@@ -1,0 +1,74 @@
+name: Egress crawl
+
+# The crawl is the only part of this project that cannot be caught up later. An
+# hour not recorded is an hour nobody can go back for, so it runs on a schedule
+# rather than by hand.
+#
+# GitHub caps a job at 6 hours and treats cron as best effort - a sibling project
+# saw delays of 1h23m, 1h52m and 3h17m in one week. So this is a LONG-RUNNING JOB,
+# not a cron tick: each run loops for 5.8 hours and commits as it goes. A delayed
+# start costs a gap, and `--coverage` reports gaps rather than hiding them.
+on:
+  schedule:
+    - cron: "0 */6 * * *"
+  workflow_dispatch:
+    inputs:
+      hours:
+        description: "how long to crawl (default fits the 6h job cap)"
+        default: "5.8"
+
+concurrency:
+  group: egress-crawl        # never two writers on one append-only store
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  crawl:
+    runs-on: ubuntu-latest
+    timeout-minutes: 355
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Crawl
+        run: |
+          python -m egress.crawl --loop --hours "${{ inputs.hours || '5.8' }}" &
+          CRAWL=$!
+          # Commit hourly so a reclaimed runner costs an hour, not a shift.
+          while kill -0 $CRAWL 2>/dev/null; do
+            sleep 3600
+            git config user.name  "egress-bot"
+            git config user.email "noreply@github.com"
+            git add -A state/
+            git diff --cached --quiet || {
+              git stash push --staged -m pending
+              git pull --rebase --autostash origin main || true
+              git stash pop
+              git add -A state/
+              git commit -m "crawl: $(date -u '+%Y-%m-%d %H:%MZ')"
+              for i in 1 2 3; do git push && break; git pull --rebase --autostash origin main || true; done
+            }
+          done
+          wait $CRAWL || true
+
+      - name: Commit the tail
+        if: always()
+        run: |
+          git config user.name  "egress-bot"
+          git config user.email "noreply@github.com"
+          git add -A state/
+          git diff --cached --quiet && exit 0
+          git stash push --staged -m pending
+          git pull --rebase --autostash origin main || true
+          git stash pop
+          git add -A state/
+          git commit -m "crawl: $(date -u '+%Y-%m-%d %H:%MZ')"
+          for i in 1 2 3; do git push && exit 0; git pull --rebase --autostash origin main || true; done
+
+      - name: Coverage
+        if: always()
+        run: python -m egress.crawl --coverage

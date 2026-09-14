@@ -1,0 +1,19 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: pip install --quiet ruff==0.15.8 mypy==1.19.1
+      - name: Lint
+        run: ruff check .
+      - name: Types
+        run: mypy
+      - name: Tests
+        run: python -m unittest discover -s tests -v
+      - name: Compile every module
+        run: python -m compileall -q egress
