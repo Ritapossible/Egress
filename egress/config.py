@@ -16,6 +16,7 @@ API = "https://api.bitget.com/api/v3"
 TICKERS = f"{API}/market/tickers"
 INSTRUMENTS = f"{API}/market/instruments"
 ORDERBOOK = f"{API}/market/orderbook"
+CANDLES = f"{API}/market/candles"
 
 # One GET returns every spot instrument, so the whole universe is one request.
 # Measured 2026-09-14: 1,761 rows, 582 KB, 0.81 s.

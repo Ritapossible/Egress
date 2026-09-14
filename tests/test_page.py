@@ -89,7 +89,7 @@ class StandsAlone(unittest.TestCase):
         by anything. Matching it would be matching a string, not a request.
         """
         html = page.render(FACTS).replace("http://www.w3.org/2000/svg", "")
-        for forbidden in ("http://", "fonts.googleapis", "cdn.", "<script",
+        for forbidden in ("http://", "fonts.googleapis", "cdn.",
                           "<iframe", "@import"):
             with self.subTest(forbidden=forbidden):
                 self.assertNotIn(forbidden, html)
@@ -98,10 +98,18 @@ class StandsAlone(unittest.TestCase):
         html = page.render(FACTS)
         self.assertIn('rel="icon" href="data:image/svg+xml,', html)
 
-    def test_the_only_link_out_is_the_source_repository(self):
+    def test_every_link_out_points_at_the_source_repository(self):
+        import re
         html = page.render(FACTS)
-        self.assertEqual(html.count("https://"), 1)
-        self.assertIn("github.com/Ritapossible/Egress", html)
+        hosts = {re.match(r"https://([^/\"]+)", u).group(1)
+                 for u in re.findall(r'https://[^"\s]+', html)}
+        self.assertEqual(hosts, {"github.com"})
+
+    def test_the_only_script_is_the_desk_and_it_is_external(self):
+        """Inline script would force unsafe-inline into the CSP."""
+        html = page.render(FACTS)
+        self.assertIn('<script src="desk.js"></script>', html)
+        self.assertEqual(html.count("<script"), 1)
 
     def test_it_is_responsive(self):
         html = page.render(FACTS)
@@ -111,3 +119,40 @@ class StandsAlone(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TheDesk(unittest.TestCase):
+    """Track 3 is a research workbench, so there has to be somewhere to ask."""
+
+    def setUp(self):
+        self.html = page.render(FACTS)
+
+    def test_there_is_an_input_that_posts_to_the_endpoint(self):
+        self.assertIn('id="ask"', self.html)
+        self.assertIn('action="/api/ask"', self.html)
+        self.assertIn('<input id="q"', self.html)
+
+    def test_the_form_still_has_a_label_for_screen_readers(self):
+        self.assertIn('for="q"', self.html)
+
+    def test_the_answer_region_announces_itself(self):
+        self.assertIn('aria-live="polite"', self.html)
+
+    def test_the_page_says_what_needs_javascript_and_what_does_not(self):
+        self.assertIn("needs JavaScript", self.html)
+        self.assertIn("read fine with", self.html)
+
+
+class Navigation(unittest.TestCase):
+    def test_the_header_carries_a_menu_not_an_event_name(self):
+        html = page.render(FACTS)
+        self.assertIn("<nav", html)
+        for target in ("#desk", "#evidence", "#validation", "#method"):
+            with self.subTest(target=target):
+                self.assertIn(f'href="{target}"', html)
+        self.assertNotIn("Bitget AI Base Camp", html)
+
+    def test_the_footer_states_provenance_and_its_limits(self):
+        html = page.render(FACTS)
+        self.assertIn("none is typed", html)
+        self.assertIn("Not advice", html)

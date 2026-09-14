@@ -37,9 +37,9 @@ and the tail map stand on their own.
 | **Sun 14** | Crawler shipped and collecting. Universe classified. Store + manifest + tests | **done** |
 | **Sun 14** | Exit-cost estimator and the public page (Talise structure, Latch palette) | **done** |
 | Mon 15 | Exit-cost estimator: walk the book, slice an order, cost a schedule | **done early** |
-| Tue 16 | Validation: predicted cost vs what actually printed. Publish the error distribution | |
+| Tue 16 | Validation: predicted cost vs what actually printed. Publish the error distribution | **done early** - and the honest result is that most of the universe cannot be validated yet |
 | Wed 17 | Phase analysis: open vs overnight vs weekend, stocks vs the crypto control | |
-| Thu 18 | The desk - natural-language question in, liquidation plan out | |
+| Thu 18 | The desk - natural-language question in, liquidation plan out | **built**, needs QWEN_API_KEY on the deployment |
 | Fri 19 | One research task end-to-end, recorded. Page. X post | |
 | Sat 20 | Buffer. Submit | |
 

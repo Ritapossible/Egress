@@ -12,7 +12,7 @@ import json
 import statistics as st
 from pathlib import Path
 
-from . import config, exitcost, market, sessions, store, universe
+from . import config, exitcost, market, sessions, store, universe, validate
 
 UTC = dt.timezone.utc
 
@@ -133,6 +133,7 @@ def build(symbols: list[str] | None = None) -> dict:
             "BTCUSDT",
         ]),
         "notional_usdt": 25_000.0,
+        "validation": validate.run(),
     }
 
 

@@ -114,6 +114,29 @@ def depth_or_touch(symbol: str, limit: int = 150) -> tuple[list, list, str]:
     return [], [], "none"
 
 
+def candles(symbol: str, interval: str = "5m", limit: int = 100) -> list[dict]:
+    """Traded bars for one symbol: what ACTUALLY printed, not what was quoted.
+
+    The venue names the interval `5m`, not `5min` - the latter is rejected with
+    code 40020. Rows arrive as positional strings; they are named here so no
+    caller has to count columns.
+    """
+    rows = _get(config.CANDLES, {"category": config.CATEGORY, "symbol": symbol,
+                                 "interval": interval, "limit": str(limit)})
+    out = []
+    for row in rows if isinstance(rows, list) else []:
+        if len(row) < 7:
+            continue
+        try:
+            out.append({"ts": int(row[0]), "open": float(row[1]),
+                        "high": float(row[2]), "low": float(row[3]),
+                        "close": float(row[4]), "base_vol": float(row[5]),
+                        "quote_vol": float(row[6])})
+        except (TypeError, ValueError):
+            continue
+    return sorted(out, key=lambda r: r["ts"])
+
+
 def orderbook(symbol: str, limit: int = 150) -> tuple[list, list]:
     """(bids, asks) for one symbol, each a list of [price, size], best first.
 

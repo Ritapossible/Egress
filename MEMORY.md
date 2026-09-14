@@ -59,6 +59,28 @@ is a liquidity signal rather than a bug.
   `technical_analysis` and `crypto_derivatives` work. **Do not design around
   those skills.** Bitget's own public API is the integration surface.
 
+## The venue's two volume feeds disagree on stocks
+
+Sum 24 hourly candles for a symbol and hold it against that symbol's rolling
+`turnover24h`:
+
+| | ratio |
+|---|---|
+| BTCUSDT, ETHUSDT, SOLUSDT | **0.97 - 0.98** |
+| RMSFTUSDT | 4.2 |
+| RAAPLUSDT / RTSLAUSDT | 5.9 / 6.1 |
+| RNVDAUSDT / RPBRUSDT | 8.5 / 9.0 |
+| RSYKUSDT | **15.7** |
+
+Base volume and quote volume diverge by the SAME factor, so it is not a units or
+price error. The factor differs per symbol, so it is not a fixed multiplier. Which
+feed is right cannot be settled from outside.
+
+`validate.feed_agreement` gates on this and EXCLUDES a symbol rather than
+averaging over a number already shown to be unreliable. Do not remove that gate to
+get a bigger sample: a validation that validates against bad data is worse than
+none, because it produces a figure people trust.
+
 ## The append-only store has exactly one writer
 
 The gzipped daily snapshot is binary, so git cannot merge it. Running

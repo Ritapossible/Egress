@@ -44,6 +44,54 @@ header{display:flex;align-items:center;justify-content:space-between;
        padding-block:22px}
 .brand{display:flex;align-items:center;gap:12px;font-size:22px;letter-spacing:-.01em}
 .brand svg{display:block}
+nav{display:flex;gap:26px;align-items:center;font-family:var(--mono);
+    font-size:11.5px;letter-spacing:.14em;text-transform:uppercase}
+nav a{color:var(--ink-2);text-decoration:none;padding-block:4px;
+      border-bottom:1px solid transparent}
+nav a:hover,nav a:focus{color:var(--accent);border-bottom-color:var(--accent)}
+nav a.here{color:var(--ink);border-bottom-color:var(--accent)}
+
+/* the desk */
+.desk{background:#fff;box-shadow:inset 0 0 0 1px var(--rule);padding:30px;
+      margin-top:34px}
+.desk label{display:block;font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+  margin-bottom:10px}
+.ask{display:flex;gap:12px;flex-wrap:wrap}
+.ask input{flex:1;min-width:240px;font-family:var(--mono);font-size:15px;
+  padding:15px 16px;border:0;background:var(--paper);color:var(--ink);
+  box-shadow:inset 0 0 0 1px var(--rule)}
+.ask input:focus{outline:2px solid var(--accent);outline-offset:1px}
+.ask button{font-family:var(--mono);font-size:13px;letter-spacing:.14em;
+  text-transform:uppercase;padding:15px 28px;border:0;background:var(--accent);
+  color:#fff;cursor:pointer}
+.ask button:disabled{opacity:.55;cursor:default}
+.eg{margin-top:14px;font-family:var(--mono);font-size:12px;color:var(--ink-3)}
+.eg button{background:none;border:0;color:var(--accent);cursor:pointer;
+  font:inherit;padding:0;text-decoration:underline;text-underline-offset:3px}
+#out{margin-top:26px}
+#out:empty{display:none}
+.ans{border-left:2px solid var(--accent);padding-left:18px}
+.ans .big{font-size:19px;line-height:1.55;color:var(--ink)}
+.ans dl{display:grid;grid-template-columns:auto 1fr;gap:7px 18px;margin-top:18px;
+  font-family:var(--mono);font-size:13px}
+.ans dt{color:var(--ink-3);text-transform:uppercase;letter-spacing:.1em;
+        font-size:11px;padding-top:2px}
+.ans dd{color:var(--ink);font-variant-numeric:tabular-nums}
+.ans ul{margin:16px 0 0 18px;font-size:13.5px;color:var(--ink-2);line-height:1.75}
+.ans .bad{color:var(--bad)}
+
+footer{padding-block:54px 40px}
+.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px}
+.foot-top h3{font-size:11px;font-family:var(--mono);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3);font-weight:400;margin-bottom:14px}
+.foot-top p{color:var(--ink-2);font-size:14.5px;max-width:42ch;line-height:1.7}
+.foot-top a{display:block;color:var(--ink-2);text-decoration:none;
+  font-size:14px;margin-bottom:9px}
+.foot-top a:hover{color:var(--accent)}
+.foot-bot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
+  margin-top:40px;padding-top:22px;border-top:1px solid var(--rule);
+  font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
 .tag{font-family:var(--mono);font-size:11px;letter-spacing:.16em;
      text-transform:uppercase;color:var(--accent)}
 
@@ -109,6 +157,7 @@ h2{font-size:clamp(26px,3.6vw,38px);letter-spacing:-.025em;font-weight:600;
         vertical-align:top}
 .tbl td.n{font-family:var(--mono);font-variant-numeric:tabular-nums;
           white-space:nowrap}
+.tbl td.dim{color:var(--ink-3);font-size:13.5px}
 .sym{font-family:var(--mono);font-weight:600}
 .pill{font-family:var(--mono);font-size:10px;letter-spacing:.1em;
   text-transform:uppercase;padding:3px 8px;background:var(--accent-soft);
@@ -130,6 +179,11 @@ footer a{color:var(--ink-2)}
   section,.grid-panel{padding-block:52px}
   header{flex-wrap:wrap;gap:8px}
   .tag{font-size:10px;letter-spacing:.11em}
+  nav{gap:16px;font-size:10px;flex-wrap:wrap}
+  .desk{padding:20px}
+  .ask input{min-width:100%}
+  .ask button{width:100%}
+  .foot-top{grid-template-columns:1fr;gap:26px}
   /* Letterspaced monospace does not wrap on its own and was setting a floor
      width wider than a phone. */
   .badge{font-size:10px;letter-spacing:.1em;padding:10px 14px;
@@ -147,6 +201,103 @@ footer a{color:var(--ink-2)}
   .say{font-size:16px}
 }
 """
+
+DESK_JS = """/* The desk's only script. Progressive: with JS off the form posts nowhere
+   and every measured section on the page still renders, because all of it is
+   generated at build time. */
+(function () {
+  var form = document.getElementById('ask');
+  var input = document.getElementById('q');
+  var button = document.getElementById('go');
+  var out = document.getElementById('out');
+  if (!form || !input || !out) return;
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c];
+    });
+  }
+
+  function row(term, value) {
+    return '<dt>' + esc(term) + '</dt><dd>' + esc(value) + '</dd>';
+  }
+
+  function render(data) {
+    if (data.error) {
+      out.innerHTML = '<div class="ans"><p class="big bad">' + esc(data.error)
+        + '</p></div>';
+      return;
+    }
+    var q = data.quote || {};
+    var html = '<div class="ans"><p class="big">' + esc(data.reading || '')
+      + '</p><dl>';
+    html += row('Symbol', data.symbol || '-');
+    html += row('Position', Number(q.requested_usdt || 0).toLocaleString() + ' USDT');
+    if (q.total_bp === q.total_bp) {
+      var floor = (q.exhausted || q.source === 'touch') ? '>' : '';
+      html += row('One clip', floor + Number(q.total_bp).toFixed(0) + ' bp');
+      html += row('In USDT', floor + Number(q.total_usdt).toLocaleString());
+    }
+    html += row('Book on that side', Number(q.book_usdt || 0).toLocaleString() + ' USDT');
+    if (data.max_exit_200bp !== undefined) {
+      html += row('Most you can exit under 200 bp',
+                  Number(data.max_exit_200bp).toLocaleString() + ' USDT');
+    }
+    html += row('Depth source', q.source === 'touch' ? 'top of book only' : (q.source || '-'));
+    html += row('Market phase', data.phase || '-');
+    html += '</dl>';
+
+    if (data.plan && data.plan.length) {
+      html += '<dl>';
+      data.plan.forEach(function (p) {
+        html += row(p.slices + (p.slices === 1 ? ' clip' : ' clips'),
+          Number(p.best_case_bp).toFixed(0) + ' to '
+          + Number(p.worst_case_bp).toFixed(0) + ' bp');
+      });
+      html += '</dl>';
+    }
+
+    if (data.unverified && data.unverified.length) {
+      html += '<ul>';
+      data.unverified.forEach(function (u) { html += '<li>' + esc(u) + '</li>'; });
+      html += '</ul>';
+    }
+    out.innerHTML = html + '</div>';
+  }
+
+  function ask(question) {
+    if (!question.trim()) return;
+    button.disabled = true;
+    out.innerHTML = '<div class="ans"><p class="big">Reading the question, then '
+      + 'the book...</p></div>';
+    fetch('/api/ask', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({q: question})
+    }).then(function (r) { return r.json(); })
+      .then(render)
+      .catch(function (e) {
+        out.innerHTML = '<div class="ans"><p class="big bad">The desk could not '
+          + 'be reached: ' + esc(e.message || e) + '</p></div>';
+      })
+      .then(function () { button.disabled = false; });
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    ask(input.value);
+  });
+
+  Array.prototype.forEach.call(
+    document.querySelectorAll('.eg button[data-q]'), function (b) {
+      b.addEventListener('click', function () {
+        input.value = b.getAttribute('data-q');
+        ask(input.value);
+      });
+    });
+})();
+"""
+
 
 MARK = ('<svg width="26" height="26" viewBox="0 0 26 26" fill="none" '
         'aria-hidden="true">'
@@ -174,6 +325,52 @@ def _phase_rows(phases: list[dict]) -> str:
             f"<td class='n'>{ratio}</td>"
             f"<td class='n'>{row['snapshots']}</td></tr>")
     return "\n".join(out)
+
+
+def _validation(v: dict) -> tuple[str, str]:
+    """(one sentence, the block) - or an honest account of why there is neither."""
+    if not v or not v.get("symbols"):
+        return ("It has not been run yet.", "")
+    excluded = v.get("excluded", 0)
+    kinds = ", ".join(v.get("excluded_kinds") or []) or "some"
+
+    say = ""
+    if v.get("median_ratio") is not None:
+        say = (f"Across {v['bars']:,} bars the median was "
+               f"<strong>{v['median_ratio']:,.0f}x</strong> - far more traded than "
+               f"was ever displayed, so the book refills and the estimator is "
+               f"conservative.")
+    rows = "\n".join(
+        f"<tr><td class='sym'>{html.escape(e['symbol'])}</td>"
+        f"<td class='n'>{e['feed_ratio']:,.1f}x</td>"
+        f"<td class='dim'>{html.escape(e['reason'])}</td></tr>"
+        for e in (v.get("excluded_detail") or []) if e.get("feed_ratio"))
+
+    block = f"""
+    <p class="note"><b>Most of this universe could not be validated, and that is
+    the result.</b> Before comparing anything, the check sums twenty-four hourly
+    bars for a symbol and holds the total against that symbol's own rolling 24h
+    turnover. On crypto the two land within 2% of each other. On tokenized stocks
+    they diverge by a factor that differs per symbol - base volume and quote
+    volume diverge by the same factor, so it is not a units error, and it is not
+    constant, so it is not a fixed multiplier. Which feed is right cannot be
+    settled from outside, so {excluded} {kinds} symbols were excluded rather than
+    averaged over.</p>
+
+    <div class="scroll">
+    <table class="tbl">
+      <thead><tr><th>Excluded symbol</th><th>Candle vs ticker</th>
+      <th>Why</th></tr></thead>
+      <tbody>{rows}</tbody>
+    </table>
+    </div>
+
+    <p class="note"><b>A ratio above 1 has one explanation; below 1 has two.</b>
+    More printing than was displayed can only mean the book refilled. Displayed
+    size going unconsumed could mean it was withdrawn before anyone hit it, or
+    that nobody wanted it. Idle and phantom liquidity look identical from outside,
+    and this data cannot separate them.</p>"""
+    return say, block
 
 
 def _example_rows(examples: list[dict]) -> str:
@@ -208,6 +405,7 @@ def render(f: dict | None = None) -> str:
     cover = f["coverage"]
     gen = dt.datetime.fromisoformat(f["generated"])
     notional = f["notional_usdt"]
+    validation_say, validation_block = _validation(f.get("validation") or {})
 
     swing = ""
     if closed.get("stock") and openp.get("stock"):
@@ -225,10 +423,17 @@ stocks on Bitget, measured from the book that exists.">
 <style>{CSS}</style>
 </head><body>
 
-<div class="wrap">
+<div class="wrap" id="top">
   <header>
-    <div class="brand">{MARK}<span>egress</span></div>
-    <span class="tag">Bitget AI Base Camp S2</span>
+    <a class="brand" href="#top" style="text-decoration:none;color:inherit">
+      {MARK}<span>egress</span></a>
+    <nav aria-label="Sections">
+      <a href="#desk">Desk</a>
+      <a href="#evidence">Evidence</a>
+      <a href="#validation">Validation</a>
+      <a href="#method">Method</a>
+      <a href="https://github.com/Ritapossible/Egress">Source</a>
+    </nav>
   </header>
 </div>
 <div class="wrap"><div class="rule"></div></div>
@@ -248,6 +453,42 @@ stocks on Bitget, measured from the book that exists.">
       works</a></span>
     </div>
   </div>
+</div>
+
+<div class="wrap">
+  <section id="desk" style="padding-top:0">
+    <p class="kicker">The desk</p>
+    <h2>Ask what leaving costs</h2>
+    <p class="say">Plain English. The reader turns your question into a symbol
+    and a size; every number after that is walked off the live book by code, so a
+    wrong answer shows up as a visibly wrong reading rather than an invented
+    figure.</p>
+
+    <div class="desk">
+      <form class="ask" id="ask" action="/api/ask" method="post">
+        <label for="q" class="visually-hidden" style="position:absolute;
+          width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">
+          Your question</label>
+        <input id="q" name="q" type="text" autocomplete="off"
+               placeholder="What does leaving 40,000 USDT of TSLA cost?">
+        <button type="submit" id="go">Ask</button>
+      </form>
+      <p class="eg">Try:
+        <button type="button" data-q="What does leaving 40,000 USDT of TSLA cost?">a
+        large TSLA position</button> &middot;
+        <button type="button" data-q="I hold 5000 USDT of NVDA and need out today.">a
+        small NVDA one</button> &middot;
+        <button type="button" data-q="Cost to exit 25,000 USDT of SYK?">a
+        thin name</button>
+      </p>
+      <div id="out" role="status" aria-live="polite"></div>
+    </div>
+
+    <p class="note"><b>The desk needs JavaScript and a configured reader.</b>
+    Everything below this point does not: the measurement, the validation and the
+    worked example are rendered into this page at build time and read fine with
+    scripting off.</p>
+  </section>
 </div>
 
 <div class="grid-panel">
@@ -296,6 +537,18 @@ stocks on Bitget, measured from the book that exists.">
 <div class="wrap"><div class="rule"></div></div>
 
 <div class="wrap">
+  <section id="validation">
+    <p class="kicker">Validation</p>
+    <h2>Checking the quotes against the prints</h2>
+    <p class="say">A quote is a promise. The check is to hold the size resting at
+    the touch against the volume that actually printed in the five minutes after
+    it. {validation_say}</p>
+    {validation_block}
+  </section>
+</div>
+<div class="wrap"><div class="rule"></div></div>
+
+<div class="wrap">
   <section id="method">
     <p class="kicker">Worked example</p>
     <h2>What leaving {notional:,.0f} USDT costs right now</h2>
@@ -322,13 +575,36 @@ stocks on Bitget, measured from the book that exists.">
 
 <div class="wrap"><div class="rule"></div>
   <footer>
-    <span>Generated {gen:%Y-%m-%d %H:%M} UTC from the recorded crawl.
-    No figure on this page is typed by hand.</span>
-    <span><a href="https://github.com/Ritapossible/Egress">Source</a> &middot;
-    MIT</span>
+    <div class="foot-top">
+      <div>
+        <h3>Egress</h3>
+        <p>Exit liquidity for tokenized US equities. Egress reads every listed
+        instrument on Bitget every five minutes and measures what it costs to
+        leave a position, at a stated size, from the book that exists.</p>
+      </div>
+      <div>
+        <h3>On this page</h3>
+        <a href="#desk">Ask the desk</a>
+        <a href="#evidence">The measurement</a>
+        <a href="#validation">Validation</a>
+        <a href="#method">Worked example</a>
+      </div>
+      <div>
+        <h3>Project</h3>
+        <a href="https://github.com/Ritapossible/Egress">Source and method</a>
+        <a href="https://github.com/Ritapossible/Egress/blob/main/ARCHITECTURE.md">Architecture</a>
+        <a href="https://github.com/Ritapossible/Egress/blob/main/PLAN.md">What is measured</a>
+      </div>
+    </div>
+    <div class="foot-bot">
+      <span>Generated {gen:%Y-%m-%d %H:%M} UTC from {cover['snapshots']:,}
+      recorded snapshots. Every figure is read from that record, none is typed.</span>
+      <span>Research only. Not advice, not an offer, not a quote. MIT licensed.</span>
+    </div>
   </footer>
 </div>
 
+<script src="desk.js"></script>
 </body></html>
 """
 
@@ -338,6 +614,9 @@ def write(out: Path | None = None) -> Path:
     out.mkdir(parents=True, exist_ok=True)
     path = out / "index.html"
     path.write_text(render(), encoding="utf-8")
+    # External rather than inline so the CSP can stay script-src 'self' with no
+    # unsafe-inline for scripts.
+    (out / "desk.js").write_text(DESK_JS, encoding="utf-8")
     return path
 
 
