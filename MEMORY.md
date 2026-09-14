@@ -59,6 +59,19 @@ is a liquidity signal rather than a bug.
   `technical_analysis` and `crypto_derivatives` work. **Do not design around
   those skills.** Bitget's own public API is the integration surface.
 
+## The append-only store has exactly one writer
+
+The gzipped daily snapshot is binary, so git cannot merge it. Running
+`crawl --once` locally while the Action was mid-run produced a genuine rebase
+conflict on `state/snapshots/*.csv.gz` and `state/manifest.jsonl`.
+
+Resolution: **the runner's copy always wins.** It holds the continuous record; a
+local snapshot is scaffolding. During a rebase that means `git checkout --ours --
+state/` (in a rebase, "ours" is the upstream being replayed onto).
+
+Better: do not write to `state/` locally at all while the Action runs. Point
+`EGRESS_STATE` at a scratch directory for local work.
+
 ## Rendering and screenshots
 
 **Headless Chromium lays out ~85 px wider than `--window-size`.** A 400 px window
