@@ -1,6 +1,6 @@
 # Plan
 
-**Egress — Bitget AI Base Camp Hackathon S2 · Track 3, AI Trading Desk · Execution Assistance**
+**Egress - Bitget AI Base Camp Hackathon S2 · Track 3, AI Trading Desk · Execution Assistance**
 
 Deadline **2026-09-21 23:59 UTC+8**. Started 2026-09-14.
 

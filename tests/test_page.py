@@ -1,10 +1,13 @@
-"""The page must state the record, not a memory of it.
+"""The site must state the record, not a memory of it.
 
 MEMORY.md rule 5: no measured figure is ever typed into a template. These tests
-enforce it by perturbing the facts and checking the page follows.
+enforce it by perturbing the facts and checking the pages follow. They also hold
+the multi-page structure together: every menu tab is its own file, and the
+chrome is identical on all of them.
 """
 from __future__ import annotations
 
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -37,95 +40,205 @@ FACTS = {
     ],
 }
 
+FILES = [file for file, *_ in page.PAGES]
+
+
+def render(name="index.html", facts=None):
+    return page.render(name, facts or FACTS)
+
+
+class EveryTabIsItsOwnPage(unittest.TestCase):
+    def test_the_five_tabs_each_have_a_file(self):
+        self.assertEqual(FILES, ["index.html", "evidence.html",
+                                 "validation.html", "method.html", "docs.html"])
+
+    def test_the_menu_is_the_same_on_every_page_and_links_to_files(self):
+        for name in FILES:
+            html = render(name)
+            with self.subTest(page=name):
+                for target in FILES:
+                    self.assertIn(f'href="{target}"', html)
+
+    def test_the_current_tab_is_marked_and_only_the_current_tab(self):
+        for name in FILES:
+            html = render(name)
+            with self.subTest(page=name):
+                self.assertEqual(html.count('aria-current="page"'), 1)
+                self.assertIn(f'<a href="{name}" class="here"', html)
+
+    def test_the_menu_opens_without_javascript(self):
+        """A <details> disclosure is the whole mobile menu. No script."""
+        html = render()
+        self.assertIn('<details class="menu">', html)
+        self.assertIn("<summary", html)
+
+    def test_no_page_links_to_a_fragment_that_lives_on_another_page(self):
+        """The bug this replaces: #evidence in the menu of a page without it."""
+        for name in FILES:
+            html = render(name)
+            ids = set(re.findall(r'id="([^"]+)"', html))
+            for frag in set(re.findall(r'href="#([^"]+)"', html)):
+                with self.subTest(page=name, fragment=frag):
+                    self.assertIn(frag, ids)
+
+    def test_an_unknown_page_is_an_error_not_an_empty_file(self):
+        with self.assertRaises(KeyError):
+            page.render("nope.html", FACTS)
+
 
 class RendersFromTheRecord(unittest.TestCase):
-    def setUp(self):
-        self.html = page.render(FACTS)
-
     def test_the_universe_count_comes_from_facts(self):
-        self.assertIn("1,175", self.html)
-        self.assertIn("584", self.html)
+        html = render()
+        self.assertIn("1,175", html)
+        self.assertIn("584", html)
 
     def test_both_phases_are_shown_with_their_snapshot_counts(self):
+        html = render("evidence.html")
         for fragment in ("18.8 bp", "158.0 bp", "11.3 bp", "15.3x"):
             with self.subTest(fragment=fragment):
-                self.assertIn(fragment, self.html)
+                self.assertIn(fragment, html)
 
     def test_a_floor_is_marked_as_a_floor(self):
         """A cost the book could not fully price must not read as exact."""
-        self.assertIn("&gt;22 bp", self.html)
-        self.assertIn("13 bp", self.html)
+        html = render("method.html")
+        self.assertIn("&gt;22 bp", html)
+        self.assertIn("13 bp", html)
 
     def test_a_symbol_the_venue_would_not_price_is_shown_not_dropped(self):
-        self.assertIn("RDEADUSDT", self.html)
-        self.assertIn("not in the ticker feed", self.html)
+        html = render("method.html")
+        self.assertIn("RDEADUSDT", html)
+        self.assertIn("not in the ticker feed", html)
 
     def test_touch_sourced_rows_say_so(self):
-        self.assertIn("top of book only", self.html)
+        self.assertIn("top of book only", render("method.html"))
 
-    def test_the_page_declares_its_figures_estimated(self):
-        self.assertIn("estimated, never observed", self.html)
+    def test_the_method_page_declares_its_figures_estimated(self):
+        self.assertIn("estimated, never observed", render("method.html"))
 
     def test_perturbing_the_facts_moves_the_page(self):
         """The guard against a number being typed into the template."""
-        other = {**FACTS, "universe": {"stock": 99, "crypto": 7}}
-        moved = page.render(other)
+        moved = render(facts={**FACTS, "universe": {"stock": 99, "crypto": 7}})
         self.assertIn("99", moved)
         self.assertNotIn("1,175", moved)
 
+    def test_perturbing_the_facts_moves_the_evidence_page_too(self):
+        other = {**FACTS, "phases": [
+            {"phase": "open", "snapshots": 2, "stock": 4.4, "crypto": 9.1,
+             "ratio": 0.5}]}
+        moved = render("evidence.html", other)
+        self.assertIn("4.4 bp", moved)
+        self.assertNotIn("158.0 bp", moved)
+
     def test_gap_count_is_singular_or_plural_correctly(self):
-        one = page.render({**FACTS, "coverage": {**FACTS["coverage"],
-                                                 "gaps": [{"minutes": 60}]}})
+        one = render(facts={**FACTS,
+                            "coverage": {**FACTS["coverage"],
+                                         "gaps": [{"minutes": 60}]}})
         self.assertIn("Gap in the record", one)
-        self.assertIn("Gaps in the record", self.html)
+        self.assertIn("Gaps in the record", render())
+
+    def test_the_taker_fee_on_the_method_page_is_the_one_the_code_charges(self):
+        from egress import exitcost
+        self.assertIn(f"{exitcost.TAKER_FEE_BP:g} bp taker fee",
+                      render("method.html"))
+
+    def test_the_docs_state_the_record_size_from_the_record(self):
+        html = render("docs.html")
+        self.assertIn("21,132", html)
+        self.assertIn("1,761", html)
+
+
+class TheDocsPageIsStandard(unittest.TestCase):
+    """A judge who has never seen the repo has to be able to reproduce a number."""
+
+    def setUp(self):
+        self.html = render("docs.html")
+
+    def test_it_carries_the_sections_a_docs_page_is_expected_to_have(self):
+        for slug, _label in page.DOC_SECTIONS:
+            with self.subTest(section=slug):
+                self.assertIn(f'id="{slug}"', self.html)
+                self.assertIn(f'href="#{slug}"', self.html)
+
+    def test_the_quickstart_is_runnable_not_prose(self):
+        for command in ("git clone", "python -m egress.crawl --once",
+                        "python -m egress.page"):
+            with self.subTest(command=command):
+                self.assertIn(command, self.html)
+
+    def test_every_stored_column_is_documented(self):
+        from egress import store
+        for column in store.COLUMNS:
+            with self.subTest(column=column):
+                self.assertIn(f"<td class='sym'>{column}</td>", self.html)
+
+    def test_the_endpoint_is_documented_with_its_method(self):
+        self.assertIn("POST /api/ask", self.html)
+
+    def test_limitations_are_on_the_page_not_only_in_the_repo(self):
+        for limit in ("A quote is not a fill", "The record is short",
+                      "Research only"):
+            with self.subTest(limit=limit):
+                self.assertIn(limit, self.html)
 
 
 class StandsAlone(unittest.TestCase):
     def test_no_external_request_of_any_kind(self):
-        """One file a judge can open offline. No CDN, no webfont, no tracker.
+        """Files a judge can open offline. No CDN, no webfont, no tracker.
 
         `http://www.w3.org/2000/svg` is excluded deliberately: it is an XML
         namespace identifier, required on the inline favicon, and never fetched
         by anything. Matching it would be matching a string, not a request.
         """
-        html = page.render(FACTS).replace("http://www.w3.org/2000/svg", "")
-        for forbidden in ("http://", "fonts.googleapis", "cdn.",
-                          "<iframe", "@import"):
-            with self.subTest(forbidden=forbidden):
-                self.assertNotIn(forbidden, html)
+        for name in FILES:
+            html = render(name).replace("http://www.w3.org/2000/svg", "")
+            for forbidden in ("http://", "fonts.googleapis", "cdn.",
+                              "<iframe", "@import"):
+                with self.subTest(page=name, forbidden=forbidden):
+                    self.assertNotIn(forbidden, html)
 
     def test_the_favicon_is_inline_not_a_file_request(self):
-        html = page.render(FACTS)
-        self.assertIn('rel="icon" href="data:image/svg+xml,', html)
+        for name in FILES:
+            with self.subTest(page=name):
+                self.assertIn('rel="icon" href="data:image/svg+xml,',
+                              render(name))
 
     def test_every_link_out_points_at_the_source_repository(self):
-        import re
-        html = page.render(FACTS)
-        hosts = {re.match(r"https://([^/\"]+)", u).group(1)
-                 for u in re.findall(r'https://[^"\s]+', html)}
-        self.assertEqual(hosts, {"github.com"})
+        for name in FILES:
+            hosts = {re.match(r"https://([^/\"]+)", u).group(1)
+                     for u in re.findall(r'https://[^"\s]+', render(name))}
+            with self.subTest(page=name):
+                self.assertEqual(hosts, {"github.com"})
 
-    def test_the_only_script_is_the_desk_and_it_is_external(self):
+    def test_the_only_script_is_the_desk_and_only_where_the_desk_is(self):
         """Inline script would force unsafe-inline into the CSP."""
-        html = page.render(FACTS)
-        self.assertIn('<script src="desk.js"></script>', html)
-        self.assertEqual(html.count("<script"), 1)
+        index = render()
+        self.assertIn('<script src="desk.js"></script>', index)
+        self.assertEqual(index.count("<script"), 1)
+        for name in FILES[1:]:
+            with self.subTest(page=name):
+                self.assertEqual(render(name).count("<script"), 0)
 
-    def test_it_is_responsive(self):
-        html = page.render(FACTS)
-        self.assertIn('name="viewport"', html)
-        self.assertIn("@media", html)
+    def test_every_page_is_responsive(self):
+        for name in FILES:
+            html = render(name)
+            with self.subTest(page=name):
+                self.assertIn('name="viewport"', html)
+                self.assertIn("@media", html)
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_wide_tables_are_wrapped_so_they_scroll_rather_than_crush(self):
+        """The mobile bug: a table column wrapping one word per line."""
+        for name in ("evidence.html", "method.html", "docs.html"):
+            html = render(name)
+            with self.subTest(page=name):
+                self.assertEqual(html.count('<table class="tbl">'),
+                                 html.count('<div class="scroll">'))
 
 
 class TheDesk(unittest.TestCase):
     """Track 3 is a research workbench, so there has to be somewhere to ask."""
 
     def setUp(self):
-        self.html = page.render(FACTS)
+        self.html = render()
 
     def test_there_is_an_input_that_posts_to_the_endpoint(self):
         self.assertIn('id="ask"', self.html)
@@ -140,19 +253,41 @@ class TheDesk(unittest.TestCase):
 
     def test_the_page_says_what_needs_javascript_and_what_does_not(self):
         self.assertIn("needs JavaScript", self.html)
-        self.assertIn("read fine with", self.html)
+        self.assertIn("read fine", self.html)
 
 
-class Navigation(unittest.TestCase):
+class Chrome(unittest.TestCase):
     def test_the_header_carries_a_menu_not_an_event_name(self):
-        html = page.render(FACTS)
-        self.assertIn("<nav", html)
-        for target in ("#desk", "#evidence", "#validation", "#method"):
-            with self.subTest(target=target):
-                self.assertIn(f'href="{target}"', html)
-        self.assertNotIn("Bitget AI Base Camp", html)
+        for name in FILES:
+            html = render(name)
+            with self.subTest(page=name):
+                self.assertIn("<nav", html)
+                self.assertNotIn("Bitget AI Base Camp", html)
 
-    def test_the_footer_states_provenance_and_its_limits(self):
-        html = page.render(FACTS)
-        self.assertIn("none is typed", html)
-        self.assertIn("Not advice", html)
+    def test_the_footer_states_provenance_and_its_limits_on_every_page(self):
+        for name in FILES:
+            html = render(name)
+            with self.subTest(page=name):
+                self.assertIn("none is typed", html)
+                self.assertIn("Not advice", html)
+
+    def test_every_page_has_exactly_one_h1(self):
+        for name in FILES:
+            with self.subTest(page=name):
+                self.assertEqual(render(name).count("<h1>"), 1)
+
+    def test_writing_the_site_emits_every_page_and_the_script(self):
+        import tempfile
+        from unittest import mock
+        with tempfile.TemporaryDirectory() as tmp, \
+                mock.patch.object(page.facts, "build", return_value=FACTS):
+            out = Path(tmp)
+            index = page.write(out)
+            self.assertEqual(index.name, "index.html")
+            for name in [*FILES, "desk.js"]:
+                with self.subTest(file=name):
+                    self.assertTrue((out / name).exists())
+
+
+if __name__ == "__main__":
+    unittest.main()

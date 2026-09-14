@@ -104,6 +104,37 @@ a layout that was never broken. Measure instead: inject a probe that reports
 edge exceeds the viewport. 485 px is this build's floor, so narrower than that
 cannot be measured here at all.
 
+### A closed `<details>` hides its content with `content-visibility`
+
+The menu is one markup in two shapes: inline links on a wide screen, a native
+disclosure on a narrow one, and no script either way. Overriding
+`.menu ul{display:flex}` makes the links paint on desktop, but the `<details>`
+box still measures **zero wide**, because Chromium hides the content through
+`::details-content{content-visibility:hidden}` rather than through the child's
+own `display`. The links therefore painted out of a zero-width box and off the
+right edge of the header at every desktop width. The fix is to override the
+pseudo-element itself:
+
+```css
+.menu::details-content{content-visibility:visible;display:contents}
+```
+
+Engines without `::details-content` ignore the rule and fall back to the older
+`display:none`-on-content behaviour, which lays out correctly, so this is a safe
+progressive enhancement rather than a dependency.
+
+Caught only because the responsiveness check measures `getBoundingClientRect()`
+per element instead of comparing `scrollWidth` to `clientWidth`: the header did
+not widen the page, so the page-level check was green while five pages had
+unreachable navigation. **`scrollWidth === clientWidth` is not proof that
+nothing is off-screen.**
+
+### Six inline tabs stop fitting long before a phone
+
+The mobile breakpoint was 700 px; the menu ran out of room at about 900. The
+header collapses to the pill one breakpoint earlier than the layout does, which
+is why there are two media queries rather than one.
+
 ## Working rules
 
 1. **Probe before designing.** Every assumption above that turned out wrong was
@@ -120,3 +151,7 @@ cannot be measured here at all.
 5. **No typed literals for measured numbers.** Any figure in a document or page
    comes from the record, or it goes stale silently and nobody notices.
 6. **Label everything `observed` or `estimated`.** A quote is not a fill.
+7. **Measure the layout, do not look at it.** Screenshots crop; a headless
+   window is not the viewport. Every responsiveness claim in this project comes
+   from reading `getBoundingClientRect()` on every element at eight widths, and
+   from opening the menu and checking where it landed.

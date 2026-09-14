@@ -2,9 +2,9 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Egress - what it costs to leave</title>
+<title>Method - Egress</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Crect width='26' height='26' fill='%23fbf7f1'/%3E%3Cpath d='M6 13h13M14 8l5 5-5 5' stroke='%23c8791b' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
-<meta name="description" content="Exit liquidity for tokenized US stocks on Bitget, measured from the book that exists, at the size you actually hold.">
+<meta name="description" content="How an exit cost is computed: the mid as reference, the walk, the taker fee, and where an estimate becomes a floor.">
 <style>:root{
   --paper:#fbf7f1; --paper-2:#f4efe6; --ink:#16150f; --ink-2:#55524a;
   --ink-3:#8a8579; --rule:#ded7c9; --accent:#c8791b; --accent-soft:#f3e3cd;
@@ -271,10 +271,10 @@ footer a{color:var(--ink-2)}
     <details class="menu">
       <summary aria-label="Menu"><span></span></summary>
       <ul>
-      <li><a href="index.html" class="here" aria-current="page">Desk</a></li>
+      <li><a href="index.html">Desk</a></li>
       <li><a href="evidence.html">Evidence</a></li>
       <li><a href="validation.html">Validation</a></li>
-      <li><a href="method.html">Method</a></li>
+      <li><a href="method.html" class="here" aria-current="page">Method</a></li>
       <li><a href="docs.html">Docs</a></li>
       <li><a href="https://github.com/Ritapossible/Egress">Source</a></li>
       </ul>
@@ -285,103 +285,72 @@ footer a{color:var(--ink-2)}
 <div class="wrap"><div class="rule"></div></div>
 
 <div class="wrap">
-  <div class="hero">
-    <span class="badge"><i></i>Exit liquidity for tokenized stocks</span>
-    <h1>One click in. <em>Not</em> one click out.</h1>
-    <p class="lede">Bitget lists 1,175 tokenized US stocks. Egress measures
-    what it actually costs to leave one - at your size, from the order book that
-    exists right now, not from an average. It reads the whole listed universe
-    every five minutes and keeps the record.</p>
-    <div class="cta">
-      <span class="bracket"><a class="btn solid" href="evidence.html">See the
-      evidence</a></span>
-      <span class="bracket"><a class="btn ghost" href="docs.html">Read the
-      docs</a></span>
-    </div>
+  <div class="page-head">
+    <p class="kicker">Method</p>
+    <h1>How a cost is computed</h1>
+    <p class="lead">Walk the book from the mid, take the fill you would actually
+    get, add the taker fee. Where the displayed book runs out before the position
+    does, the number is a floor and is shown with a
+    <span class="sym">&gt;</span>.</p>
   </div>
 </div>
 
 <div class="wrap">
-  <section id="desk" style="padding-top:0">
-    <p class="kicker">The desk</p>
-    <h2>Ask what leaving costs</h2>
-    <p class="say">Plain English. The reader turns your question into a symbol
-    and a size; every number after that is walked off the live book by code, so a
-    wrong answer shows up as a visibly wrong reading rather than an invented
-    figure.</p>
-
-    <div class="desk">
-      <form class="ask" id="ask" action="/api/ask" method="post">
-        <label for="q">Your question</label>
-        <input id="q" name="q" type="text" autocomplete="off"
-               placeholder="What does leaving 40,000 USDT of TSLA cost?">
-        <button type="submit" id="go">Ask</button>
-      </form>
-      <p class="eg">Try:
-        <button type="button" data-q="What does leaving 40,000 USDT of TSLA cost?">a
-        large TSLA position</button> &middot;
-        <button type="button" data-q="I hold 5000 USDT of NVDA and need out today.">a
-        small NVDA one</button> &middot;
-        <button type="button" data-q="Cost to exit 25,000 USDT of SYK?">a
-        thin name</button>
-      </p>
-      <div id="out" role="status" aria-live="polite"></div>
-    </div>
-
-    <p class="note"><b>The desk needs JavaScript and a configured reader.</b>
-    Nothing else on this site does: every measurement, the validation and the
-    worked example are rendered into their pages at build time and read fine
-    with scripting off.</p>
-  </section>
-</div>
-
-<div class="grid-panel">
-  <div class="wrap">
-    <div class="stats">
-      <div class="stat"><b>1,175</b><span>Tokenized stocks listed</span></div>
-      <div class="stat"><b>584</b>
-        <span>Crypto pairs as control</span></div>
-      <div class="stat"><b>50</b>
-        <span>Snapshots recorded</span></div>
-      <div class="stat"><b>0</b>
-        <span>Gaps in the record</span></div>
-    </div>
-  </div>
-</div>
-
-<div class="wrap">
-  <section>
-    <p class="kicker">What is on this site</p>
-    <h2>Four pages, each one a claim you can check</h2>
-    <p class="say">Nothing here is asserted without the record behind it. Each
-    page states what it measured, how, and what it could not settle. Median spread across every quoted name runs 143 bp while the US market is shut against 9 bp while it is open.</p>
-
+  <section class="after-head">
+    <h2>The four steps</h2>
     <div class="cards">
-      <a class="card" href="evidence.html">
-        <h3>Evidence</h3>
-        <p>Spread by market phase, tokenized stocks against a crypto control
-        group on the same venue and the same matching engine.</p>
-        <span>See the measurement</span>
-      </a>
-      <a class="card" href="validation.html">
-        <h3>Validation</h3>
-        <p>Whether a displayed quote is worth anything: resting size held
-        against the volume that actually printed after it.</p>
-        <span>See the check</span>
-      </a>
-      <a class="card" href="method.html">
-        <h3>Method</h3>
-        <p>How a cost is computed - walking the book from the mid, the taker
-        fee, and where an estimate turns into a floor.</p>
-        <span>See the working</span>
-      </a>
-      <a class="card" href="docs.html">
-        <h3>Docs</h3>
-        <p>Run the crawler yourself, read the data format, call the endpoint,
-        and see the limits stated in one place.</p>
-        <span>Read the docs</span>
-      </a>
+      <div class="card">
+        <h3>1. Reference</h3>
+        <p>The mid, not the best bid. Crossing the spread is money the seller
+        actually pays, so charging it to the exit is the honest accounting.</p>
+      </div>
+      <div class="card">
+        <h3>2. Walk</h3>
+        <p>Consume the bid side level by level until the stated notional is
+        filled. The average fill price against the mid is the impact.</p>
+      </div>
+      <div class="card">
+        <h3>3. Fee</h3>
+        <p>A flat 10 bp taker fee is added. It is the published schedule, not a measurement,
+        and it is the only typed number on this site.</p>
+      </div>
+      <div class="card">
+        <h3>4. Floor or estimate</h3>
+        <p>If the displayed book runs out first, the answer is a lower bound,
+        marked, never rounded up into a figure that looks exact.</p>
+      </div>
     </div>
+
+    <h2>What leaving 25,000 USDT costs right now</h2>
+    <p class="say">Read at build time from the live book, for a spread of names
+    thick and thin, with a crypto pair alongside for scale.</p>
+
+    <div class="scroll">
+    <table class="tbl">
+      <thead><tr><th>Symbol</th><th>Type</th><th>Exit cost</th>
+      <th>Book, USDT</th><th>Source</th></tr></thead>
+      <tbody><tr><td class='sym'>RNVDAUSDT</td><td><span class='pill'>stock</span></td><td class='n'>14 bp</td><td class='n'>1,005,957</td><td class='n'>orderbook</td></tr>
+<tr><td class='sym'>RTSLAUSDT</td><td><span class='pill'>stock</span></td><td class='n'>14 bp</td><td class='n'>602,616</td><td class='n'>orderbook</td></tr>
+<tr><td class='sym'>RAAPLUSDT</td><td><span class='pill'>stock</span></td><td class='n'>37 bp</td><td class='n'>112,570</td><td class='n'>orderbook</td></tr>
+<tr><td class='sym'>RSYKUSDT</td><td><span class='pill'>stock</span></td><td class='n'>&gt;14 bp</td><td class='n'>5,922</td><td class='n'>top of book only</td></tr>
+<tr><td class='sym'>RPBRUSDT</td><td><span class='pill'>stock</span></td><td class='n'>&gt;12 bp</td><td class='n'>50,015</td><td class='n'>top of book only</td></tr>
+<tr><td class='sym'>BTCUSDT</td><td><span class='pill c'>crypto</span></td><td class='n'>10 bp</td><td class='n'>9,178,304</td><td class='n'>orderbook</td></tr></tbody>
+    </table>
+    </div>
+
+    <p class="note"><b>Every figure here is estimated, never observed.</b> A
+    displayed quote is not a fill: size can be withdrawn, and a real order moves
+    the book it is measured against. The reference is the mid rather than the
+    best bid, because crossing the spread is money the seller actually pays.
+    Where a symbol returns no depth but a live quote, the cost is computed from
+    the top of book alone and everything below it is unknown, not absent.</p>
+
+    <h3 class="sub">Slicing is given as a bound, not a number</h3>
+    <p class="say">Splitting an exit into parts helps only if the book refills
+    between them, and how fast it refills cannot be read off a single snapshot.
+    So the desk returns a best case, which assumes full replenishment, and a
+    worst case, which assumes none. The truth is somewhere inside, and the
+    bound is stated rather than a midpoint invented.</p>
   </section>
 </div>
 
@@ -416,5 +385,4 @@ footer a{color:var(--ink-2)}
     </div>
   </footer>
 </div>
-<script src="desk.js"></script>
 </body></html>

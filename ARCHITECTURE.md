@@ -27,7 +27,16 @@
                              │          (analysis only - the crawler never imports it)
                              ▼
                     estimator  ·  research desk  ·  page
+                                              │
+                                              ▼
+                              docs/{index,evidence,validation,
+                                    method,docs}.html
 ```
+
+The site is one page per menu tab, generated from the same fact set by
+`egress/page.py`. Each file is static, carries no request to anything external,
+and can be opened from a checkout. `docs/index.html` is the only one that loads
+a script, because it is the only one with the desk on it.
 
 ## The five decisions that matter
 

@@ -2,9 +2,9 @@
 <html lang="en"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Egress - what it costs to leave</title>
+<title>Docs - Egress</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Crect width='26' height='26' fill='%23fbf7f1'/%3E%3Cpath d='M6 13h13M14 8l5 5-5 5' stroke='%23c8791b' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
-<meta name="description" content="Exit liquidity for tokenized US stocks on Bitget, measured from the book that exists, at the size you actually hold.">
+<meta name="description" content="Run the crawler, read the record format, call the endpoint, and see every limitation stated in one place.">
 <style>:root{
   --paper:#fbf7f1; --paper-2:#f4efe6; --ink:#16150f; --ink-2:#55524a;
   --ink-3:#8a8579; --rule:#ded7c9; --accent:#c8791b; --accent-soft:#f3e3cd;
@@ -271,11 +271,11 @@ footer a{color:var(--ink-2)}
     <details class="menu">
       <summary aria-label="Menu"><span></span></summary>
       <ul>
-      <li><a href="index.html" class="here" aria-current="page">Desk</a></li>
+      <li><a href="index.html">Desk</a></li>
       <li><a href="evidence.html">Evidence</a></li>
       <li><a href="validation.html">Validation</a></li>
       <li><a href="method.html">Method</a></li>
-      <li><a href="docs.html">Docs</a></li>
+      <li><a href="docs.html" class="here" aria-current="page">Docs</a></li>
       <li><a href="https://github.com/Ritapossible/Egress">Source</a></li>
       </ul>
     </details>
@@ -285,103 +285,232 @@ footer a{color:var(--ink-2)}
 <div class="wrap"><div class="rule"></div></div>
 
 <div class="wrap">
-  <div class="hero">
-    <span class="badge"><i></i>Exit liquidity for tokenized stocks</span>
-    <h1>One click in. <em>Not</em> one click out.</h1>
-    <p class="lede">Bitget lists 1,175 tokenized US stocks. Egress measures
-    what it actually costs to leave one - at your size, from the order book that
-    exists right now, not from an average. It reads the whole listed universe
-    every five minutes and keeps the record.</p>
-    <div class="cta">
-      <span class="bracket"><a class="btn solid" href="evidence.html">See the
-      evidence</a></span>
-      <span class="bracket"><a class="btn ghost" href="docs.html">Read the
-      docs</a></span>
+  <div class="page-head">
+    <p class="kicker">Documentation</p>
+    <h1>Egress, end to end</h1>
+    <p class="lead">What it measures, how to run it yourself, what the record
+    looks like on disk, and what it cannot tell you. Written so that someone who
+    has never seen the repository can reproduce a number on this site.</p>
+    <div class="toc">
+    <a href="#overview">Overview</a>
+    <a href="#quickstart">Quickstart</a>
+    <a href="#architecture">Architecture</a>
+    <a href="#data">Data reference</a>
+    <a href="#api">HTTP API</a>
+    <a href="#cli">Command line</a>
+    <a href="#limits">Limitations</a>
+    <a href="#glossary">Glossary</a>
     </div>
   </div>
 </div>
 
 <div class="wrap">
-  <section id="desk" style="padding-top:0">
-    <p class="kicker">The desk</p>
-    <h2>Ask what leaving costs</h2>
-    <p class="say">Plain English. The reader turns your question into a symbol
-    and a size; every number after that is walked off the live book by code, so a
-    wrong answer shows up as a visibly wrong reading rather than an invented
-    figure.</p>
+  <section class="after-head">
 
-    <div class="desk">
-      <form class="ask" id="ask" action="/api/ask" method="post">
-        <label for="q">Your question</label>
-        <input id="q" name="q" type="text" autocomplete="off"
-               placeholder="What does leaving 40,000 USDT of TSLA cost?">
-        <button type="submit" id="go">Ask</button>
-      </form>
-      <p class="eg">Try:
-        <button type="button" data-q="What does leaving 40,000 USDT of TSLA cost?">a
-        large TSLA position</button> &middot;
-        <button type="button" data-q="I hold 5000 USDT of NVDA and need out today.">a
-        small NVDA one</button> &middot;
-        <button type="button" data-q="Cost to exit 25,000 USDT of SYK?">a
-        thin name</button>
-      </p>
-      <div id="out" role="status" aria-live="polite"></div>
+    <h2 id="overview">Overview</h2>
+    <p class="say">Egress answers one question: what does it cost to leave a
+    tokenized US stock position, at a stated size, right now. Entering is easy
+    and every venue advertises it. Leaving is the half nobody prices, and on a
+    tokenized equity it is the half that moves, because the share underneath
+    stops trading at the New York close while the token does not.</p>
+    <p class="say">The project is two halves that never touch. A crawler reads
+    every listed instrument on a fixed interval and appends what it saw to an
+    append-only record. Everything else - the phase table, the validation, the
+    estimator, this site - reads that record afterwards. Collection never
+    imports interpretation, so a change in how a number is read can never
+    change what was recorded.</p>
+    <p class="note"><b>No credentials anywhere.</b> Every venue endpoint used is
+    public. The crawler runs unattended on a shared runner with nothing to leak.
+    The only secret in the project is the reader key for the desk, and it lives
+    in the serverless function, never in a page.</p>
+
+    <h2 id="quickstart">Quickstart</h2>
+    <p class="say">Python 3.11 or newer. No runtime dependencies at all - the
+    standard library does the HTTP, the gzip and the CSV. Ruff and mypy are dev
+    tools, not requirements.</p>
+    <pre><code>git clone https://github.com/Ritapossible/Egress.git
+cd Egress
+
+# one pass over the whole listed universe, written to state/
+python -m egress.crawl --once
+
+# what the record holds so far
+python -m egress.crawl --coverage
+
+# what leaving 25,000 USDT of TSLA costs, from the live book
+python -c "from egress import exitcost; print(exitcost.for_symbol('RTSLAUSDT', 25000))"
+
+# rebuild this site into docs/
+python -m egress.page</code></pre>
+    <p class="say">A continuous record is a long loop rather than a long
+    process: <code>python -m egress.crawl --loop --hours 6</code> takes a
+    snapshot every 5 minutes for six hours and
+    exits cleanly, which is what the scheduled job on the repository runs.</p>
+
+    <h2 id="architecture">Architecture</h2>
+    <p class="say">Nine modules, each with one job, listed in the order data
+    moves through them.</p>
+    <div class="scroll">
+    <table class="tbl">
+      <thead><tr><th>Module</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="sym">config</td><td class="dim">Paths, endpoints and the
+          few constants. No key appears here or anywhere else.</td></tr>
+        <tr><td class="sym">market</td><td class="dim">The only module that
+          speaks HTTP. A venue that will not answer raises a typed
+          MarketUnavailable, never a bare exception.</td></tr>
+        <tr><td class="sym">universe</td><td class="dim">Classifies every listed
+          instrument by the venue's own symbolType field. Guessing from the
+          symbol name is wrong for dozens of symbols.</td></tr>
+        <tr><td class="sym">sessions</td><td class="dim">Turns a timestamp into
+          open, overnight, weekend or holiday. Pure arithmetic, no
+          network.</td></tr>
+        <tr><td class="sym">store</td><td class="dim">The append-only record.
+          Rows are written first and the snapshot is entered in the manifest
+          second, so a run killed halfway leaves data no reader will
+          trust.</td></tr>
+        <tr><td class="sym">crawl</td><td class="dim">The loop. Reads the
+          universe, writes a snapshot, sleeps. It never imports sessions or
+          exitcost: collection is separate from interpretation.</td></tr>
+        <tr><td class="sym">exitcost</td><td class="dim">Walks the book from the
+          mid and returns what an exit costs, with a floor where the book ran
+          out and a bound where slicing is involved.</td></tr>
+        <tr><td class="sym">validate</td><td class="dim">Holds displayed size
+          against printed volume, and refuses to compare a symbol whose own two
+          volume feeds disagree.</td></tr>
+        <tr><td class="sym">desk</td><td class="dim">The question answerer. The
+          reader chooses a ticker and a size; every number after that is
+          computed.</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="note"><b>The reader compiles, the code computes.</b> The language
+    model is only ever asked for a symbol and a notional. It is never asked for
+    a price, a spread or a cost, and it cannot select a ticker that is not
+    listed on the venue right now - resolution is a lookup against the live
+    instrument list, so an invented ticker fails loudly instead of being
+    priced.</p>
+
+    <h2 id="data">Data reference</h2>
+    <p class="say">The record lives in <code>state/</code>. Each snapshot is one
+    gzipped CSV under <code>state/snapshots/</code>, and
+    <code>state/manifest.jsonl</code> holds one JSON line per completed
+    snapshot. A snapshot absent from the manifest is skipped on read even if its
+    file exists.</p>
+    <div class="scroll">
+    <table class="tbl">
+      <thead><tr><th>Column</th><th>Meaning</th></tr></thead>
+      <tbody><tr><td class='sym'>snap_ts</td><td class='dim'>Epoch milliseconds the snapshot was started, stamped once for every row in it.</td></tr>
+<tr><td class='sym'>symbol</td><td class='dim'>Venue symbol, for example RTSLAUSDT or BTCUSDT.</td></tr>
+<tr><td class='sym'>bid</td><td class='dim'>Best bid at the moment of the read.</td></tr>
+<tr><td class='sym'>ask</td><td class='dim'>Best ask at the moment of the read.</td></tr>
+<tr><td class='sym'>bid_size</td><td class='dim'>Size resting at the best bid, in base units.</td></tr>
+<tr><td class='sym'>ask_size</td><td class='dim'>Size resting at the best ask, in base units.</td></tr>
+<tr><td class='sym'>last</td><td class='dim'>Last traded price reported by the ticker feed.</td></tr>
+<tr><td class='sym'>turnover24h</td><td class='dim'>Rolling 24h quote turnover for the symbol.</td></tr>
+<tr><td class='sym'>venue_ts</td><td class='dim'>The venue's own timestamp for the quote, which is what phase is decided from.</td></tr></tbody>
+    </table>
+    </div>
+    <p class="say">Current record: 50 snapshots,
+    88,050 rows, 0
+    gaps in coverage, across
+    1,761 listed instruments (1,175 tokenized stocks,
+    584 crypto pairs).</p>
+    <p class="note"><b>Silence is not zero.</b> A symbol missing from a snapshot
+    means the venue did not report it, not that its spread was nothing. Missing
+    rows are absent from every median rather than counted as a value.</p>
+
+    <h2 id="api">HTTP API</h2>
+    <p class="say">One endpoint, used by the desk on the front page. It exists
+    because a reader key cannot live in a browser.</p>
+    <pre><code>POST /api/ask
+Content-Type: application/json
+
+  "q": "What does leaving 40,000 USDT of TSLA cost?"</code></pre>
+    <p class="say">The response states a symbol, the compiled size, the quote
+    walked off the live book, a slicing bound, and a plain-English reading. Every
+    failure is a stated answer rather than an exception: an unreadable question,
+    a ticker that is not listed, or a venue that will not answer each come back
+    as a sentence saying so. Bodies over 4 KB are refused.</p>
+    <p class="note"><b>Estimated, never observed.</b> Every figure the endpoint
+    returns is marked <code>estimated</code>. It is what the displayed book says
+    an exit would cost, not a fill anyone received.</p>
+
+    <h2 id="cli">Command line</h2>
+    <div class="scroll">
+    <table class="tbl">
+      <thead><tr><th>Command</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="sym">crawl --once</td><td class="dim">One snapshot of the
+          whole listed universe.</td></tr>
+        <tr><td class="sym">crawl --loop --hours N</td><td class="dim">Snapshot
+          every five minutes for N hours, then exit.</td></tr>
+        <tr><td class="sym">crawl --interval S</td><td class="dim">Override the
+          interval, in seconds.</td></tr>
+        <tr><td class="sym">crawl --universe</td><td class="dim">Refresh the
+          instrument list and print the counts by type.</td></tr>
+        <tr><td class="sym">crawl --coverage</td><td class="dim">What the record
+          holds, and where the gaps are.</td></tr>
+        <tr><td class="sym">python -m egress.page</td><td class="dim">Rebuild
+          every page in docs/ from the record.</td></tr>
+      </tbody>
+    </table>
     </div>
 
-    <p class="note"><b>The desk needs JavaScript and a configured reader.</b>
-    Nothing else on this site does: every measurement, the validation and the
-    worked example are rendered into their pages at build time and read fine
-    with scripting off.</p>
-  </section>
-</div>
+    <h2 id="limits">Limitations</h2>
+    <p class="say">Stated here rather than buried, because a research tool that
+    hides its limits is a marketing tool.</p>
+    <ul class="say">
+      <li><b>A quote is not a fill.</b> Displayed size can be withdrawn before
+      anyone reaches it, and a real order moves the book it was measured
+      against. Every cost here is an estimate of the displayed book.</li>
+      <li><b>The record is short.</b> The snapshot count behind every table is
+      printed next to it. Nothing here is a claim about the future, and a
+      handful of days is not a study.</li>
+      <li><b>Replenishment is unobservable from a snapshot.</b> That is why
+      slicing is answered as a best and a worst case rather than a
+      number.</li>
+      <li><b>Two of the venue's volume feeds disagree on tokenized stocks.</b>
+      Which one is right cannot be settled from outside, so those symbols are
+      excluded from validation and named on the validation page.</li>
+      <li><b>Idle and phantom liquidity look identical.</b> Displayed size going
+      unconsumed could mean it was withdrawn or that nobody wanted it. This data
+      cannot separate them.</li>
+      <li><b>Research only.</b> Not advice, not an offer, not a quote.</li>
+    </ul>
 
-<div class="grid-panel">
-  <div class="wrap">
-    <div class="stats">
-      <div class="stat"><b>1,175</b><span>Tokenized stocks listed</span></div>
-      <div class="stat"><b>584</b>
-        <span>Crypto pairs as control</span></div>
-      <div class="stat"><b>50</b>
-        <span>Snapshots recorded</span></div>
-      <div class="stat"><b>0</b>
-        <span>Gaps in the record</span></div>
+    <h2 id="glossary">Glossary</h2>
+    <div class="scroll">
+    <table class="tbl">
+      <thead><tr><th>Term</th><th>Meaning here</th></tr></thead>
+      <tbody>
+        <tr><td class="sym">bp</td><td class="dim">Basis point, one hundredth of
+          a percent. 100 bp is 1%.</td></tr>
+        <tr><td class="sym">mid</td><td class="dim">Midpoint of the best bid and
+          best ask. The reference every cost on this site is measured
+          from.</td></tr>
+        <tr><td class="sym">touch</td><td class="dim">The top of the book - the
+          best bid and best ask and the size resting on each.</td></tr>
+        <tr><td class="sym">floor</td><td class="dim">A cost marked
+          <span class="sym">&gt;</span>: the displayed book ran out before the
+          position did, so the true cost is at least this.</td></tr>
+        <tr><td class="sym">phase</td><td class="dim">open, overnight, weekend or
+          holiday, decided from the venue's own timestamp against US equity
+          market hours.</td></tr>
+        <tr><td class="sym">control</td><td class="dim">The crypto pairs. Same
+          venue, same engine, same fees, no reason to care whether New York is
+          open.</td></tr>
+        <tr><td class="sym">tokenized stock</td><td class="dim">An instrument the
+          venue reports with symbolType <code>stock</code>, tracking a US listed
+          share.</td></tr>
+      </tbody>
+    </table>
     </div>
-  </div>
-</div>
 
-<div class="wrap">
-  <section>
-    <p class="kicker">What is on this site</p>
-    <h2>Four pages, each one a claim you can check</h2>
-    <p class="say">Nothing here is asserted without the record behind it. Each
-    page states what it measured, how, and what it could not settle. Median spread across every quoted name runs 143 bp while the US market is shut against 9 bp while it is open.</p>
-
-    <div class="cards">
-      <a class="card" href="evidence.html">
-        <h3>Evidence</h3>
-        <p>Spread by market phase, tokenized stocks against a crypto control
-        group on the same venue and the same matching engine.</p>
-        <span>See the measurement</span>
-      </a>
-      <a class="card" href="validation.html">
-        <h3>Validation</h3>
-        <p>Whether a displayed quote is worth anything: resting size held
-        against the volume that actually printed after it.</p>
-        <span>See the check</span>
-      </a>
-      <a class="card" href="method.html">
-        <h3>Method</h3>
-        <p>How a cost is computed - walking the book from the mid, the taker
-        fee, and where an estimate turns into a floor.</p>
-        <span>See the working</span>
-      </a>
-      <a class="card" href="docs.html">
-        <h3>Docs</h3>
-        <p>Run the crawler yourself, read the data format, call the endpoint,
-        and see the limits stated in one place.</p>
-        <span>Read the docs</span>
-      </a>
-    </div>
+    <div class="caveat">Every number on this site is regenerated from the record
+    each time the crawler commits. If a figure here disagrees with the
+    repository, the repository is right and this page is stale - check the
+    generation stamp in the footer.</div>
   </section>
 </div>
 
@@ -416,5 +545,4 @@ footer a{color:var(--ink-2)}
     </div>
   </footer>
 </div>
-<script src="desk.js"></script>
 </body></html>
