@@ -63,10 +63,15 @@ is a liquidity signal rather than a bug.
 
 1. **Probe before designing.** Every assumption above that turned out wrong was
    read from documentation. Call the endpoint, look at the bytes.
-2. **A test that has never failed proves nothing.** Perturb it, watch it go red,
+2. **Re-run every gate AFTER the last edit, and read the exit code.** CI went red
+   on RUF012 in a test class appended after the lint run - the "all green" was
+   true of a state that no longer existed. Gates prove nothing about code written
+   since they ran. This is the second time the same mistake has been made in this
+   codebase's lineage; it is written down so it is the last.
+3. **A test that has never failed proves nothing.** Perturb it, watch it go red,
    restore. Done for the manifest gate and the classification.
-3. **Collection is separate from interpretation.** The crawler records; analysis
+4. **Collection is separate from interpretation.** The crawler records; analysis
    decides. A wrong calendar must never be able to spoil the week of data.
-4. **No typed literals for measured numbers.** Any figure in a document or page
+5. **No typed literals for measured numbers.** Any figure in a document or page
    comes from the record, or it goes stale silently and nobody notices.
-5. **Label everything `observed` or `estimated`.** A quote is not a fill.
+6. **Label everything `observed` or `estimated`.** A quote is not a fill.

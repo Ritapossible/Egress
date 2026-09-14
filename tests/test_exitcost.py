@@ -9,6 +9,7 @@ import datetime as dt
 import sys
 import unittest
 from pathlib import Path
+from typing import ClassVar
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -174,7 +175,7 @@ class SilenceIsNotZero(unittest.TestCase):
     venue quirk as the project's headline finding.
     """
 
-    BOOKLESS = {"symbol": "RPBRUSDT", "bid1Price": "21.45", "ask1Price": "21.58",
+    BOOKLESS: ClassVar[dict[str, str]] = {"symbol": "RPBRUSDT", "bid1Price": "21.45", "ask1Price": "21.58",
                 "bid1Size": "1", "ask1Size": "23", "turnover24h": "2390064.8"}
 
     def _patch(self, depth, ticker_row):
