@@ -59,6 +59,16 @@ is a liquidity signal rather than a bug.
   `technical_analysis` and `crypto_derivatives` work. **Do not design around
   those skills.** Bitget's own public API is the integration surface.
 
+## Rendering and screenshots
+
+**Headless Chromium lays out ~85 px wider than `--window-size`.** A 400 px window
+renders a 485 px viewport but screenshots at 400 px, so the right edge is CROPPED
+and it looks exactly like horizontal overflow. Two hours could be lost redesigning
+a layout that was never broken. Measure instead: inject a probe that reports
+`document.documentElement.clientWidth`, `scrollWidth`, and any element whose right
+edge exceeds the viewport. 485 px is this build's floor, so narrower than that
+cannot be measured here at all.
+
 ## Working rules
 
 1. **Probe before designing.** Every assumption above that turned out wrong was
