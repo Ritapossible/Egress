@@ -82,12 +82,21 @@ class RendersFromTheRecord(unittest.TestCase):
 
 class StandsAlone(unittest.TestCase):
     def test_no_external_request_of_any_kind(self):
-        """One file a judge can open offline. No CDN, no webfont, no tracker."""
-        html = page.render(FACTS)
+        """One file a judge can open offline. No CDN, no webfont, no tracker.
+
+        `http://www.w3.org/2000/svg` is excluded deliberately: it is an XML
+        namespace identifier, required on the inline favicon, and never fetched
+        by anything. Matching it would be matching a string, not a request.
+        """
+        html = page.render(FACTS).replace("http://www.w3.org/2000/svg", "")
         for forbidden in ("http://", "fonts.googleapis", "cdn.", "<script",
                           "<iframe", "@import"):
             with self.subTest(forbidden=forbidden):
                 self.assertNotIn(forbidden, html)
+
+    def test_the_favicon_is_inline_not_a_file_request(self):
+        html = page.render(FACTS)
+        self.assertIn('rel="icon" href="data:image/svg+xml,', html)
 
     def test_the_only_link_out_is_the_source_repository(self):
         html = page.render(FACTS)

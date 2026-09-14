@@ -219,6 +219,7 @@ def render(f: dict | None = None) -> str:
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Egress - what it costs to leave</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 26 26'%3E%3Crect width='26' height='26' fill='%23fbf7f1'/%3E%3Cpath d='M6 13h13M14 8l5 5-5 5' stroke='%23c8791b' stroke-width='2.4' fill='none'/%3E%3C/svg%3E">
 <meta name="description" content="Exit liquidity for {stocks:,} tokenized US
 stocks on Bitget, measured from the book that exists.">
 <style>{CSS}</style>

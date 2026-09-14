@@ -43,12 +43,17 @@ jobs:
             sleep 3600
             git config user.name  "egress-bot"
             git config user.email "noreply@github.com"
-            git add -A state/
+            # The page states the record, so it is rebuilt whenever the record
+            # moves. Without this the hosted site silently freezes at the last
+            # hand-run generation - stale figures nobody notices, which is the
+            # failure MEMORY.md rule 5 exists to prevent.
+            python -m egress.page || true
+            git add -A state/ docs/
             git diff --cached --quiet || {
               git stash push --staged -m pending
               git pull --rebase --autostash origin main || true
               git stash pop
-              git add -A state/
+              git add -A state/ docs/
               git commit -m "crawl: $(date -u '+%Y-%m-%d %H:%MZ')"
               for i in 1 2 3; do git push && break; git pull --rebase --autostash origin main || true; done
             }
@@ -60,12 +65,13 @@ jobs:
         run: |
           git config user.name  "egress-bot"
           git config user.email "noreply@github.com"
-          git add -A state/
+          python -m egress.page || true
+          git add -A state/ docs/
           git diff --cached --quiet && exit 0
           git stash push --staged -m pending
           git pull --rebase --autostash origin main || true
           git stash pop
-          git add -A state/
+          git add -A state/ docs/
           git commit -m "crawl: $(date -u '+%Y-%m-%d %H:%MZ')"
           for i in 1 2 3; do git push && exit 0; git pull --rebase --autostash origin main || true; done
 
