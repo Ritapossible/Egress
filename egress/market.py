@@ -69,6 +69,51 @@ def tickers() -> list[dict]:
     return _get(config.TICKERS, {"category": config.CATEGORY})
 
 
+def ticker(symbol: str) -> dict:
+    """One symbol's top of book, straight from the ticker feed.
+
+    Needed because `orderbook` and `tickers` disagree: some symbols return an
+    empty depth book while the ticker shows a live two-sided quote and millions
+    in 24h turnover. See `depth_or_touch`.
+    """
+    for row in tickers():
+        if row.get("symbol") == symbol:
+            return row
+    raise MarketUnavailable(f"{symbol} is not in the ticker feed")
+
+
+def depth_or_touch(symbol: str, limit: int = 150) -> tuple[list, list, str]:
+    """(bids, asks, source) - the best view of the book the venue will give.
+
+    `source` is "orderbook" when real depth came back, "touch" when only the
+    ticker's best bid and offer are available, and "none" when neither is.
+
+    The distinction is the point. An empty depth response is NOT proof of an
+    empty market: RPBRUSDT and RSYKUSDT both return `{"a": [], "b": []}` while
+    quoting two-sided with over 2M USDT of 24h turnover. Treating that silence as
+    zero liquidity would report a venue quirk as a finding about the asset.
+    """
+    bids, asks = orderbook(symbol, limit)
+    if bids or asks:
+        return bids, asks, "orderbook"
+    try:
+        row = ticker(symbol)
+    except MarketUnavailable:
+        return [], [], "none"
+
+    def level(price_key: str, size_key: str) -> list:
+        try:
+            price, size = float(row.get(price_key) or 0), float(row.get(size_key) or 0)
+        except (TypeError, ValueError):
+            return []
+        return [[price, size]] if price > 0 and size > 0 else []
+
+    touch_bids, touch_asks = level("bid1Price", "bid1Size"), level("ask1Price", "ask1Size")
+    if touch_bids or touch_asks:
+        return touch_bids, touch_asks, "touch"
+    return [], [], "none"
+
+
 def orderbook(symbol: str, limit: int = 150) -> tuple[list, list]:
     """(bids, asks) for one symbol, each a list of [price, size], best first.
 

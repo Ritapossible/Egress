@@ -32,6 +32,14 @@ rejected every depth call.
 **Numbers arrive as strings.** `bid1Price` is `"359.05"`. Blank means the venue
 sent nothing - which is different from zero and must stay different.
 
+**`orderbook` and `tickers` disagree, and silence is not zero.** RPBRUSDT and
+RSYKUSDT return `{"a": [], "b": []}` from the depth endpoint while the ticker
+quotes them two-sided with over 2M USDT of 24h turnover. The first estimator
+printed "NO EXIT" for both - a venue quirk about to be shipped as the project's
+headline finding. `market.depth_or_touch` now falls back to the ticker's touch and
+labels the source, so an unquotable book and an unreported one can never render as
+the same number. Regression-tested in `tests/test_exitcost.py::SilenceIsNotZero`.
+
 **`ts` in a ticker row is per-symbol**, not the fetch time. Both are stored:
 `snap_ts` is ours, `venue_ts` is theirs. A stale `venue_ts` is a dead book, which
 is a liquidity signal rather than a bug.

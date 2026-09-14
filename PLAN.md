@@ -35,7 +35,7 @@ and the tail map stand on their own.
 | Day | Deliverable | Status |
 |---|---|---|
 | **Sun 14** | Crawler shipped and collecting. Universe classified. Store + manifest + tests | **done** |
-| Mon 15 | Exit-cost estimator: walk the book, slice an order, cost a schedule | |
+| Mon 15 | Exit-cost estimator: walk the book, slice an order, cost a schedule | **done early** |
 | Tue 16 | Validation: predicted cost vs what actually printed. Publish the error distribution | |
 | Wed 17 | Phase analysis: open vs overnight vs weekend, stocks vs the crypto control | |
 | Thu 18 | The desk - natural-language question in, liquidation plan out | |
