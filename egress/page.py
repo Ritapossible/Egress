@@ -97,6 +97,8 @@ footer{padding-block:54px 40px}
 .foot-top{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:40px}
 .foot-top h3{font-size:11px;font-family:var(--mono);letter-spacing:.16em;
   text-transform:uppercase;color:var(--ink-3);font-weight:400;margin-bottom:14px}
+/* The brand, not a section label: same accent as the Ask button. */
+.foot-top h3.mark{color:var(--accent)}
 .foot-top p{color:var(--ink-2);font-size:14.5px;max-width:48ch;line-height:1.7}
 .foot-top a{display:block;color:var(--ink-2);text-decoration:none;
   font-size:14px;margin-bottom:9px}
@@ -549,7 +551,7 @@ def _footer(f: dict) -> str:
     return f"""  <footer>
     <div class="foot-top">
       <div>
-        <h3>Egress</h3>
+        <h3 class="mark">Egress</h3>
         <p>Exit liquidity for tokenized US equities. Egress reads every listed
         instrument on Bitget every five minutes and measures what it costs to
         leave a position, at a stated size, from the book that exists.</p>

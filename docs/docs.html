@@ -80,6 +80,8 @@ footer{padding-block:54px 40px}
 .foot-top{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:40px}
 .foot-top h3{font-size:11px;font-family:var(--mono);letter-spacing:.16em;
   text-transform:uppercase;color:var(--ink-3);font-weight:400;margin-bottom:14px}
+/* The brand, not a section label: same accent as the Ask button. */
+.foot-top h3.mark{color:var(--accent)}
 .foot-top p{color:var(--ink-2);font-size:14.5px;max-width:48ch;line-height:1.7}
 .foot-top a{display:block;color:var(--ink-2);text-decoration:none;
   font-size:14px;margin-bottom:9px}
@@ -449,8 +451,8 @@ python -m egress.page</code></pre>
 <tr><td class='sym'>venue_ts</td><td class='dim'>The venue's own timestamp for the quote, which is what phase is decided from.</td></tr></tbody>
     </table>
     </div>
-    <p class="say">Current record: 203 snapshots,
-    357,483 rows, 2
+    <p class="say">Current record: 191 snapshots,
+    336,351 rows, 2
     gaps in coverage, across
     1,761 listed instruments (1,175 tokenized stocks,
     584 crypto pairs).</p>
@@ -556,7 +558,7 @@ Content-Type: application/json
   <footer>
     <div class="foot-top">
       <div>
-        <h3>Egress</h3>
+        <h3 class="mark">Egress</h3>
         <p>Exit liquidity for tokenized US equities. Egress reads every listed
         instrument on Bitget every five minutes and measures what it costs to
         leave a position, at a stated size, from the book that exists.</p>
@@ -577,8 +579,8 @@ Content-Type: application/json
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-09-15 09:23 UTC from
-      203 recorded snapshots. Every figure on this site is read
+      <p class="prov"><i></i>Generated 2026-09-15 09:22 UTC from
+      191 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
       <div class="foot-legal">

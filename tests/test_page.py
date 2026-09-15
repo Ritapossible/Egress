@@ -342,6 +342,13 @@ class Chrome(unittest.TestCase):
                 self.assertIn("<nav", html)
                 self.assertNotIn("Bitget AI Base Camp", html)
 
+    def test_the_footer_brand_carries_the_accent_not_the_label_grey(self):
+        """Same accent as the Ask button, so the two read as one system."""
+        html = render()
+        self.assertIn('<h3 class="mark">Egress</h3>', html)
+        self.assertIn(".foot-top h3.mark{color:var(--accent)}", html)
+        self.assertIn(".ask button", html)
+
     def test_the_footer_states_provenance_and_its_limits_on_every_page(self):
         for name in FILES:
             html = render(name)
