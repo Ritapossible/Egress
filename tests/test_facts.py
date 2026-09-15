@@ -129,3 +129,63 @@ class ReadingIsBounded(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TheBenchmarkNeverBlanksItself(unittest.TestCase):
+    """The desk reads this file to judge an answer, and an empty one produces
+    no error anywhere - it just silently removes the verdict and the comparison
+    from every answer on the live site."""
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    @staticmethod
+    def snaps(n=3):
+        return [{"snap_ts": i, "at": "", "phase": "overnight",
+                 "stock": {"median_spread_bp": 160.0 + i},
+                 "crypto": {"median_spread_bp": 11.0}} for i in range(n)]
+
+    def test_a_populated_benchmark_is_written(self):
+        facts.save_benchmark(self.root, self.snaps())
+        written = json.loads((self.root / "benchmark.json").read_text())
+        self.assertEqual(written["phases"]["overnight"]["stock_median_bp"], 161.0)
+
+    def test_an_empty_one_is_fine_when_there_is_nothing_to_lose(self):
+        path = facts.save_benchmark(self.root, [])
+        self.assertEqual(json.loads(path.read_text())["phases"], {})
+
+    def test_it_refuses_to_replace_a_populated_benchmark_with_nothing(self):
+        facts.save_benchmark(self.root, self.snaps())
+        with self.assertRaises(facts.BenchmarkEmpty):
+            facts.save_benchmark(self.root, [])
+        kept = json.loads((self.root / "benchmark.json").read_text())
+        self.assertIn("overnight", kept["phases"],
+                      "the standing comparison must survive an empty compute")
+
+    def test_a_corrupt_existing_file_does_not_block_a_rewrite(self):
+        (self.root / "benchmark.json").write_text("{ not json")
+        facts.save_benchmark(self.root, [])
+        self.assertEqual(
+            json.loads((self.root / "benchmark.json").read_text())["phases"], {})
+
+    def test_the_page_build_warns_rather_than_dying(self):
+        from egress import page
+        with mock.patch.object(page.facts, "save_benchmark",
+                               side_effect=facts.BenchmarkEmpty("no phases")), \
+             mock.patch.object(page.facts, "build", return_value=FACTS_MIN), \
+             tempfile.TemporaryDirectory() as out:
+            page.write(Path(out))          # must not raise
+            self.assertTrue((Path(out) / "index.html").exists())
+
+
+FACTS_MIN = {
+    "generated": "2026-09-15T10:00:00+00:00",
+    "universe": {"stock": 1, "crypto": 1}, "listed_total": 2,
+    "coverage": {"snapshots": 1, "rows": 1, "gaps": []},
+    "latest": {}, "phases": [], "snapshots": [], "notional_usdt": 25_000.0,
+    "examples": [], "validation": {},
+}

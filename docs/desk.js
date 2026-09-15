@@ -90,9 +90,21 @@
       html += '</dl>';
     }
 
-    if (data.unverified && data.unverified.length) {
-      html += '<p class="sub-head">What this cannot tell you</p><ul>';
-      data.unverified.forEach(function (u) { html += '<li>' + esc(u) + '</li>'; });
+    // Two lists, not one. What no tool can see all pushes the cost the same
+    // way; what you can substitute is a different claim and says so.
+    var limits = q.limits || {};
+    var unseen = limits.cannot_see || data.unverified || [];
+    if (unseen.length) {
+      html += '<p class="sub-head">What this cannot see'
+        + '<em> - all of it makes the real cost higher, never lower</em></p><ul>';
+      unseen.forEach(function (u) { html += '<li>' + esc(u) + '</li>'; });
+      html += '</ul>';
+    }
+    if ((limits.can_correct || []).length) {
+      html += '<p class="sub-head">What you can correct for</p><ul>';
+      limits.can_correct.forEach(function (u) {
+        html += '<li>' + esc(u) + '</li>';
+      });
       html += '</ul>';
     }
     html += '</details>';

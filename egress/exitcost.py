@@ -73,6 +73,11 @@ class ExitQuote:
     at: dt.datetime
     source: str = "orderbook"
     unverified: list[str] = field(default_factory=list)
+    # Split out of `unverified` rather than replacing it: an assumption the
+    # reader can substitute is a different kind of statement from something no
+    # tool can see, and presenting them as one flat list makes the honest half
+    # read as an apology for the other.
+    correctable: list[str] = field(default_factory=list)
 
     @property
     def total_bp(self) -> float:
@@ -104,6 +109,11 @@ class ExitQuote:
             "exhausted": self.exhausted, "source": self.source,
             "at": self.at.isoformat(),
             "basis": "estimated", "unverified": list(self.unverified),
+            "limits": {
+                "cannot_see": [u for u in self.unverified
+                               if u not in set(self.correctable)],
+                "can_correct": list(self.correctable),
+            },
         }
 
 
@@ -143,17 +153,26 @@ def quote(symbol: str, notional_usdt: float, bids: list[Level], asks: list[Level
     if notional_usdt <= 0:
         raise ValueError("notional must be positive")
     at = at or dt.datetime.now(UTC)
-    unverified = [
+    # Everything here makes the real cost HIGHER, never lower: size can vanish
+    # before you reach it, and your own order pushes the price against you.
+    unseeable = [
         "displayed size is not guaranteed - quotes can be withdrawn before a fill",
         "a real order moves the book this is measured against",
-        f"taker fee assumed at {fee_bp:.1f} bp; account tiers are not readable",
     ]
+    # This one you can substitute. It is additive and identical for every
+    # symbol, so it shifts the level and cannot reorder anything.
+    correctable = [
+        f"taker fee assumed at {fee_bp:.1f} bp; the slippage figure is "
+        f"unaffected, so substitute your own tier if it differs",
+    ]
+    unverified = [*unseeable, *correctable]
 
     reference = mid_price(bids, asks)
     if reference is None:
         return ExitQuote(
             symbol, side, notional_usdt, 0.0, 0.0, 0.0, 0.0, float("nan"),
             fee_bp, 0, 0.0, True, at,
+            correctable=correctable,
             unverified=[*unverified,
                         "no two-sided market: cost is unquotable"])
 
@@ -166,6 +185,7 @@ def quote(symbol: str, notional_usdt: float, bids: list[Level], asks: list[Level
         return ExitQuote(
             symbol, side, notional_usdt, 0.0, 0.0, 0.0, reference, float("nan"),
             fee_bp, 0, book_usdt, True, at,
+            correctable=correctable,
             unverified=[*unverified,
                         "no displayed size on the exit side: cost is unquotable"])
 
@@ -183,7 +203,8 @@ def quote(symbol: str, notional_usdt: float, bids: list[Level], asks: list[Level
         filled_usdt=round(proceeds, 6), quantity=filled_qty,
         vwap=round(vwap, 8), reference=round(reference, 8),
         slippage_bp=round(slippage, 2), fee_bp=fee_bp, levels_used=used,
-        book_usdt=book_usdt, exhausted=exhausted, at=at, unverified=unverified)
+        book_usdt=book_usdt, exhausted=exhausted, at=at, unverified=unverified,
+        correctable=correctable)
 
 
 def for_symbol(symbol: str, notional_usdt: float, depth: int = 150,

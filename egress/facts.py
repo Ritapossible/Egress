@@ -150,12 +150,34 @@ def benchmark(snapshots: list[dict] | None = None) -> dict:
     }
 
 
+class BenchmarkEmpty(RuntimeError):
+    """Computed no phases where a populated benchmark already exists."""
+
+
 def save_benchmark(root: Path | None = None,
                    snapshots: list[dict] | None = None) -> Path:
+    """Write the benchmark, but never replace a populated one with nothing.
+
+    The desk reads this file to judge an answer. An empty one does not produce
+    an error anywhere - it silently removes the verdict and the comparison from
+    every answer on the live site, which is the failure that is hardest to
+    notice. One such write was observed and could not be reproduced, so the
+    guard is on the consequence rather than on a cause nobody has identified.
+    """
     root = root or config.STATE
     root.mkdir(parents=True, exist_ok=True)
     path = root / "benchmark.json"
-    path.write_text(json.dumps(benchmark(snapshots), indent=1, sort_keys=True))
+    payload = benchmark(snapshots)
+    if not payload["phases"] and path.exists():
+        try:
+            standing = json.loads(path.read_text()).get("phases")
+        except (OSError, ValueError):
+            standing = None
+        if standing:
+            raise BenchmarkEmpty(
+                f"computed no phases; keeping the {len(standing)} already in "
+                f"{path.name} rather than blanking the desk's comparison")
+    path.write_text(json.dumps(payload, indent=1, sort_keys=True))
     return path
 
 

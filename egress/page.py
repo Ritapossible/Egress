@@ -99,6 +99,9 @@ header{display:flex;align-items:center;justify-content:space-between;
 .working[open] summary{color:var(--ink-2);margin-bottom:6px}
 .sub-head{margin-top:20px;font-family:var(--mono);font-size:11px;
   letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+/* The direction the caveats push, said once rather than per bullet. */
+.sub-head em{font-style:normal;text-transform:none;letter-spacing:0;
+  color:var(--ink-3);opacity:.8}
 .ans .big{font-size:19px;line-height:1.55;color:var(--ink)}
 /* minmax(0,...) so a long label cannot squeeze the value column into a
    one-word-per-line ribbon, which is what `auto 1fr` did on a phone. */
@@ -434,9 +437,21 @@ DESK_JS = """/* The desk's only script. Progressive: with JS off the form posts 
       html += '</dl>';
     }
 
-    if (data.unverified && data.unverified.length) {
-      html += '<p class="sub-head">What this cannot tell you</p><ul>';
-      data.unverified.forEach(function (u) { html += '<li>' + esc(u) + '</li>'; });
+    // Two lists, not one. What no tool can see all pushes the cost the same
+    // way; what you can substitute is a different claim and says so.
+    var limits = q.limits || {};
+    var unseen = limits.cannot_see || data.unverified || [];
+    if (unseen.length) {
+      html += '<p class="sub-head">What this cannot see'
+        + '<em> - all of it makes the real cost higher, never lower</em></p><ul>';
+      unseen.forEach(function (u) { html += '<li>' + esc(u) + '</li>'; });
+      html += '</ul>';
+    }
+    if ((limits.can_correct || []).length) {
+      html += '<p class="sub-head">What you can correct for</p><ul>';
+      limits.can_correct.forEach(function (u) {
+        html += '<li>' + esc(u) + '</li>';
+      });
       html += '</ul>';
     }
     html += '</details>';
@@ -1279,7 +1294,11 @@ def write(out: Path | None = None) -> Path:
     f = facts.build()
     # The desk compares one answer against the record; write the comparison out
     # here so a question costs a small file read rather than a full record read.
-    facts.save_benchmark(snapshots=f["snapshots"])
+    try:
+        facts.save_benchmark(snapshots=f["snapshots"])
+    except facts.BenchmarkEmpty as exc:
+        # Loud, and the pages still build on the benchmark already on disk.
+        print(f"WARNING: benchmark not updated - {exc}")
     for file, *_ in PAGES:
         (out / file).write_text(render(file, f), encoding="utf-8")
     # External rather than inline so the CSP can stay script-src 'self' with no

@@ -82,6 +82,9 @@ header{display:flex;align-items:center;justify-content:space-between;
 .working[open] summary{color:var(--ink-2);margin-bottom:6px}
 .sub-head{margin-top:20px;font-family:var(--mono);font-size:11px;
   letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+/* The direction the caveats push, said once rather than per bullet. */
+.sub-head em{font-style:normal;text-transform:none;letter-spacing:0;
+  color:var(--ink-3);opacity:.8}
 .ans .big{font-size:19px;line-height:1.55;color:var(--ink)}
 /* minmax(0,...) so a long label cannot squeeze the value column into a
    one-word-per-line ribbon, which is what `auto 1fr` did on a phone. */
@@ -391,12 +394,12 @@ pre code{background:none;padding:0}
     <table class="tbl">
       <thead><tr><th>Symbol</th><th>Type</th><th>Exit cost</th>
       <th>Book, USDT</th><th>Source</th></tr></thead>
-      <tbody><tr><td class='sym'>RNVDAUSDT</td><td><span class='pill'>stock</span></td><td class='n'>15 bp</td><td class='n'>1,197,465</td><td class='n'>orderbook</td></tr>
-<tr><td class='sym'>RTSLAUSDT</td><td><span class='pill'>stock</span></td><td class='n'>15 bp</td><td class='n'>571,940</td><td class='n'>orderbook</td></tr>
-<tr><td class='sym'>RAAPLUSDT</td><td><span class='pill'>stock</span></td><td class='n'>50 bp</td><td class='n'>118,600</td><td class='n'>orderbook</td></tr>
-<tr><td class='sym'>RSYKUSDT</td><td><span class='pill'>stock</span></td><td class='n'>&gt;249 bp</td><td class='n'>560</td><td class='n'>top of book only</td></tr>
+      <tbody><tr><td class='sym'>RNVDAUSDT</td><td><span class='pill'>stock</span></td><td class='n'>15 bp</td><td class='n'>1,219,014</td><td class='n'>orderbook</td></tr>
+<tr><td class='sym'>RTSLAUSDT</td><td><span class='pill'>stock</span></td><td class='n'>16 bp</td><td class='n'>590,801</td><td class='n'>orderbook</td></tr>
+<tr><td class='sym'>RAAPLUSDT</td><td><span class='pill'>stock</span></td><td class='n'>46 bp</td><td class='n'>114,024</td><td class='n'>orderbook</td></tr>
+<tr><td class='sym'>RSYKUSDT</td><td><span class='pill'>stock</span></td><td class='n'>&gt;249 bp</td><td class='n'>1,120</td><td class='n'>top of book only</td></tr>
 <tr><td class='sym'>RPBRUSDT</td><td><span class='pill'>stock</span></td><td class='n'>&gt;29 bp</td><td class='n'>10,711</td><td class='n'>top of book only</td></tr>
-<tr><td class='sym'>BTCUSDT</td><td><span class='pill c'>crypto</span></td><td class='n'>11 bp</td><td class='n'>7,867,601</td><td class='n'>orderbook</td></tr></tbody>
+<tr><td class='sym'>BTCUSDT</td><td><span class='pill c'>crypto</span></td><td class='n'>10 bp</td><td class='n'>7,776,783</td><td class='n'>orderbook</td></tr></tbody>
     </table>
     </div>
 
@@ -441,7 +444,7 @@ pre code{background:none;padding:0}
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-09-15 10:29 UTC from
+      <p class="prov"><i></i>Generated 2026-09-15 10:56 UTC from
       203 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>

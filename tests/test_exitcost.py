@@ -210,3 +210,60 @@ class SilenceIsNotZero(unittest.TestCase):
             q = exitcost.for_symbol("ZUSDT", 100.0)
         self.assertEqual(q.source, "none")
         self.assertTrue(any("neither depth nor a quote" in u for u in q.unverified))
+
+
+class LimitsAreSplitByKind(unittest.TestCase):
+    """An assumption you can substitute is not the same claim as something no
+    tool can see, and a flat list makes the honest half read as an apology."""
+
+    BOOK = ([[100.0, 500.0]], [[101.0, 500.0]])
+
+    def record(self, **kw):
+        return exitcost.quote("X", 25_000.0, *self.BOOK, **kw).to_record()
+
+    def test_the_two_groups_are_disjoint_and_cover_everything(self):
+        rec = self.record()
+        seen, fix = rec["limits"]["cannot_see"], rec["limits"]["can_correct"]
+        self.assertEqual(set(seen) & set(fix), set())
+        self.assertEqual(set(seen) | set(fix), set(rec["unverified"]))
+
+    def test_only_the_fee_is_presented_as_correctable(self):
+        fix = self.record()["limits"]["can_correct"]
+        self.assertEqual(len(fix), 1)
+        self.assertIn("taker fee", fix[0])
+
+    def test_the_correctable_note_says_slippage_is_unaffected(self):
+        """The whole point: a wrong fee tier does not touch the measured part."""
+        self.assertIn("slippage figure is unaffected",
+                      self.record()["limits"]["can_correct"][0])
+
+    def test_nothing_unseeable_is_ever_an_assumption_the_reader_can_change(self):
+        for line in self.record()["limits"]["cannot_see"]:
+            with self.subTest(line=line):
+                self.assertNotIn("assumed", line)
+
+    def test_the_fee_line_tracks_the_fee_actually_used(self):
+        self.assertIn("25.0 bp", self.record(fee_bp=25.0)["limits"]["can_correct"][0])
+
+    def test_a_book_specific_finding_is_unseeable_not_correctable(self):
+        """"the book absorbed only 2.2%" is a fact, not a dial."""
+        rec = exitcost.quote("X", 25_000.0, [[100.0, 1.0]], [[101.0, 1.0]]).to_record()
+        absorbed = [u for u in rec["limits"]["cannot_see"] if "absorbed only" in u]
+        self.assertTrue(absorbed)
+        self.assertNotIn("absorbed only",
+                         " ".join(rec["limits"]["can_correct"]))
+
+    def test_the_depth_note_from_for_symbol_stays_unseeable(self):
+        q = exitcost.from_book("X", 25_000.0, *self.BOOK, "touch")
+        rec = q.to_record()
+        self.assertTrue(any("UNKNOWN, not absent" in u
+                            for u in rec["limits"]["cannot_see"]))
+        self.assertEqual(len(rec["limits"]["can_correct"]), 1)
+
+    def test_every_unseeable_limit_pushes_the_cost_up_not_down(self):
+        """The claim the panel makes in its own heading, held to the text."""
+        downward = ("cheaper", "lower", "less than", "overstat")
+        for line in self.record()["limits"]["cannot_see"]:
+            for word in downward:
+                with self.subTest(line=line, word=word):
+                    self.assertNotIn(word, line.lower())
