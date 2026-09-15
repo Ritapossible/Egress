@@ -45,13 +45,21 @@ def _bar_of(snap_ts: int) -> int:
     return (snap_ts // BAR_MS) * BAR_MS
 
 
-def feed_agreement(symbol: str) -> dict:
-    """Do the venue's candle volume and its 24h turnover describe one market?"""
+def feed_agreement(symbol: str, feed: dict[str, dict] | None = None) -> dict:
+    """Do the venue's candle volume and its 24h turnover describe one market?
+
+    `feed` is the whole ticker response, keyed by symbol. Pass it when checking
+    several symbols: `market.ticker` downloads the entire 580 KB feed to find
+    one row, so nine symbols meant nine full downloads on every page build.
+    """
     try:
         bars = market.candles(symbol, "1H", 24)
-        row = market.ticker(symbol)
+        row = feed.get(symbol) if feed is not None else market.ticker(symbol)
     except market.MarketUnavailable as exc:
         return {"symbol": symbol, "agrees": False, "reason": exc.reason}
+    if row is None:
+        return {"symbol": symbol, "agrees": False,
+                "reason": f"{symbol} is not in the ticker feed"}
     if len(bars) < 20:
         return {"symbol": symbol, "agrees": False,
                 "reason": f"only {len(bars)} hourly bars available"}
@@ -98,7 +106,8 @@ def touch_by_bar(symbol: str, day: dt.date | list[dt.date] | None = None,
 
 
 def for_symbol(symbol: str, day: dt.date | list[dt.date] | None = None,
-               root: Path | None = None) -> dict:
+               root: Path | None = None,
+               feed: dict[str, dict] | None = None) -> dict:
     """Quoted touch against printed volume, bar by bar - if the feeds agree.
 
     `day` narrows to one date or a set of them; omitting it uses the whole
@@ -106,7 +115,7 @@ def for_symbol(symbol: str, day: dt.date | list[dt.date] | None = None,
     quote are paired, so reading extra days costs nothing but never leaves the
     check with nothing to pair against.
     """
-    agreement = feed_agreement(symbol)
+    agreement = feed_agreement(symbol, feed)
     if not agreement.get("agrees"):
         return {"symbol": symbol, "bars": 0, "excluded": True,
                 "feed_ratio": agreement.get("ratio"),
@@ -151,7 +160,12 @@ def run(symbols: list[str] | None = None,
     kinds = {s: r["type"] for s, r in universe.load(root).items()}
     symbols = symbols or ["RNVDAUSDT", "RTSLAUSDT", "RAAPLUSDT", "RMSFTUSDT",
                           "RSYKUSDT", "RPBRUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT"]
-    results = [for_symbol(s, day, root) for s in symbols]
+    # One ticker download for the whole run, not one per symbol.
+    try:
+        feed = {r["symbol"]: r for r in market.tickers() if r.get("symbol")}
+    except market.MarketUnavailable:
+        feed = None          # fall back to per-symbol lookups rather than fail
+    results = [for_symbol(s, day, root, feed) for s in symbols]
     scored = [r for r in results if r.get("bars")]
     excluded = [r for r in results if r.get("excluded")]
 

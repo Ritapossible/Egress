@@ -160,6 +160,41 @@ restating the menu directly above it, and on a phone an endless stack. Replaced
 with one comparison built from the record. A landing page makes one argument;
 navigation is the menu's job.
 
+### NaN is a valid Python float and an invalid JSON token
+
+`json.dumps({"x": float("nan")})` emits a bare `NaN`. Every conforming parser
+rejects it, so the browser threw a SyntaxError and the desk showed "could not be
+reached" for an answer the server had computed correctly. The client even had a
+`q.total_bp === q.total_bp` NaN guard - dead code that could never fire, which is
+what a contract nobody tested end to end looks like.
+
+`to_record()` emits `null` plus a `quotable` flag, and `api/ask.py` serialises
+with `allow_nan=False` so a regression is a stated 500 rather than a body nobody
+can read. **A boundary that crosses a serialiser needs a test that actually
+serialises.**
+
+### A docstring is not an implementation
+
+`desk.answer` said "every failure is a stated answer, never an exception" and
+then let `MarketUnavailable` through to the serverless handler. The *redundant*
+second fetch was guarded; the essential first one was not. Where a function
+promises total behaviour, there is now a test class named after the promise.
+
+### The reader/writer race was real, and the reader was innocent-looking
+
+The crawl loop appends while the page build reads and `git add` stages. A
+half-written gzip member raises `EOFError` - which the build swallowed via
+`|| true` and committed a stale site behind a fresh-looking commit. Fixed at
+three layers: members compressed up front and committed under `flock`, readers
+take a shared lock, and a torn tail costs the torn snapshot rather than the
+file. **`|| true` on a build step converts a loud failure into a silent one.**
+
+### Test what you claim, or stop claiming it
+
+`pyproject` said `>=3.10`; CI tested only 3.11. The claim happened to be true -
+198 tests pass on 3.10 through 3.13 - but nothing was checking. CI now runs the
+matrix it advertises.
+
 ## Working rules
 
 1. **Probe before designing.** Every assumption above that turned out wrong was
@@ -183,3 +218,6 @@ navigation is the menu's job.
 8. **Build the page and look at it before believing the tests.** 108 unit tests
    were green while the live site showed an empty evidence table: every test
    fed the renderer a fixture, and no test ever rendered from the real record.
+9. **A gate that lives on my machine is not a gate.** The layout check that
+   found the zero-width menu sat in /tmp for a week. It is `tools/check_layout.mjs`
+   and a CI job now, and it has been proven to fail.

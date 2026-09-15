@@ -62,22 +62,59 @@
     out.innerHTML = html + '</div>';
   }
 
+  var inFlight = false;
+
+  function fail(message) {
+    out.innerHTML = '<div class="ans"><p class="big bad">' + esc(message)
+      + '</p></div>';
+  }
+
   function ask(question) {
-    if (!question.trim()) return;
-    button.disabled = true;
+    // The serverless function is capped; the client gives it a little more than
+    // that and then says so, rather than leaving the form disabled forever.
+    if (inFlight || !question.trim()) return;
+    inFlight = true;
+    if (button) button.disabled = true;
     out.innerHTML = '<div class="ans"><p class="big">Reading the question, then '
       + 'the book...</p></div>';
+
+    var control = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () {
+      if (control) control.abort();
+    }, 35000);
+
     fetch('/api/ask', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({q: question})
-    }).then(function (r) { return r.json(); })
-      .then(render)
+      body: JSON.stringify({q: question}),
+      signal: control ? control.signal : undefined
+    }).then(function (r) {
+      return r.text().then(function (body) {
+        var data;
+        try {
+          data = JSON.parse(body);
+        } catch (e) {
+          // A non-JSON body means the platform answered, not the desk.
+          throw new Error('the desk returned an unreadable response (HTTP '
+                          + r.status + ')');
+        }
+        if (!r.ok && !data.error) {
+          throw new Error('the desk returned HTTP ' + r.status);
+        }
+        return data;
+      });
+    }).then(render)
       .catch(function (e) {
-        out.innerHTML = '<div class="ans"><p class="big bad">The desk could not '
-          + 'be reached: ' + esc(e.message || e) + '</p></div>';
+        fail(e && e.name === 'AbortError'
+          ? 'The desk took too long and the request was cancelled. Try again, '
+            + 'or ask about a more liquid name.'
+          : 'The desk could not be reached: ' + (e && e.message ? e.message : e));
       })
-      .then(function () { button.disabled = false; });
+      .then(function () {
+        clearTimeout(timer);
+        inFlight = false;
+        if (button) button.disabled = false;
+      });
   }
 
   form.addEventListener('submit', function (e) {

@@ -384,22 +384,59 @@ DESK_JS = """/* The desk's only script. Progressive: with JS off the form posts 
     out.innerHTML = html + '</div>';
   }
 
+  var inFlight = false;
+
+  function fail(message) {
+    out.innerHTML = '<div class="ans"><p class="big bad">' + esc(message)
+      + '</p></div>';
+  }
+
   function ask(question) {
-    if (!question.trim()) return;
-    button.disabled = true;
+    // The serverless function is capped; the client gives it a little more than
+    // that and then says so, rather than leaving the form disabled forever.
+    if (inFlight || !question.trim()) return;
+    inFlight = true;
+    if (button) button.disabled = true;
     out.innerHTML = '<div class="ans"><p class="big">Reading the question, then '
       + 'the book...</p></div>';
+
+    var control = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () {
+      if (control) control.abort();
+    }, 35000);
+
     fetch('/api/ask', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({q: question})
-    }).then(function (r) { return r.json(); })
-      .then(render)
+      body: JSON.stringify({q: question}),
+      signal: control ? control.signal : undefined
+    }).then(function (r) {
+      return r.text().then(function (body) {
+        var data;
+        try {
+          data = JSON.parse(body);
+        } catch (e) {
+          // A non-JSON body means the platform answered, not the desk.
+          throw new Error('the desk returned an unreadable response (HTTP '
+                          + r.status + ')');
+        }
+        if (!r.ok && !data.error) {
+          throw new Error('the desk returned HTTP ' + r.status);
+        }
+        return data;
+      });
+    }).then(render)
       .catch(function (e) {
-        out.innerHTML = '<div class="ans"><p class="big bad">The desk could not '
-          + 'be reached: ' + esc(e.message || e) + '</p></div>';
+        fail(e && e.name === 'AbortError'
+          ? 'The desk took too long and the request was cancelled. Try again, '
+            + 'or ask about a more liquid name.'
+          : 'The desk could not be reached: ' + (e && e.message ? e.message : e));
       })
-      .then(function () { button.disabled = false; });
+      .then(function () {
+        clearTimeout(timer);
+        inFlight = false;
+        if (button) button.disabled = false;
+      });
   }
 
   form.addEventListener('submit', function (e) {
@@ -960,9 +997,9 @@ def docs_body(f: dict) -> str:
     in the serverless function, never in a page.</p>
 
     <h2 id="quickstart">Quickstart</h2>
-    <p class="say">Python 3.11 or newer. No runtime dependencies at all - the
-    standard library does the HTTP, the gzip and the CSV. Ruff and mypy are dev
-    tools, not requirements.</p>
+    <p class="say">Python 3.10 or newer, tested on 3.10 through 3.13. No
+    runtime dependencies at all - the standard library does the HTTP, the gzip
+    and the CSV. Ruff and mypy are dev tools, not requirements.</p>
     <pre><code>git clone {REPO}.git
 cd Egress
 
@@ -983,7 +1020,7 @@ python -m egress.page</code></pre>
     exits cleanly, which is what the scheduled job on the repository runs.</p>
 
     <h2 id="architecture">Architecture</h2>
-    <p class="say">Nine modules, each with one job, listed in the order data
+    <p class="say">Twelve modules, each with one job, listed in the order data
     moves through them.</p>
     <div class="scroll">
     <table class="tbl">
@@ -1013,9 +1050,19 @@ python -m egress.page</code></pre>
         <tr><td class="sym">validate</td><td class="dim">Holds displayed size
           against printed volume, and refuses to compare a symbol whose own two
           volume feeds disagree.</td></tr>
+        <tr><td class="sym">llm</td><td class="dim">The reader. Plain English in,
+          a ticker and a size out - never a price, never a cost. Its output is
+          validated against a shape and clamped before anything uses it.</td></tr>
         <tr><td class="sym">desk</td><td class="dim">The question answerer. The
           reader chooses a ticker and a size; every number after that is
-          computed.</td></tr>
+          computed. One venue round trip per question, so the quote, the plan
+          and the max-exit search describe one same book.</td></tr>
+        <tr><td class="sym">facts</td><td class="dim">Reads the whole record and
+          assembles the fact set every page renders from. Nothing here fetches;
+          it only interprets what the crawler stored.</td></tr>
+        <tr><td class="sym">page</td><td class="dim">Generates this site. Every
+          measured number is interpolated from facts, never typed, so a figure
+          cannot go stale without the record going stale with it.</td></tr>
       </tbody>
     </table>
     </div>

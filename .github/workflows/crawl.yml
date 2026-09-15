@@ -6,7 +6,7 @@ name: Egress crawl
 #
 # GitHub caps a job at 6 hours and treats cron as best effort - a sibling project
 # saw delays of 1h23m, 1h52m and 3h17m in one week. So this is a LONG-RUNNING JOB,
-# not a cron tick: each run loops for 5.8 hours and commits as it goes. A delayed
+# not a cron tick: each run loops for 5.5 hours and commits as it goes. A delayed
 # start costs a gap, and `--coverage` reports gaps rather than hiding them.
 on:
   schedule:
@@ -14,8 +14,8 @@ on:
   workflow_dispatch:
     inputs:
       hours:
-        description: "how long to crawl (default fits the 6h job cap)"
-        default: "5.8"
+        description: "how long to crawl (leaves room for the closing commit)"
+        default: "5.5"
 
 concurrency:
   group: egress-crawl        # never two writers on one append-only store
@@ -27,36 +27,29 @@ permissions:
 jobs:
   crawl:
     runs-on: ubuntu-latest
-    timeout-minutes: 355
+    # 5.5h of crawling + up to 20 min for the loop to notice and the tail to
+    # commit, inside GitHub's 6h ceiling. The old 5.8h left the final in-loop
+    # commit to be killed mid-sleep.
+    timeout-minutes: 350
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0          # `git pull --rebase` needs real history
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
       - name: Crawl
         run: |
-          python -m egress.crawl --loop --hours "${{ inputs.hours || '5.8' }}" &
+          python -m egress.crawl --loop --hours "${{ inputs.hours || '5.5' }}" &
           CRAWL=$!
-          # Commit hourly so a reclaimed runner costs an hour, not a shift.
+          git config user.name  "egress-bot"
+          git config user.email "noreply@github.com"
+          # Commit every 20 min so a reclaimed runner costs minutes, not a shift.
           while kill -0 $CRAWL 2>/dev/null; do
-            sleep 3600
-            git config user.name  "egress-bot"
-            git config user.email "noreply@github.com"
-            # The page states the record, so it is rebuilt whenever the record
-            # moves. Without this the hosted site silently freezes at the last
-            # hand-run generation - stale figures nobody notices, which is the
-            # failure MEMORY.md rule 5 exists to prevent.
-            python -m egress.page || true
-            git add -A state/ docs/
-            git diff --cached --quiet || {
-              git stash push --staged -m pending
-              git pull --rebase --autostash origin main || true
-              git stash pop
-              git add -A state/ docs/
-              git commit -m "crawl: $(date -u '+%Y-%m-%d %H:%MZ')"
-              for i in 1 2 3; do git push && break; git pull --rebase --autostash origin main || true; done
-            }
+            sleep 1200
+            bash .github/commit-record.sh || echo "::warning::commit cycle failed"
           done
           wait $CRAWL || true
 
@@ -65,15 +58,7 @@ jobs:
         run: |
           git config user.name  "egress-bot"
           git config user.email "noreply@github.com"
-          python -m egress.page || true
-          git add -A state/ docs/
-          git diff --cached --quiet && exit 0
-          git stash push --staged -m pending
-          git pull --rebase --autostash origin main || true
-          git stash pop
-          git add -A state/ docs/
-          git commit -m "crawl: $(date -u '+%Y-%m-%d %H:%MZ')"
-          for i in 1 2 3; do git push && exit 0; git pull --rebase --autostash origin main || true; done
+          bash .github/commit-record.sh
 
       - name: Coverage
         if: always()

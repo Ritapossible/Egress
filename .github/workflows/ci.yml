@@ -1,19 +1,77 @@
 name: CI
+
 on: [push, pull_request]
+
+permissions:
+  contents: read
+
 jobs:
   test:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # pyproject claims >=3.10, so CI tests >=3.10. An untested claim is a
+        # claim, not a guarantee.
+        python: ["3.10", "3.11", "3.12", "3.13"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "${{ matrix.python }}"
+
+      - run: pip install --quiet ruff==0.15.8 mypy==1.19.1
+
+      - name: Lint
+        run: ruff check .
+
+      - name: Types
+        # `mypy` alone reads pyproject's files list, which does not include the
+        # serverless entry point. Naming both is what makes the endpoint checked.
+        run: mypy egress api
+
+      - name: Tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Compile every module, endpoint included
+        run: python -m compileall -q egress api
+
+      - name: Build the site from the real record
+        if: matrix.python == '3.11' 
+        # The gate that was missing. 108 tests were green while the live site
+        # rendered an empty evidence table, because every test fed the renderer
+        # a fixture and none ever built the page from the record on disk.
+        run: |
+          python -m egress.page
+          python - <<'PY'
+          import pathlib, sys
+          pages = ["index", "evidence", "validation", "method", "docs"]
+          missing = [p for p in pages
+                     if not (pathlib.Path("docs") / f"{p}.html").exists()]
+          if missing:
+              sys.exit(f"page build produced no {missing}")
+          print(f"built {len(pages)} pages + desk.js")
+          PY
+
+  layout:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: pip install --quiet ruff==0.15.8 mypy==1.19.1
-      - name: Lint
-        run: ruff check .
-      - name: Types
-        run: mypy
-      - name: Tests
-        run: python -m unittest discover -s tests -v
-      - name: Compile every module
-        run: python -m compileall -q egress
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install a browser to measure in
+        run: npm install --no-save playwright@1.56.1 && npx playwright install chromium
+
+      - name: Build the site
+        run: python -m egress.page
+
+      - name: Measure every page at every width
+        # Screenshots crop; a headless window is not the viewport. This reads
+        # getBoundingClientRect on every element instead, which is how the
+        # zero-width <details> menu was found after a scrollWidth check passed.
+        run: node tools/check_layout.mjs

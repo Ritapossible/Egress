@@ -31,7 +31,7 @@ it cheapest?*
 
 ## Run it
 
-Python 3.11 or newer. No runtime dependencies - the standard library does the
+Python 3.10 or newer (CI tests 3.10 to 3.13). No runtime dependencies - the standard library does the
 HTTP, the gzip and the CSV.
 
 ```
@@ -46,19 +46,22 @@ No API key. No account. Every endpoint the crawler uses is public. The one secre
 in the project is the reader key for the desk, and it lives in the serverless
 function, never in a page.
 
-## The first measurement
+## What it found
 
-One snapshot, 2026-09-14, US market closed. A dated observation, not a finding:
+Median spread on tokenized US stocks, by market phase, against crypto pairs on
+the same venue as a control. **The live figures are on
+[the evidence page](https://egress-v1.vercel.app/evidence)** and are regenerated
+from the record on every crawl - nothing in this README is a measurement,
+because a number typed into a document goes stale the moment the record moves
+and nobody notices.
 
-| | median spread | p90 |
-|---|---|---|
-| Tokenized stocks (1,170) | **151.3 bp** | 1,485.8 bp |
-| Crypto control (585) | **10.8 bp** | 31.9 bp |
+What the record shows so far: the spread on a tokenized stock widens by more
+than an order of magnitude once New York closes, while the crypto control on the
+same matching engine and the same fee schedule does not move. Same venue, same
+engine, same fees - so the effect is not venue-wide.
 
-Same venue, same matching engine, same fees. **One observation is not a finding**,
-which is what the week of crawling is for, and why the crypto pairs are stored
-alongside the stocks as a control. Every figure on the live site is regenerated
-from the record on each crawl; none is typed.
+**A few days is not a study.** Every table on the site prints the snapshot count
+behind it and the gaps in the record, so you can see how thin it still is.
 
 ## Reading more
 

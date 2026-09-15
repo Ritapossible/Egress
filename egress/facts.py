@@ -8,7 +8,6 @@ crawler wrote.
 from __future__ import annotations
 
 import datetime as dt
-import json
 import statistics as st
 from pathlib import Path
 
@@ -142,11 +141,3 @@ def build(symbols: list[str] | None = None) -> dict:
         "notional_usdt": 25_000.0,
         "validation": validate.run(),
     }
-
-
-def save(root: Path | None = None) -> Path:
-    root = root or config.STATE
-    root.mkdir(parents=True, exist_ok=True)
-    path = root / "facts.json"
-    path.write_text(json.dumps(build(), indent=1, sort_keys=True))
-    return path

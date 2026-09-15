@@ -365,9 +365,9 @@ pre code{background:none;padding:0}
     in the serverless function, never in a page.</p>
 
     <h2 id="quickstart">Quickstart</h2>
-    <p class="say">Python 3.11 or newer. No runtime dependencies at all - the
-    standard library does the HTTP, the gzip and the CSV. Ruff and mypy are dev
-    tools, not requirements.</p>
+    <p class="say">Python 3.10 or newer, tested on 3.10 through 3.13. No
+    runtime dependencies at all - the standard library does the HTTP, the gzip
+    and the CSV. Ruff and mypy are dev tools, not requirements.</p>
     <pre><code>git clone https://github.com/Ritapossible/Egress.git
 cd Egress
 
@@ -388,7 +388,7 @@ python -m egress.page</code></pre>
     exits cleanly, which is what the scheduled job on the repository runs.</p>
 
     <h2 id="architecture">Architecture</h2>
-    <p class="say">Nine modules, each with one job, listed in the order data
+    <p class="say">Twelve modules, each with one job, listed in the order data
     moves through them.</p>
     <div class="scroll">
     <table class="tbl">
@@ -418,9 +418,19 @@ python -m egress.page</code></pre>
         <tr><td class="sym">validate</td><td class="dim">Holds displayed size
           against printed volume, and refuses to compare a symbol whose own two
           volume feeds disagree.</td></tr>
+        <tr><td class="sym">llm</td><td class="dim">The reader. Plain English in,
+          a ticker and a size out - never a price, never a cost. Its output is
+          validated against a shape and clamped before anything uses it.</td></tr>
         <tr><td class="sym">desk</td><td class="dim">The question answerer. The
           reader chooses a ticker and a size; every number after that is
-          computed.</td></tr>
+          computed. One venue round trip per question, so the quote, the plan
+          and the max-exit search describe one same book.</td></tr>
+        <tr><td class="sym">facts</td><td class="dim">Reads the whole record and
+          assembles the fact set every page renders from. Nothing here fetches;
+          it only interprets what the crawler stored.</td></tr>
+        <tr><td class="sym">page</td><td class="dim">Generates this site. Every
+          measured number is interpolated from facts, never typed, so a figure
+          cannot go stale without the record going stale with it.</td></tr>
       </tbody>
     </table>
     </div>
@@ -579,7 +589,7 @@ Content-Type: application/json
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-09-15 09:55 UTC from
+      <p class="prov"><i></i>Generated 2026-09-15 10:02 UTC from
       203 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
