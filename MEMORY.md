@@ -195,6 +195,23 @@ file. **`|| true` on a build step converts a loud failure into a silent one.**
 198 tests pass on 3.10 through 3.13 - but nothing was checking. CI now runs the
 matrix it advertises.
 
+### A deployment manifest that names one file will not grow a second one
+
+`includeFiles: "state/universe.json"` was correct when the desk read one state
+file. Adding `benchmark.json` for the comparison shipped a desk that answered
+correctly and then silently dropped the verdict and the context in production -
+the exact finding that had already been flagged as "unverified", recurring on a
+new file within the hour. Locally it worked, because locally the file is there.
+
+`tests/test_config.py` now greps the desk's own source for
+`config.STATE / "*.json"` and asserts every path it finds is matched by the
+glob in `vercel.json`, and that the crawler's snapshots are not. It fails with
+the remedy in the message, and it fails on a file the desk starts reading that
+nobody declared.
+
+**Anything that only exists on a deployment needs a test that reads the
+deployment config, not the filesystem you are standing on.**
+
 ### An answer is a judgement, not a field dump
 
 The desk's first output listed nine labelled variables - `DEPTH SOURCE:
