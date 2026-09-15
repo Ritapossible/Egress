@@ -195,6 +195,36 @@ file. **`|| true` on a build step converts a loud failure into a silent one.**
 198 tests pass on 3.10 through 3.13 - but nothing was checking. CI now runs the
 matrix it advertises.
 
+### An answer is a judgement, not a field dump
+
+The desk's first output listed nine labelled variables - `DEPTH SOURCE:
+orderbook`, `ONE CLIP: 18 bp` - and left the reader to interpret them. Every
+number was right and the panel still failed at its job, because "15 bp" means
+nothing without something to compare it to.
+
+It leads with a verdict now (cheap / about typical / expensive / very
+expensive), then the comparison that justifies it, then whether to act. The
+bands are a judgement about wording and are named in one place; the figure
+behind them is `state/benchmark.json`, derived from the record at build time,
+so the comparison moves when the record moves and is never typed. The same
+16 bp reads "cheap" overnight and "expensive" while New York is open - which is
+the entire point of comparing per phase.
+
+Everything that was on the panel is still one tap away under "Show the working".
+Honesty was never the problem; ordering was.
+
+### Nothing executed the client script
+
+Replacing `render()` deleted `var inFlight` and `fail()`, which lived between
+it and `ask()`. 201 Python tests stayed green, ruff stayed green, the page
+built, and the desk threw `inFlight is not defined` on the first click - it was
+completely broken in production and every gate said fine.
+
+`tools/check_desk.mjs` drives the real script in a real browser against four
+recorded answer shapes, checks the panel renders, checks the button is released,
+and checks an error message is escaped. Proven to catch both that bug and an
+unescaped error path. **A syntax check is not an execution.**
+
 ## Working rules
 
 1. **Probe before designing.** Every assumption above that turned out wrong was

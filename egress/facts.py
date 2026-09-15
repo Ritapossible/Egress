@@ -8,6 +8,7 @@ crawler wrote.
 from __future__ import annotations
 
 import datetime as dt
+import json
 import statistics as st
 from pathlib import Path
 
@@ -129,6 +130,33 @@ def worked_example(symbols: list[str], notional: float = 25_000.0) -> list[dict]
         record["floor"] = quote.exhausted or quote.source == "touch"
         out.append(record)
     return out
+
+
+def benchmark(snapshots: list[dict] | None = None) -> dict:
+    """What a typical exit costs, per phase, so one answer can be put in scale.
+
+    Written to disk at page-build time and read by the desk, because computing
+    it per question would mean reading the whole record on every request. It is
+    derived, never typed: the numbers here are the same ones the evidence page
+    shows, and they move when the record moves.
+    """
+    rows = phase_table(snapshots if snapshots is not None else by_snapshot())
+    return {
+        "generated": dt.datetime.now(UTC).isoformat(timespec="seconds"),
+        "phases": {r["phase"]: {"stock_median_bp": r["stock"],
+                                "crypto_median_bp": r["crypto"],
+                                "snapshots": r["snapshots"]}
+                   for r in rows if r.get("stock")},
+    }
+
+
+def save_benchmark(root: Path | None = None,
+                   snapshots: list[dict] | None = None) -> Path:
+    root = root or config.STATE
+    root.mkdir(parents=True, exist_ok=True)
+    path = root / "benchmark.json"
+    path.write_text(json.dumps(benchmark(snapshots), indent=1, sort_keys=True))
+    return path
 
 
 def build(symbols: list[str] | None = None) -> dict:

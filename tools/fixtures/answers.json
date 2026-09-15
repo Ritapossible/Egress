@@ -1,0 +1,268 @@
+{
+ "error": {
+  "at": "2026-09-15T10:21:50+00:00",
+  "basis": "estimated",
+  "error": "the venue would not return a book for RTSLAUSDT: http 503",
+  "phase": "overnight",
+  "question": "cost to exit 40000 USDT of TSLA",
+  "spec": {
+   "confident": true,
+   "model": "stub",
+   "notional_usdt": 40000.0,
+   "ticker": "TSLA"
+  },
+  "symbol": "RTSLAUSDT"
+ },
+ "floor": {
+  "advice": "Splitting the order does not help against this book.",
+  "at": "2026-09-15T10:21:50+00:00",
+  "basis": "estimated",
+  "context": "That is about 10x cheaper than the median tokenized stock in the same overnight conditions (163 bp across 141 snapshots).",
+  "depth_note": "The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
+  "headline": ">17 bp - cheap. About >68 USDT to get out of 40,000.",
+  "max_exit_200bp": 358.0,
+  "phase": "overnight",
+  "plan": [
+   {
+    "assumption_best": "the book fully refills between clips",
+    "assumption_worst": "the book never refills (identical to one clip)",
+    "basis": "estimated",
+    "best_case_bp": 16.98,
+    "notional_usdt": 40000.0,
+    "quotable": true,
+    "slices": 1,
+    "symbol": "RTSLAUSDT",
+    "unverified": [
+     "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+    ],
+    "worst_case_bp": 16.98
+   },
+   {
+    "assumption_best": "the book fully refills between clips",
+    "assumption_worst": "the book never refills (identical to one clip)",
+    "basis": "estimated",
+    "best_case_bp": 16.98,
+    "notional_usdt": 40000.0,
+    "quotable": true,
+    "slices": 4,
+    "symbol": "RTSLAUSDT",
+    "unverified": [
+     "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+    ],
+    "worst_case_bp": 16.98
+   },
+   {
+    "assumption_best": "the book fully refills between clips",
+    "assumption_worst": "the book never refills (identical to one clip)",
+    "basis": "estimated",
+    "best_case_bp": 16.98,
+    "notional_usdt": 40000.0,
+    "quotable": true,
+    "slices": 12,
+    "symbol": "RTSLAUSDT",
+    "unverified": [
+     "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+    ],
+    "worst_case_bp": 16.98
+   }
+  ],
+  "question": "cost to exit 40000 USDT of TSLA",
+  "quote": {
+   "at": "2026-09-15T10:21:50.588980+00:00",
+   "basis": "estimated",
+   "book_usdt": 358.0,
+   "exhausted": true,
+   "fee_bp": 10.0,
+   "filled_usdt": 358.0,
+   "levels_used": 1,
+   "quantity": 1.0,
+   "quotable": true,
+   "reference": 358.25,
+   "requested_usdt": 40000.0,
+   "side": "sell",
+   "slippage_bp": 6.98,
+   "source": "touch",
+   "symbol": "RTSLAUSDT",
+   "total_bp": 16.98,
+   "total_usdt": 67.92,
+   "unverified": [
+    "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+    "a real order moves the book this is measured against",
+    "taker fee assumed at 10.0 bp; account tiers are not readable",
+    "the displayed book absorbed only 0.9% of this position; the rest has no quoted price",
+    "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it"
+   ],
+   "vwap": 358.0
+  },
+  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about >17 bp (>68 USDT) in one clip, with the overnight book as it stands. The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
+  "spec": {
+   "confident": true,
+   "model": "stub",
+   "notional_usdt": 40000.0,
+   "ticker": "TSLA"
+  },
+  "symbol": "RTSLAUSDT",
+  "unverified": [
+   "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+   "a real order moves the book this is measured against",
+   "taker fee assumed at 10.0 bp; account tiers are not readable",
+   "the displayed book absorbed only 0.9% of this position; the rest has no quoted price",
+   "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it"
+  ],
+  "verdict": {
+   "label": "cheap",
+   "median_bp": 162.6,
+   "ratio": 0.1,
+   "snapshots": 141
+  }
+ },
+ "priced": {
+  "advice": "Splitting the order does not help against this book.",
+  "at": "2026-09-15T10:21:50+00:00",
+  "basis": "estimated",
+  "context": "That is about 10x cheaper than the median tokenized stock in the same overnight conditions (163 bp across 141 snapshots).",
+  "depth_note": "",
+  "headline": "17 bp - cheap. About 68 USDT to get out of 40,000.",
+  "max_exit_200bp": 643950.0,
+  "phase": "overnight",
+  "plan": [
+   {
+    "assumption_best": "the book fully refills between clips",
+    "assumption_worst": "the book never refills (identical to one clip)",
+    "basis": "estimated",
+    "best_case_bp": 16.98,
+    "notional_usdt": 40000.0,
+    "quotable": true,
+    "slices": 1,
+    "symbol": "RTSLAUSDT",
+    "unverified": [
+     "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+    ],
+    "worst_case_bp": 16.98
+   },
+   {
+    "assumption_best": "the book fully refills between clips",
+    "assumption_worst": "the book never refills (identical to one clip)",
+    "basis": "estimated",
+    "best_case_bp": 16.98,
+    "notional_usdt": 40000.0,
+    "quotable": true,
+    "slices": 4,
+    "symbol": "RTSLAUSDT",
+    "unverified": [
+     "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+    ],
+    "worst_case_bp": 16.98
+   },
+   {
+    "assumption_best": "the book fully refills between clips",
+    "assumption_worst": "the book never refills (identical to one clip)",
+    "basis": "estimated",
+    "best_case_bp": 16.98,
+    "notional_usdt": 40000.0,
+    "quotable": true,
+    "slices": 12,
+    "symbol": "RTSLAUSDT",
+    "unverified": [
+     "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+    ],
+    "worst_case_bp": 16.98
+   }
+  ],
+  "question": "cost to exit 40000 USDT of TSLA",
+  "quote": {
+   "at": "2026-09-15T10:21:50.588383+00:00",
+   "basis": "estimated",
+   "book_usdt": 643950.0,
+   "exhausted": false,
+   "fee_bp": 10.0,
+   "filled_usdt": 39972.09,
+   "levels_used": 1,
+   "quantity": 111.65387299,
+   "quotable": true,
+   "reference": 358.25,
+   "requested_usdt": 40000.0,
+   "side": "sell",
+   "slippage_bp": 6.98,
+   "source": "orderbook",
+   "symbol": "RTSLAUSDT",
+   "total_bp": 16.98,
+   "total_usdt": 67.92,
+   "unverified": [
+    "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+    "a real order moves the book this is measured against",
+    "taker fee assumed at 10.0 bp; account tiers are not readable"
+   ],
+   "vwap": 358.0
+  },
+  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about 17 bp (68 USDT) in one clip, with the overnight book as it stands.",
+  "spec": {
+   "confident": true,
+   "model": "stub",
+   "notional_usdt": 40000.0,
+   "ticker": "TSLA"
+  },
+  "symbol": "RTSLAUSDT",
+  "unverified": [
+   "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+   "a real order moves the book this is measured against",
+   "taker fee assumed at 10.0 bp; account tiers are not readable"
+  ],
+  "verdict": {
+   "label": "cheap",
+   "median_bp": 162.6,
+   "ratio": 0.1,
+   "snapshots": 141
+  }
+ },
+ "unquotable": {
+  "at": "2026-09-15T10:21:50+00:00",
+  "basis": "estimated",
+  "context": "The venue is not showing both a bid and an ask for this symbol right now, so there is no mid to measure an exit against.",
+  "headline": "No two-sided market - this cannot be priced.",
+  "phase": "overnight",
+  "question": "cost to exit 40000 USDT of TSLA",
+  "quote": {
+   "at": "2026-09-15T10:21:50.589423+00:00",
+   "basis": "estimated",
+   "book_usdt": 0.0,
+   "exhausted": true,
+   "fee_bp": 10.0,
+   "filled_usdt": 0.0,
+   "levels_used": 0,
+   "quantity": 0.0,
+   "quotable": false,
+   "reference": 0.0,
+   "requested_usdt": 40000.0,
+   "side": "sell",
+   "slippage_bp": null,
+   "source": "none",
+   "symbol": "RTSLAUSDT",
+   "total_bp": null,
+   "total_usdt": null,
+   "unverified": [
+    "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+    "a real order moves the book this is measured against",
+    "taker fee assumed at 10.0 bp; account tiers are not readable",
+    "no two-sided market: cost is unquotable",
+    "the venue returned neither depth nor a quote for this symbol"
+   ],
+   "vwap": 0.0
+  },
+  "reading": "There is no two-sided market here, so no exit can be priced.",
+  "spec": {
+   "confident": true,
+   "model": "stub",
+   "notional_usdt": 40000.0,
+   "ticker": "TSLA"
+  },
+  "symbol": "RTSLAUSDT",
+  "unverified": [
+   "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+   "a real order moves the book this is measured against",
+   "taker fee assumed at 10.0 bp; account tiers are not readable",
+   "no two-sided market: cost is unquotable",
+   "the venue returned neither depth nor a quote for this symbol"
+  ]
+ }
+}

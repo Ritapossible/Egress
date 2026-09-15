@@ -70,6 +70,12 @@ jobs:
       - name: Build the site
         run: python -m egress.page
 
+      - name: Drive the desk client in a real browser
+        # A syntax check is not enough: `var inFlight` was deleted in a
+        # refactor, every Python test stayed green, and the desk threw a
+        # ReferenceError on the first click. Nothing executed the script.
+        run: node tools/check_desk.mjs
+
       - name: Measure every page at every width
         # Screenshots crop; a headless window is not the viewport. This reads
         # getBoundingClientRect on every element instead, which is how the

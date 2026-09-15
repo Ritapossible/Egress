@@ -18,55 +18,85 @@
     return '<dt>' + esc(term) + '</dt><dd>' + esc(value) + '</dd>';
   }
 
+  var inFlight = false;
+
+  function fail(message) {
+    out.innerHTML = '<div class="ans"><p class="verdict bad">' + esc(message)
+      + '</p></div>';
+  }
+
   function render(data) {
     if (data.error) {
-      out.innerHTML = '<div class="ans"><p class="big bad">' + esc(data.error)
+      out.innerHTML = '<div class="ans"><p class="verdict bad">' + esc(data.error)
         + '</p></div>';
       return;
     }
     var q = data.quote || {};
-    var html = '<div class="ans"><p class="big">' + esc(data.reading || '')
-      + '</p><dl>';
-    html += row('Symbol', data.symbol || '-');
-    html += row('Position', Number(q.requested_usdt || 0).toLocaleString() + ' USDT');
+    var spec = data.spec || {};
+    var html = '<div class="ans">';
+
+    // The answer, not the variables: a verdict, then what it is measured
+    // against, then whether to do anything about it.
+    html += '<p class="verdict">' + esc(data.headline || data.reading || '') + '</p>';
+    if (data.context) html += '<p class="ctx">' + esc(data.context) + '</p>';
+    if (data.depth_note) html += '<p class="warn">' + esc(data.depth_note) + '</p>';
+    if (data.advice) html += '<p class="advice">' + esc(data.advice) + '</p>';
+
+    // Everything a reader might want to check, one tap away and never lost.
+    html += '<details class="working"><summary>Show the working</summary><dl>';
+    html += row('Ticker', (spec.ticker || '-') + ' · ' + (data.symbol || '-'));
+    html += row('Position size', Number(q.requested_usdt || 0).toLocaleString()
+                + ' USDT, valued at the mid');
     if (q.quotable) {
       var floor = (q.exhausted || q.source === 'touch') ? '>' : '';
-      html += row('One clip', floor + Number(q.total_bp).toFixed(0) + ' bp');
-      html += row('In USDT', floor + Number(q.total_usdt).toLocaleString());
+      html += row('Exit cost, one order',
+        floor + Number(q.total_bp).toFixed(2) + ' bp  ('
+        + floor + Number(q.total_usdt).toLocaleString(undefined,
+            {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' USDT)');
+      html += row('  of which slippage', Number(q.slippage_bp).toFixed(2) + ' bp');
+      html += row('  of which fee', Number(q.fee_bp).toFixed(2) + ' bp (assumed)');
+      html += row('Reference mid', Number(q.reference).toLocaleString());
+      html += row('You would receive', Number(q.vwap).toLocaleString() + ' average');
+      html += row('Book levels used', q.levels_used);
     }
-    html += row('Book on that side', Number(q.book_usdt || 0).toLocaleString() + ' USDT');
+    var book = Number(q.book_usdt || 0);
+    html += row('Bid-side depth', book.toLocaleString() + ' USDT');
     if (data.max_exit_200bp !== undefined) {
-      html += row('Most you can exit under 200 bp',
-                  Number(data.max_exit_200bp).toLocaleString() + ' USDT');
+      var max = Number(data.max_exit_200bp);
+      html += row('Exitable under 200 bp', max.toLocaleString() + ' USDT'
+        + (Math.abs(max - book) < 1 ? ' (the whole displayed book)' : ''));
     }
-    html += row('Depth source', q.source === 'touch' ? 'top of book only' : (q.source || '-'));
+    html += row('Depth source',
+      q.source === 'touch' ? 'top of book only' : (q.source || '-'));
     html += row('Market phase', data.phase || '-');
+    html += row('Basis', 'estimated from the displayed book, not a fill');
     html += '</dl>';
 
-    if (data.plan && data.plan.length) {
-      html += '<dl>';
-      data.plan.forEach(function (p) {
-        html += row(p.slices + (p.slices === 1 ? ' clip' : ' clips'),
-          p.quotable ? (Number(p.best_case_bp).toFixed(0) + ' to '
-                        + Number(p.worst_case_bp).toFixed(0) + ' bp')
-                     : 'unquotable');
+    // Only show the slicing table when the clips actually differ.
+    var plan = (data.plan || []).filter(function (p) {
+      return p.quotable && p.slices > 1;      // one order is the headline above
+    });
+    var varies = plan.some(function (p) {
+      return (p.worst_case_bp - p.best_case_bp) >= 0.5;
+    });
+    if (plan.length && varies) {
+      html += '<p class="sub-head">Split into smaller orders</p><dl>';
+      plan.forEach(function (p) {
+        html += row(p.slices + ' orders',
+          Number(p.best_case_bp).toFixed(1) + ' to '
+          + Number(p.worst_case_bp).toFixed(1) + ' bp'
+          + ' (best case assumes the book refills)');
       });
       html += '</dl>';
     }
 
     if (data.unverified && data.unverified.length) {
-      html += '<ul>';
+      html += '<p class="sub-head">What this cannot tell you</p><ul>';
       data.unverified.forEach(function (u) { html += '<li>' + esc(u) + '</li>'; });
       html += '</ul>';
     }
+    html += '</details>';
     out.innerHTML = html + '</div>';
-  }
-
-  var inFlight = false;
-
-  function fail(message) {
-    out.innerHTML = '<div class="ans"><p class="big bad">' + esc(message)
-      + '</p></div>';
   }
 
   function ask(question) {

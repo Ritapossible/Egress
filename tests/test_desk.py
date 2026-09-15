@@ -17,6 +17,7 @@ import json
 import sys
 import unittest
 from pathlib import Path
+from typing import ClassVar
 from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
@@ -195,3 +196,154 @@ class NumbersComeFromCodeNotTheReader(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ClientFixturesStayInSync(unittest.TestCase):
+    """tools/fixtures/answers.json drives the browser test of desk.js.
+
+    A fixture that drifts from what `answer()` actually returns makes the
+    client gate green while the real panel is broken, so the shapes are
+    checked against live output here.
+    """
+
+    FIXTURES = (Path(__file__).resolve().parent.parent
+                / "tools" / "fixtures" / "answers.json")
+
+    def setUp(self):
+        self.saved = json.loads(self.FIXTURES.read_text())
+        desk._UNIVERSE_CACHE[0] = None
+
+    def produce(self, book):
+        with mock.patch.object(llm, "compile_question", return_value=SPEC), \
+             mock.patch.object(market, "depth_or_touch", **book):
+            return desk.answer("cost to exit 40000 USDT of TSLA", LISTED)
+
+    def test_every_fixture_is_a_shape_the_desk_still_produces(self):
+        live = {
+            "priced": self.produce({"return_value": (*BOOK, "orderbook")}),
+            "floor": self.produce({"return_value": (
+                [[358.0, 1.0]], [[358.5, 1.0]], "touch")}),
+            "unquotable": self.produce({"return_value": ([], [], "none")}),
+            "error": self.produce({
+                "side_effect": market.MarketUnavailable("http 503")}),
+        }
+        self.assertEqual(set(live), set(self.saved),
+                         "a fixture case no longer matches the desk's cases")
+        for name, answer in live.items():
+            with self.subTest(case=name):
+                self.assertEqual(set(answer), set(self.saved[name]),
+                                 f"the {name} answer's keys have changed - "
+                                 f"regenerate tools/fixtures/answers.json")
+
+    def test_a_priced_answer_carries_what_the_panel_renders(self):
+        answer = self.produce({"return_value": (*BOOK, "orderbook")})
+        for key in ("headline", "context", "advice", "verdict", "quote",
+                    "plan", "unverified", "reading"):
+            with self.subTest(key=key):
+                self.assertIn(key, answer)
+
+    def test_a_floor_answer_carries_the_warning_the_panel_shows(self):
+        answer = self.produce({"return_value": (
+            [[358.0, 1.0]], [[358.5, 1.0]], "touch")})
+        self.assertTrue(answer["depth_note"])
+        self.assertIn("floor", answer["depth_note"])
+
+
+class TheVerdict(unittest.TestCase):
+    """The answer leads with a judgement, and the judgement comes from the
+    record - not from a threshold somebody typed into a template."""
+
+    MARKS: ClassVar[dict] = {
+        "overnight": {"stock_median_bp": 160.0, "snapshots": 141},
+        "open": {"stock_median_bp": 8.0, "snapshots": 62}}
+
+    def test_the_bands_read_the_way_a_desk_would_say_them(self):
+        for total_bp, expected in ((16.0, "cheap"), (80.0, "cheap"),
+                                   (160.0, "about typical"),
+                                   (400.0, "expensive"),
+                                   (2000.0, "very expensive")):
+            with self.subTest(bp=total_bp):
+                self.assertEqual(
+                    desk._verdict(total_bp, "overnight", self.MARKS)["label"],
+                    expected)
+
+    def test_the_same_cost_is_judged_against_its_own_phase(self):
+        """16 bp is cheap at night and expensive while New York is open.
+
+        This is the whole point of comparing per phase: an exit cost is only
+        good or bad relative to what the same market charges at the same hour.
+        """
+        self.assertEqual(desk._verdict(16.0, "overnight", self.MARKS)["label"],
+                         "cheap")
+        self.assertEqual(desk._verdict(16.0, "open", self.MARKS)["label"],
+                         "expensive")
+
+    def test_no_benchmark_means_no_verdict_rather_than_a_guess(self):
+        verdict = desk._verdict(16.0, "overnight", {})
+        self.assertEqual(verdict["label"], "")
+        self.assertIsNone(verdict["median_bp"])
+
+    def test_an_unknown_phase_does_not_invent_a_comparison(self):
+        self.assertEqual(desk._verdict(16.0, "holiday", self.MARKS)["label"], "")
+
+    def test_the_context_sentence_states_the_figure_behind_it(self):
+        verdict = desk._verdict(16.0, "overnight", self.MARKS)
+        sentence = desk._context({}, verdict, "overnight")
+        self.assertIn("10x cheaper", sentence)
+        self.assertIn("160 bp", sentence)
+        self.assertIn("141", sentence)
+
+    def test_no_context_without_a_benchmark(self):
+        self.assertEqual(
+            desk._context({}, desk._verdict(16.0, "x", {}), "x"), "")
+
+    def test_a_missing_benchmark_file_is_not_an_error(self):
+        with mock.patch.object(desk.config, "STATE", Path("/nonexistent")):
+            self.assertEqual(desk.benchmark(), {})
+
+    def test_the_benchmark_is_read_from_the_record_not_typed(self):
+        """Perturb the file, and the verdict must follow."""
+        import json as _json
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "benchmark.json").write_text(_json.dumps(
+                {"phases": {"overnight": {"stock_median_bp": 4.0,
+                                          "snapshots": 9}}}))
+            with mock.patch.object(desk.config, "STATE", root):
+                marks = desk.benchmark()
+        # 16 bp against a 4 bp median is 4x - expensive, not cheap. The same
+        # 16 bp against the real 163 bp median reads "cheap".
+        self.assertEqual(desk._verdict(16.0, "overnight", marks)["label"],
+                         "expensive")
+
+
+class TheAdvice(unittest.TestCase):
+    def plan(self, rows):
+        return {"plan": [{"slices": n, "best_case_bp": b, "worst_case_bp": w,
+                          "quotable": True} for n, b, w in rows]}
+
+    def test_it_says_when_splitting_is_not_worth_it(self):
+        out = self.plan([(1, 16.1, 16.1), (4, 15.6, 16.1), (12, 15.5, 16.1)])
+        self.assertIn("not worth the effort", desk._advice(out, {}))
+
+    def test_it_quantifies_a_saving_worth_having(self):
+        out = self.plan([(1, 300.0, 300.0), (4, 120.0, 300.0),
+                         (12, 80.0, 300.0)])
+        advice = desk._advice(out, {})
+        self.assertIn("Split into 12 orders", advice)
+        self.assertIn("220 bp", advice)
+        self.assertIn("only if the book refills", advice)
+
+    def test_a_saving_that_rounds_to_one_bp_is_not_advice(self):
+        """"Save up to 1 bp" contradicts its own caveat. Do not say it."""
+        out = self.plan([(1, 16.1, 16.1), (4, 15.0, 16.1), (12, 14.9, 16.1)])
+        self.assertIn("not worth the effort", desk._advice(out, {}))
+
+    def test_no_plan_means_no_advice_rather_than_filler(self):
+        self.assertEqual(desk._advice({"plan": []}, {}), "")
+        self.assertEqual(desk._advice({}, {}), "")
+
+    def test_an_unquotable_plan_is_ignored(self):
+        out = {"plan": [{"slices": 4, "quotable": False}]}
+        self.assertEqual(desk._advice(out, {}), "")

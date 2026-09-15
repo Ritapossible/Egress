@@ -84,9 +84,26 @@ header{display:flex;align-items:center;justify-content:space-between;
 #out{margin-top:26px}
 #out:empty{display:none}
 .ans{border-left:2px solid var(--accent);padding-left:18px}
+/* The answer leads with a judgement. The variables behind it are one tap away
+   rather than the first thing a reader has to interpret. */
+.verdict{font-size:21px;line-height:1.45;color:var(--ink);letter-spacing:-.01em}
+.verdict.bad{color:var(--bad);font-size:17px}
+.ctx{margin-top:12px;font-size:15px;line-height:1.65;color:var(--ink-2)}
+.advice{margin-top:10px;font-size:15px;line-height:1.65;color:var(--ink-2)}
+.warn{margin-top:12px;font-family:var(--mono);font-size:12.5px;line-height:1.7;
+      color:var(--bad);padding-left:14px;border-left:2px solid var(--bad)}
+.working{margin-top:20px}
+.working summary{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-3);cursor:pointer;padding-block:6px}
+.working summary:hover{color:var(--accent)}
+.working[open] summary{color:var(--ink-2);margin-bottom:6px}
+.sub-head{margin-top:20px;font-family:var(--mono);font-size:11px;
+  letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
 .ans .big{font-size:19px;line-height:1.55;color:var(--ink)}
-.ans dl{display:grid;grid-template-columns:auto 1fr;gap:7px 18px;margin-top:18px;
-  font-family:var(--mono);font-size:13px}
+/* minmax(0,...) so a long label cannot squeeze the value column into a
+   one-word-per-line ribbon, which is what `auto 1fr` did on a phone. */
+.ans dl{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr);
+  gap:7px 16px;margin-top:18px;font-family:var(--mono);font-size:13px}
 .ans dt{color:var(--ink-3);text-transform:uppercase;letter-spacing:.1em;
         font-size:11px;padding-top:2px}
 .ans dd{color:var(--ink);font-variant-numeric:tabular-nums}
@@ -317,6 +334,11 @@ pre code{background:none;padding:0}
   .stat{padding:20px 16px}
   h2{max-width:100%}
   .say{font-size:16px}
+  /* A label and a figure do not both fit on one phone line. */
+  .ans dl{grid-template-columns:1fr;gap:2px}
+  .ans dt{padding-top:10px}
+  .ans dt:first-child{padding-top:0}
+  .verdict{font-size:19px}
 }
 """
 
@@ -340,55 +362,85 @@ DESK_JS = """/* The desk's only script. Progressive: with JS off the form posts 
     return '<dt>' + esc(term) + '</dt><dd>' + esc(value) + '</dd>';
   }
 
+  var inFlight = false;
+
+  function fail(message) {
+    out.innerHTML = '<div class="ans"><p class="verdict bad">' + esc(message)
+      + '</p></div>';
+  }
+
   function render(data) {
     if (data.error) {
-      out.innerHTML = '<div class="ans"><p class="big bad">' + esc(data.error)
+      out.innerHTML = '<div class="ans"><p class="verdict bad">' + esc(data.error)
         + '</p></div>';
       return;
     }
     var q = data.quote || {};
-    var html = '<div class="ans"><p class="big">' + esc(data.reading || '')
-      + '</p><dl>';
-    html += row('Symbol', data.symbol || '-');
-    html += row('Position', Number(q.requested_usdt || 0).toLocaleString() + ' USDT');
+    var spec = data.spec || {};
+    var html = '<div class="ans">';
+
+    // The answer, not the variables: a verdict, then what it is measured
+    // against, then whether to do anything about it.
+    html += '<p class="verdict">' + esc(data.headline || data.reading || '') + '</p>';
+    if (data.context) html += '<p class="ctx">' + esc(data.context) + '</p>';
+    if (data.depth_note) html += '<p class="warn">' + esc(data.depth_note) + '</p>';
+    if (data.advice) html += '<p class="advice">' + esc(data.advice) + '</p>';
+
+    // Everything a reader might want to check, one tap away and never lost.
+    html += '<details class="working"><summary>Show the working</summary><dl>';
+    html += row('Ticker', (spec.ticker || '-') + ' \u00b7 ' + (data.symbol || '-'));
+    html += row('Position size', Number(q.requested_usdt || 0).toLocaleString()
+                + ' USDT, valued at the mid');
     if (q.quotable) {
       var floor = (q.exhausted || q.source === 'touch') ? '>' : '';
-      html += row('One clip', floor + Number(q.total_bp).toFixed(0) + ' bp');
-      html += row('In USDT', floor + Number(q.total_usdt).toLocaleString());
+      html += row('Exit cost, one order',
+        floor + Number(q.total_bp).toFixed(2) + ' bp  ('
+        + floor + Number(q.total_usdt).toLocaleString(undefined,
+            {minimumFractionDigits: 2, maximumFractionDigits: 2}) + ' USDT)');
+      html += row('  of which slippage', Number(q.slippage_bp).toFixed(2) + ' bp');
+      html += row('  of which fee', Number(q.fee_bp).toFixed(2) + ' bp (assumed)');
+      html += row('Reference mid', Number(q.reference).toLocaleString());
+      html += row('You would receive', Number(q.vwap).toLocaleString() + ' average');
+      html += row('Book levels used', q.levels_used);
     }
-    html += row('Book on that side', Number(q.book_usdt || 0).toLocaleString() + ' USDT');
+    var book = Number(q.book_usdt || 0);
+    html += row('Bid-side depth', book.toLocaleString() + ' USDT');
     if (data.max_exit_200bp !== undefined) {
-      html += row('Most you can exit under 200 bp',
-                  Number(data.max_exit_200bp).toLocaleString() + ' USDT');
+      var max = Number(data.max_exit_200bp);
+      html += row('Exitable under 200 bp', max.toLocaleString() + ' USDT'
+        + (Math.abs(max - book) < 1 ? ' (the whole displayed book)' : ''));
     }
-    html += row('Depth source', q.source === 'touch' ? 'top of book only' : (q.source || '-'));
+    html += row('Depth source',
+      q.source === 'touch' ? 'top of book only' : (q.source || '-'));
     html += row('Market phase', data.phase || '-');
+    html += row('Basis', 'estimated from the displayed book, not a fill');
     html += '</dl>';
 
-    if (data.plan && data.plan.length) {
-      html += '<dl>';
-      data.plan.forEach(function (p) {
-        html += row(p.slices + (p.slices === 1 ? ' clip' : ' clips'),
-          p.quotable ? (Number(p.best_case_bp).toFixed(0) + ' to '
-                        + Number(p.worst_case_bp).toFixed(0) + ' bp')
-                     : 'unquotable');
+    // Only show the slicing table when the clips actually differ.
+    var plan = (data.plan || []).filter(function (p) {
+      return p.quotable && p.slices > 1;      // one order is the headline above
+    });
+    var varies = plan.some(function (p) {
+      return (p.worst_case_bp - p.best_case_bp) >= 0.5;
+    });
+    if (plan.length && varies) {
+      html += '<p class="sub-head">Split into smaller orders</p><dl>';
+      plan.forEach(function (p) {
+        html += row(p.slices + ' orders',
+          Number(p.best_case_bp).toFixed(1) + ' to '
+          + Number(p.worst_case_bp).toFixed(1) + ' bp'
+          + ' (best case assumes the book refills)');
       });
       html += '</dl>';
     }
 
     if (data.unverified && data.unverified.length) {
-      html += '<ul>';
+      html += '<p class="sub-head">What this cannot tell you</p><ul>';
       data.unverified.forEach(function (u) { html += '<li>' + esc(u) + '</li>'; });
       html += '</ul>';
     }
+    html += '</details>';
     out.innerHTML = html + '</div>';
-  }
-
-  var inFlight = false;
-
-  function fail(message) {
-    out.innerHTML = '<div class="ans"><p class="big bad">' + esc(message)
-      + '</p></div>';
   }
 
   function ask(question) {
@@ -1225,6 +1277,9 @@ def write(out: Path | None = None) -> Path:
     out = out or OUT
     out.mkdir(parents=True, exist_ok=True)
     f = facts.build()
+    # The desk compares one answer against the record; write the comparison out
+    # here so a question costs a small file read rather than a full record read.
+    facts.save_benchmark(snapshots=f["snapshots"])
     for file, *_ in PAGES:
         (out / file).write_text(render(file, f), encoding="utf-8")
     # External rather than inline so the CSP can stay script-src 'self' with no
