@@ -1,5 +1,5 @@
 {
- "captured": "2026-09-15T04:22:01.643572+00:00",
+ "captured": "2026-09-15T11:28:18.967506+00:00",
  "counts": {
   "crypto": 584,
   "metal": 2,
@@ -2175,7 +2175,7 @@
    "type": "crypto"
   },
   "KLVUSDT": {
-   "band": "0.02",
+   "band": "0.05",
    "base": "KLV",
    "launch_ms": "1710500400000",
    "min_order_usdt": "1",
