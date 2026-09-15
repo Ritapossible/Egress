@@ -709,7 +709,7 @@ def shell(*, title: str, description: str, here: str, body: str, f: dict,
 
 <div class="wrap" id="top">
   <header>
-    <a class="brand" href="index.html">{MARK}<span>egress</span></a>
+    <a class="brand" href="index.html">{MARK}<span>Egress</span></a>
     {_menu(here)}
   </header>
 </div>
