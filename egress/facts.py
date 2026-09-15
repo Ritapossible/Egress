@@ -52,13 +52,23 @@ def by_snapshot(day: dt.date | None = None, root: Path | None = None) -> list[di
     # until the first snapshot of the new day landed, while the footer went on
     # reporting the full snapshot count from the manifest. See MEMORY.md.
     wanted = [day] if day else store.days(root)
-    rows = [r for d in wanted for r in store.read_day(d, root)]
     kinds = {s: r["type"] for s, r in universe.load(root).items()}
 
-    grouped: dict[int, list[dict]] = {}
-    for row in rows:
-        grouped.setdefault(int(row["snap_ts"]), []).append(row)
+    # ONE DAY AT A TIME. Materialising the whole record at once cost 311 MB at
+    # two days and was heading for a gigabyte by the end of the week; only the
+    # per-snapshot summaries need to outlive the day they came from, and there
+    # are a couple of hundred of those rather than a million rows.
+    out = []
+    for one in wanted:
+        grouped: dict[int, list[dict]] = {}
+        for row in store.read_day(one, root):
+            grouped.setdefault(int(row["snap_ts"]), []).append(row)
+        out.extend(_summarise(grouped, kinds))
+    return sorted(out, key=lambda r: r["snap_ts"])
 
+
+def _summarise(grouped: dict[int, list[dict]], kinds: dict[str, str]) -> list[dict]:
+    """One summary per snapshot in a single day's rows."""
     out = []
     for snap_ts, batch in sorted(grouped.items()):
         at = dt.datetime.fromtimestamp(snap_ts / 1000, UTC)

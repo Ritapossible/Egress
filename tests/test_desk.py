@@ -56,6 +56,9 @@ class Resolution(unittest.TestCase):
     def test_a_crypto_pair_is_not_a_tokenized_stock(self):
         self.assertIsNone(desk.resolve("BTC", LISTED))
 
+    def setUp(self):
+        desk._UNIVERSE_CACHE[0] = None
+
     def test_an_empty_universe_file_is_refetched_not_believed(self):
         """{} means the file is missing, never that the market is empty."""
         with mock.patch.object(universe, "load", return_value={}), \
@@ -65,6 +68,16 @@ class Resolution(unittest.TestCase):
                                               "status": "online"}]) as fetch:
             self.assertEqual(desk.resolve("TSLA"), "RTSLAUSDT")
         fetch.assert_called_once()
+
+    def test_the_fallback_is_cached_so_it_is_not_a_download_per_question(self):
+        with mock.patch.object(universe, "load", return_value={}), \
+             mock.patch.object(market, "instruments",
+                               return_value=[{"symbol": "RTSLAUSDT",
+                                              "symbolType": "stock",
+                                              "status": "online"}]) as fetch:
+            for _ in range(5):
+                desk.resolve("TSLA")
+        self.assertEqual(fetch.call_count, 1)
 
 
 class EveryFailureIsStated(unittest.TestCase):

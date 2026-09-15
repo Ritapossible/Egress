@@ -13,11 +13,16 @@ list it, the desk says so instead of pricing a thing that does not exist.
 from __future__ import annotations
 
 import datetime as dt
+import time
 
 from . import exitcost, llm, market, sessions, universe
 
 UTC = dt.timezone.utc
 SLICE_CHOICES = (1, 4, 12)
+
+# Listings change slowly; a question does not need a fresh download.
+UNIVERSE_TTL_S = 900
+_UNIVERSE_CACHE: list = [None, 0.0]
 
 
 def listed_symbols() -> dict[str, dict]:
@@ -32,7 +37,15 @@ def listed_symbols() -> dict[str, dict]:
     stored = universe.load()
     if stored:
         return stored
-    return universe.classify(market.instruments(quick=True))
+    # Fallback path: cached, because re-downloading the whole instrument list
+    # on every question would make a missing file expensive as well as wrong.
+    now = time.monotonic()
+    cached, at = _UNIVERSE_CACHE
+    if cached and now - at < UNIVERSE_TTL_S:
+        return cached
+    fetched = universe.classify(market.instruments(quick=True))
+    _UNIVERSE_CACHE[0], _UNIVERSE_CACHE[1] = fetched, now
+    return fetched
 
 
 def resolve(ticker: str, symbols: dict[str, dict] | None = None) -> str | None:

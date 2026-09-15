@@ -14,6 +14,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -82,6 +83,48 @@ class TheWholeRecord(unittest.TestCase):
         two ever disagree the site is claiming evidence it is not showing."""
         self.assertEqual(len(facts.by_snapshot(root=self.root)),
                          store.coverage(self.root)["snapshots"])
+
+
+class ReadingIsBounded(unittest.TestCase):
+    """Reading the whole record must not mean holding the whole record.
+
+    The first version materialised every row of every day at once: 311 MB at
+    two days, on course for a gigabyte by the end of a week's crawl. Only the
+    per-snapshot summaries need to outlive the day they came from.
+    """
+
+    def setUp(self):
+        self.tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self.tmp.name)
+        self.stamps = [at(d, 15) for d in (13, 14, 15)]
+        for ts in self.stamps:
+            store.append(store.rows_from(tickers("R", 3, ts), ts), ts, self.root)
+        (self.root / "universe.json").write_text(json.dumps(
+            {f"R{i}USDT": {"type": "stock"} for i in range(3)}))
+
+    def tearDown(self):
+        self.tmp.cleanup()
+
+    def test_only_one_day_is_held_at_a_time(self):
+        seen = []
+        real = store.read_day
+
+        def watched(day, root=None):
+            rows = real(day, root)
+            seen.append(len(rows))
+            return rows
+
+        with mock.patch.object(store, "read_day", watched):
+            facts.by_snapshot(root=self.root)
+        self.assertEqual(len(seen), 3, "one read per day in the record")
+        self.assertTrue(all(n == 3 for n in seen),
+                        "each read must return one day, not the whole record")
+
+    def test_the_answer_is_the_same_as_reading_the_days_one_by_one(self):
+        whole = facts.by_snapshot(root=self.root)
+        piecewise = [s for d in store.days(self.root)
+                     for s in facts.by_snapshot(d, self.root)]
+        self.assertEqual(whole, piecewise)
 
 
 if __name__ == "__main__":
