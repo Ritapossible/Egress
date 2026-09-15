@@ -103,6 +103,18 @@ def manifest(root: Path | None = None) -> list[dict]:
     return sorted(out, key=lambda r: r["snap_ts"])
 
 
+def days(root: Path | None = None) -> list[dt.date]:
+    """Every UTC day the manifest vouches for, oldest first.
+
+    Read from the manifest rather than from the filenames in snapshots/, so a
+    day whose file exists but whose snapshots were never completed is absent
+    here for the same reason its rows are skipped in read_day.
+    """
+    seen = {dt.datetime.fromtimestamp(r["snap_ts"] / 1000, UTC).date()
+            for r in manifest(root)}
+    return sorted(seen)
+
+
 def read_day(day: dt.date, root: Path | None = None) -> list[dict]:
     """Rows for one UTC day, keeping only snapshots the manifest vouches for."""
     root = root or config.STATE

@@ -135,6 +135,31 @@ The mobile breakpoint was 700 px; the menu ran out of room at about 900. The
 header collapses to the pill one breakpoint earlier than the layout does, which
 is why there are two media queries rather than one.
 
+### The site went blank at midnight UTC and still claimed fifty snapshots
+
+`facts.by_snapshot()` defaulted to `date.today()`. The footer counts the
+manifest, so it kept reporting the whole record; every table on the site read
+one day and emptied the moment the date rolled over, staying empty until the
+first snapshot of the new day landed. Found by opening the built page the
+morning after a crawl and seeing a site that asserted 50 snapshots and showed
+nothing.
+
+Omitting the day now means the WHOLE record (`store.days()` reads the manifest,
+not the filenames, so an unfinished day is invisible for the same reason its
+rows are). Passing a day still narrows, which is what `validate` wants.
+
+**The general rule: two numbers on one page that come from different readers of
+the same record must be tested against each other.** `test_facts.py` now asserts
+the summary count equals the manifest count; had that test existed, the bug
+could not have shipped.
+
+### A landing page is not a table of contents
+
+The landing page grew four cards describing the four other pages - a sitemap
+restating the menu directly above it, and on a phone an endless stack. Replaced
+with one comparison built from the record. A landing page makes one argument;
+navigation is the menu's job.
+
 ## Working rules
 
 1. **Probe before designing.** Every assumption above that turned out wrong was
@@ -155,3 +180,6 @@ is why there are two media queries rather than one.
    window is not the viewport. Every responsiveness claim in this project comes
    from reading `getBoundingClientRect()` on every element at eight widths, and
    from opening the menu and checking where it landed.
+8. **Build the page and look at it before believing the tests.** 108 unit tests
+   were green while the live site showed an empty evidence table: every test
+   fed the renderer a fixture, and no test ever rendered from the real record.

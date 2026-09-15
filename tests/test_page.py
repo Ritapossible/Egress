@@ -252,8 +252,86 @@ class TheDesk(unittest.TestCase):
         self.assertIn('aria-live="polite"', self.html)
 
     def test_the_page_says_what_needs_javascript_and_what_does_not(self):
-        self.assertIn("needs JavaScript", self.html)
-        self.assertIn("read fine", self.html)
+        """Asserted on collapsed whitespace: a source line wrap is not a
+        content change, and a test that breaks on one is a nuisance."""
+        flat = " ".join(self.html.split())
+        self.assertIn("needs JavaScript", flat)
+        self.assertIn("nothing else on this site does", flat)
+
+
+class TheDeskIsTheProduct(unittest.TestCase):
+    """Track 3 is execution assistance. The thing to use comes first, and the
+    landing page is not a table of contents for the menu above it."""
+
+    @staticmethod
+    def hero(html):
+        start = html.index('<div class="hero">')
+        return html[start:html.index('<div class="grid-panel">', start)]
+
+    def test_the_ask_form_is_inside_the_hero(self):
+        self.assertIn('id="ask"', self.hero(render()))
+
+    def test_the_form_is_the_first_thing_a_visitor_can_act_on(self):
+        html = render()
+        body = html[html.index("<body>"):]
+        self.assertLess(body.index('id="ask"'), body.index("</section>"))
+
+    def test_the_hero_has_no_competing_call_to_action(self):
+        """The old primary button sent the visitor away from the product."""
+        hero = self.hero(render())
+        self.assertNotIn('class="btn solid"', hero)
+        self.assertNotIn("See the evidence", hero)
+
+    def test_the_landing_page_does_not_restate_the_menu_as_cards(self):
+        """Four cards describing four pages is a sitemap, not content."""
+        html = render()
+        self.assertNotIn('class="cards"', html)
+        self.assertNotIn("Four pages", html)
+
+    def test_the_landing_page_makes_one_argument_not_a_tour(self):
+        html = render()
+        self.assertEqual(html.count("<h2>"), 1)
+
+
+class TheFinding(unittest.TestCase):
+    """The landing page's single claim, and it comes from the record."""
+
+    def test_both_phases_are_shown_with_their_crypto_control(self):
+        html = render()
+        for fragment in ("158", "19", "crypto control 10 bp",
+                         "crypto control 11 bp"):
+            with self.subTest(fragment=fragment):
+                self.assertIn(fragment, html)
+
+    def test_the_headline_ratio_is_computed_not_typed(self):
+        """158.0 / 18.8 is 8.4x, so the headline must say 8."""
+        self.assertIn("8x more to leave at night", render())
+
+    def test_perturbing_a_phase_moves_the_headline(self):
+        other = {**FACTS, "phases": [
+            {"phase": "open", "snapshots": 5, "stock": 10.0, "crypto": 11.3},
+            {"phase": "overnight", "snapshots": 7, "stock": 300.0,
+             "crypto": 10.3}]}
+        moved = render(facts=other)
+        self.assertIn("30x more to leave at night", moved)
+        self.assertNotIn("8x more to leave at night", moved)
+
+    def test_a_record_with_only_one_phase_omits_the_panel_entirely(self):
+        """Half a comparison is worse than none."""
+        one = {**FACTS, "phases": [
+            {"phase": "open", "snapshots": 5, "stock": 18.8, "crypto": 11.3}]}
+        html = render(facts=one)
+        self.assertNotIn('class="compare"', html)
+        self.assertNotIn("more to leave at night", html)
+
+    def test_a_weekend_record_stands_in_for_an_overnight_one(self):
+        wk = {**FACTS, "phases": [
+            {"phase": "open", "snapshots": 5, "stock": 18.8, "crypto": 11.3},
+            {"phase": "weekend", "snapshots": 9, "stock": 200.0,
+             "crypto": 10.1}]}
+        html = render(facts=wk)
+        self.assertIn('class="compare"', html)
+        self.assertIn("weekend", html)
 
 
 class Chrome(unittest.TestCase):
@@ -268,8 +346,9 @@ class Chrome(unittest.TestCase):
         for name in FILES:
             html = render(name)
             with self.subTest(page=name):
-                self.assertIn("none is typed", html)
+                self.assertIn("None is typed", html)
                 self.assertIn("Not advice", html)
+                self.assertIn("MIT licensed", html)
 
     def test_every_page_has_exactly_one_h1(self):
         for name in FILES:

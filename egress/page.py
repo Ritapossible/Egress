@@ -94,18 +94,25 @@ header{display:flex;align-items:center;justify-content:space-between;
 .ans .bad{color:var(--bad)}
 
 footer{padding-block:54px 40px}
-.foot-top{display:grid;grid-template-columns:2fr 1fr 1fr;gap:34px}
+.foot-top{display:grid;grid-template-columns:1.7fr 1fr 1fr;gap:40px}
 .foot-top h3{font-size:11px;font-family:var(--mono);letter-spacing:.16em;
   text-transform:uppercase;color:var(--ink-3);font-weight:400;margin-bottom:14px}
-.foot-top p{color:var(--ink-2);font-size:14.5px;max-width:42ch;line-height:1.7}
+.foot-top p{color:var(--ink-2);font-size:14.5px;max-width:48ch;line-height:1.7}
 .foot-top a{display:block;color:var(--ink-2);text-decoration:none;
   font-size:14px;margin-bottom:9px}
 .foot-top a:hover{color:var(--accent)}
-.foot-bot{display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap;
-  margin-top:40px;padding-top:22px;border-top:1px solid var(--rule);
-  font-family:var(--mono);font-size:11.5px;color:var(--ink-3)}
-.tag{font-family:var(--mono);font-size:11px;letter-spacing:.16em;
-     text-transform:uppercase;color:var(--accent)}
+.foot-bot{margin-top:44px;padding-top:24px;border-top:1px solid var(--rule)}
+/* The provenance line is the project's whole claim, so it is legible rather
+   than set in the same grey as the licence. */
+.prov{display:flex;gap:12px;font-family:var(--mono);font-size:12.5px;
+      line-height:1.75;color:var(--ink-2);max-width:80ch}
+.prov i{flex:none;width:7px;height:7px;margin-top:8px;background:var(--accent)}
+.foot-legal{display:flex;flex-wrap:wrap;gap:6px 22px;margin-top:20px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;color:var(--ink-3)}
+.foot-legal a{color:var(--ink-3);text-decoration:none;
+  border-bottom:1px solid var(--rule)}
+.foot-legal a:hover,.foot-legal a:focus{color:var(--accent);
+  border-bottom-color:var(--accent)}
 
 /* corner-bracketed button */
 .btn{position:relative;display:inline-block;padding:15px 30px;
@@ -129,7 +136,23 @@ footer{padding-block:54px 40px}
     linear-gradient(var(--c),var(--c)) 100% 100%/var(--t) var(--s) no-repeat}
 .btn{display:block}
 
-.hero{padding-block:88px 76px;text-align:center}
+.hero{padding-block:82px 72px;text-align:center}
+/* The desk is the product, so it is the first thing in the hero. Left-aligned
+   inside a centred hero, because a form reads left even when its frame does not. */
+.hero .desk{text-align:left;margin-top:38px}
+.hero .eg,.hero #out{text-align:left}
+/* Left-aligned and held to the desk's width: five lines of centred monospace
+   is a wall, not a caption. */
+.hero-note{text-align:left;font-family:var(--mono);font-size:12px;
+  line-height:1.9;color:var(--ink-3);margin-top:20px;max-width:74ch}
+.hero-links{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:16px;
+  text-align:left}
+.hero-links a{font-family:var(--mono);font-size:12px;color:var(--ink-2);
+  text-decoration:none;border-bottom:1px solid var(--rule);padding-bottom:2px}
+.hero-links a:hover,.hero-links a:focus{color:var(--accent);
+  border-bottom-color:var(--accent)}
+/* The label belongs above the field, not as a flex item beside it. */
+.desk label{display:block}
 .badge{display:inline-flex;align-items:center;gap:11px;background:#fff;
   padding:11px 20px;font-family:var(--mono);font-size:12px;letter-spacing:.15em;
   text-transform:uppercase;color:var(--ink);box-shadow:inset 0 0 0 1px var(--rule)}
@@ -149,7 +172,7 @@ section{padding-block:76px}
 h2{font-size:clamp(26px,3.6vw,38px);letter-spacing:-.025em;font-weight:600;
    max-width:22ch;margin-top:64px}
 /* The first heading in a section is spaced by the section's own padding. */
-section>h2:first-child{margin-top:0}
+section>h2:first-child,.kicker+h2{margin-top:0}
 /* A section that follows a page head carries less top padding: the head has
    already opened the page. */
 .after-head{padding-top:40px}
@@ -214,15 +237,28 @@ pre{font-family:var(--mono);font-size:13px;line-height:1.75;background:#fff;
     box-shadow:inset 0 0 0 1px var(--rule);padding:20px;overflow-x:auto;
     margin-top:16px}
 pre code{background:none;padding:0}
+/* The landing page's one comparison. Two panels, no table: the point is the
+   size of the gap, not the precision of either side. */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin-top:34px;
+  background:var(--rule);box-shadow:0 0 0 1px var(--rule)}
+.cmp{background:#fff;padding:30px 28px 26px}
+.cmp-when{font-family:var(--mono);font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent)}
+.cmp-when span{color:var(--ink-3);margin-left:8px}
+.cmp b{display:block;margin-top:14px;font-size:clamp(38px,5.4vw,60px);
+  font-weight:600;letter-spacing:-.035em;line-height:1}
+.cmp b i{font-style:normal;font-size:.36em;letter-spacing:.02em;
+  margin-left:7px;color:var(--ink-3)}
+.cmp-ctrl{margin-top:14px;font-family:var(--mono);font-size:12px;
+  color:var(--ink-3)}
+.note a{color:var(--ink-2);border-bottom:1px solid var(--rule);
+  text-decoration:none}
+.note a:hover,.note a:focus{color:var(--accent);border-bottom-color:var(--accent)}
 .note{font-family:var(--mono);font-size:12.5px;line-height:1.8;color:var(--ink-3);
       margin-top:20px;max-width:76ch}
 .note b{color:var(--ink-2);font-weight:600}
 .caveat{border-left:2px solid var(--accent);padding:4px 0 4px 18px;margin-top:26px;
         max-width:72ch;color:var(--ink-2);font-size:15px}
-footer{padding-block:44px;font-family:var(--mono);font-size:12px;
-       color:var(--ink-3);display:flex;justify-content:space-between;
-       gap:18px;flex-wrap:wrap}
-footer a{color:var(--ink-2)}
 /* Six inline tabs stop fitting well before a phone, so the header
    collapses to a pill a breakpoint earlier than the layout does. */
 @media (max-width:900px){
@@ -274,6 +310,8 @@ footer a{color:var(--ink-2)}
   .bracket{width:100%;display:flex}
   .btn{flex:1;text-align:center;padding-inline:16px}
   .stats{grid-template-columns:1fr 1fr}
+  .compare{grid-template-columns:1fr}
+  .cmp{padding:24px 22px}
   .stat{padding:20px 16px}
   h2{max-width:100%}
   .say{font-size:16px}
@@ -528,9 +566,16 @@ def _footer(f: dict) -> str:
       </div>
     </div>
     <div class="foot-bot">
-      <span>Generated {gen:%Y-%m-%d %H:%M} UTC from {cover['snapshots']:,}
-      recorded snapshots. Every figure is read from that record, none is typed.</span>
-      <span>Research only. Not advice, not an offer, not a quote. MIT licensed.</span>
+      <p class="prov"><i></i>Generated {gen:%Y-%m-%d %H:%M} UTC from
+      {cover['snapshots']:,} recorded snapshots. Every figure on this site is read
+      from that record at build time. None is typed, and none is cached longer
+      than the crawl that produced it.</p>
+      <div class="foot-legal">
+        <span>&copy; {gen:%Y} Egress</span>
+        <span>Research only. Not advice, not an offer, not a quote.</span>
+        <a href="{BLOB}/LICENSE">MIT licensed</a>
+        <a href="{REPO}">Source</a>
+      </div>
     </div>
   </footer>"""
 
@@ -572,19 +617,10 @@ def shell(*, title: str, description: str, here: str, body: str, f: dict,
 
 # ------------------------------------------------------------------- the desk
 
-DESK = """
-<div class="wrap">
-  <section id="desk" style="padding-top:0">
-    <p class="kicker">The desk</p>
-    <h2>Ask what leaving costs</h2>
-    <p class="say">Plain English. The reader turns your question into a symbol
-    and a size; every number after that is walked off the live book by code, so a
-    wrong answer shows up as a visibly wrong reading rather than an invented
-    figure.</p>
-
+HERO_DESK = """
     <div class="desk">
+      <label for="q">Ask what leaving costs</label>
       <form class="ask" id="ask" action="/api/ask" method="post">
-        <label for="q">Your question</label>
         <input id="q" name="q" type="text" autocomplete="off"
                placeholder="What does leaving 40,000 USDT of TSLA cost?">
         <button type="submit" id="go">Ask</button>
@@ -600,30 +636,72 @@ DESK = """
       <div id="out" role="status" aria-live="polite"></div>
     </div>
 
-    <p class="note"><b>The desk needs JavaScript and a configured reader.</b>
-    Nothing else on this site does: every measurement, the validation and the
-    worked example are rendered into their pages at build time and read fine
-    with scripting off.</p>
-  </section>
-</div>
+    <p class="hero-note">The reader turns your question into a symbol and a size.
+    Every number after that is walked off the live book by code, so a wrong
+    answer shows up as a visibly wrong reading rather than an invented figure.
+    The desk needs JavaScript and a configured reader - nothing else on this
+    site does.</p>
+    <p class="hero-links"><a href="method.html">How the number is computed</a>
+    <a href="evidence.html">What it is built on</a>
+    <a href="validation.html">Whether the quotes are real</a></p>
 """
 
 
 # ------------------------------------------------------------------- the pages
 
+def _finding(f: dict) -> str:
+    """The one comparison the landing page exists to make.
+
+    Returns "" rather than a half-filled panel when the record does not yet
+    carry both an open and a closed phase: an empty figure is worse than none.
+    """
+    phases = {row["phase"]: row for row in f["phases"]}
+    closed = phases.get("overnight") or phases.get("weekend") or {}
+    openp = phases.get("open") or {}
+    if not (closed.get("stock") and openp.get("stock")):
+        return ""
+
+    ratio = closed["stock"] / openp["stock"]
+    panels = []
+    for row, label, note in (
+            (closed, closed["phase"], "US market shut"),
+            (openp, "open", "US market open")):
+        ctrl = (f"crypto control {row['crypto']:,.0f} bp"
+                if row.get("crypto") else "crypto control unquoted")
+        panels.append(
+            f"""      <div class="cmp">
+        <p class="cmp-when">{html.escape(label)} <span>{note}</span></p>
+        <b>{row['stock']:,.0f}<i>bp</i></b>
+        <p class="cmp-ctrl">{ctrl}</p>
+      </div>""")
+
+    return f"""
+<div class="wrap">
+  <section>
+    <p class="kicker">The finding</p>
+    <h2>The same token costs {ratio:,.0f}x more to leave at night</h2>
+    <p class="say">Median spread across every quoted tokenized stock, by market
+    phase. The crypto pairs beside each figure trade on the same venue, through
+    the same matching engine, under the same fee schedule - and they do not
+    move.</p>
+
+    <div class="compare">
+{chr(10).join(panels)}
+    </div>
+
+    <p class="note"><b>That gap is the product.</b> A holder who needs out
+    overnight pays it, and nothing on the venue tells them so beforehand.
+    Measured across {f['coverage']['snapshots']:,} snapshots of the whole
+    listed universe. <a href="evidence.html">See the measurement</a>.</p>
+  </section>
+</div>
+"""
+
+
 def index_body(f: dict) -> str:
     counts = f["universe"]
     stocks = counts.get("stock", 0)
     cover = f["coverage"]
-    phases = {row["phase"]: row for row in f["phases"]}
-    closed = phases.get("overnight") or phases.get("weekend") or {}
-    openp = phases.get("open") or {}
-
-    swing = ""
-    if closed.get("stock") and openp.get("stock"):
-        swing = (f"Median spread across every quoted name runs "
-                 f"{closed['stock']:,.0f} bp while the US market is shut against "
-                 f"{openp['stock']:,.0f} bp while it is open.")
 
     return f"""
 <div class="wrap">
@@ -632,17 +710,10 @@ def index_body(f: dict) -> str:
     <h1>One click in. <em>Not</em> one click out.</h1>
     <p class="lede">Bitget lists {stocks:,} tokenized US stocks. Egress measures
     what it actually costs to leave one - at your size, from the order book that
-    exists right now, not from an average. It reads the whole listed universe
-    every five minutes and keeps the record.</p>
-    <div class="cta">
-      <span class="bracket"><a class="btn solid" href="evidence.html">See the
-      evidence</a></span>
-      <span class="bracket"><a class="btn ghost" href="docs.html">Read the
-      docs</a></span>
-    </div>
-  </div>
+    exists right now, not from an average. Ask it.</p>
+{HERO_DESK}  </div>
 </div>
-{DESK}
+
 <div class="grid-panel">
   <div class="wrap">
     <div class="stats">
@@ -656,44 +727,7 @@ def index_body(f: dict) -> str:
     </div>
   </div>
 </div>
-
-<div class="wrap">
-  <section>
-    <p class="kicker">What is on this site</p>
-    <h2>Four pages, each one a claim you can check</h2>
-    <p class="say">Nothing here is asserted without the record behind it. Each
-    page states what it measured, how, and what it could not settle.{
-      (" " + swing) if swing else ""}</p>
-
-    <div class="cards">
-      <a class="card" href="evidence.html">
-        <h3>Evidence</h3>
-        <p>Spread by market phase, tokenized stocks against a crypto control
-        group on the same venue and the same matching engine.</p>
-        <span>See the measurement</span>
-      </a>
-      <a class="card" href="validation.html">
-        <h3>Validation</h3>
-        <p>Whether a displayed quote is worth anything: resting size held
-        against the volume that actually printed after it.</p>
-        <span>See the check</span>
-      </a>
-      <a class="card" href="method.html">
-        <h3>Method</h3>
-        <p>How a cost is computed - walking the book from the mid, the taker
-        fee, and where an estimate turns into a floor.</p>
-        <span>See the working</span>
-      </a>
-      <a class="card" href="docs.html">
-        <h3>Docs</h3>
-        <p>Run the crawler yourself, read the data format, call the endpoint,
-        and see the limits stated in one place.</p>
-        <span>Read the docs</span>
-      </a>
-    </div>
-  </section>
-</div>
-"""
+{_finding(f)}"""
 
 
 def evidence_body(f: dict) -> str:

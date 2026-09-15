@@ -43,10 +43,17 @@ def _percentile(values: list[float], q: float) -> float:
 
 
 def by_snapshot(day: dt.date | None = None, root: Path | None = None) -> list[dict]:
-    """One summary per completed snapshot: spreads and touch, split by type."""
+    """One summary per completed snapshot: spreads and touch, split by type.
+
+    `day` narrows to a single UTC day; omitting it reads the entire record.
+    """
     root = root or config.STATE
-    day = day or dt.datetime.now(UTC).date()
-    rows = store.read_day(day, root)
+    # No day given means the WHOLE record, not today's slice of it. Defaulting
+    # to today emptied every table on the site at 00:00 UTC and left it empty
+    # until the first snapshot of the new day landed, while the footer went on
+    # reporting the full snapshot count from the manifest. See MEMORY.md.
+    wanted = [day] if day else store.days(root)
+    rows = [r for d in wanted for r in store.read_day(d, root)]
     kinds = {s: r["type"] for s, r in universe.load(root).items()}
 
     grouped: dict[int, list[dict]] = {}
