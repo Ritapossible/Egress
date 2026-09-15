@@ -29,7 +29,7 @@
       + '</p><dl>';
     html += row('Symbol', data.symbol || '-');
     html += row('Position', Number(q.requested_usdt || 0).toLocaleString() + ' USDT');
-    if (q.total_bp === q.total_bp) {
+    if (q.quotable) {
       var floor = (q.exhausted || q.source === 'touch') ? '>' : '';
       html += row('One clip', floor + Number(q.total_bp).toFixed(0) + ' bp');
       html += row('In USDT', floor + Number(q.total_usdt).toLocaleString());
@@ -47,8 +47,9 @@
       html += '<dl>';
       data.plan.forEach(function (p) {
         html += row(p.slices + (p.slices === 1 ? ' clip' : ' clips'),
-          Number(p.best_case_bp).toFixed(0) + ' to '
-          + Number(p.worst_case_bp).toFixed(0) + ' bp');
+          p.quotable ? (Number(p.best_case_bp).toFixed(0) + ' to '
+                        + Number(p.worst_case_bp).toFixed(0) + ' bp')
+                     : 'unquotable');
       });
       html += '</dl>';
     }

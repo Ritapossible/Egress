@@ -18,7 +18,8 @@ import urllib.request
 
 BASE_URL = os.environ.get("QWEN_BASE_URL", "https://hackathon.bitgetops.com/v1")
 MODEL = os.environ.get("QWEN_MODEL", "qwen3.8-max")
-TIMEOUT_S = 25
+# Bounded by the serverless budget, not by patience. See config.
+TIMEOUT_S = int(os.environ.get('QWEN_TIMEOUT_S', '15'))
 
 SYSTEM = (
     "You translate a trader's plain-English question about leaving a position "

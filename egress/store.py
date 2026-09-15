@@ -20,7 +20,14 @@ import gzip
 import io
 import itertools
 import json
+import os
+import zlib
 from pathlib import Path
+
+try:
+    import fcntl
+except ImportError:      # non-POSIX
+    fcntl = None            # type: ignore[assignment]
 
 from . import config
 
@@ -72,8 +79,24 @@ def append(rows: list[tuple], snap_ts: int, root: Path | None = None,
     if not path.exists():
         writer.writerow(COLUMNS)
     writer.writerows(rows)
-    with gzip.open(path, "at", encoding="utf-8") as fh:
-        fh.write(buf.getvalue())
+
+    # Compress the whole member up front, then commit it under an exclusive
+    # lock in one write. The crawl loop and the page build run concurrently on
+    # the runner, and `git add` runs alongside both: without this a reader - or
+    # a commit - can capture a half-written member. Readers take a shared lock
+    # in `_rows`, so they wait rather than tear.
+    member = io.BytesIO()
+    with gzip.GzipFile(fileobj=member, mode="wb", mtime=0) as gz:
+        gz.write(buf.getvalue().encode("utf-8"))
+    blob = member.getvalue()
+    with path.open("ab") as fh:
+        _lock(fh, exclusive=True)
+        try:
+            fh.write(blob)
+            fh.flush()
+            os.fsync(fh.fileno())
+        finally:
+            _unlock(fh)
 
     # Recorded only after the rows are durable, so the manifest can never claim
     # a snapshot that is not on disk.
@@ -115,6 +138,22 @@ def days(root: Path | None = None) -> list[dt.date]:
     return sorted(seen)
 
 
+def _lock(fh, exclusive: bool = False) -> None:
+    """Advisory lock, where the platform has them. Best effort by design.
+
+    fcntl is POSIX-only; on a platform without it the reader's tolerance for a
+    torn tail is the remaining protection, which is why that exists too.
+    """
+    if fcntl is None:
+        return
+    fcntl.flock(fh.fileno(), fcntl.LOCK_EX if exclusive else fcntl.LOCK_SH)
+
+
+def _unlock(fh) -> None:
+    if fcntl is not None:
+        fcntl.flock(fh.fileno(), fcntl.LOCK_UN)
+
+
 def read_day(day: dt.date, root: Path | None = None) -> list[dict]:
     """Rows for one UTC day, keeping only snapshots the manifest vouches for."""
     root = root or config.STATE
@@ -123,18 +162,45 @@ def read_day(day: dt.date, root: Path | None = None) -> list[dict]:
         return []
     complete = {r["snap_ts"] for r in manifest(root)}
     out = []
-    with gzip.open(path, "rt", encoding="utf-8") as fh:
-        for row in csv.DictReader(fh):
-            # Each appended member repeats no header, but a day that was started
-            # fresh has one; DictReader yields it as a row of its own names.
-            if row.get("symbol") == "symbol":
-                continue
-            try:
-                if int(row["snap_ts"]) in complete:
-                    out.append(row)
-            except (TypeError, ValueError):
-                continue
+    # A reader can arrive mid-append - the crawl loop and the page build run
+    # concurrently on the runner - and a half-written gzip member raises
+    # EOFError. Losing the torn tail is correct; taking down every reader of
+    # the whole record is not. The manifest already excludes that snapshot.
+    try:
+        rows = list(_rows(path))
+    except (EOFError, gzip.BadGzipFile, zlib.error, UnicodeDecodeError):
+        rows = list(_rows(path, tolerant=True))
+    for row in rows:
+        # Each appended member repeats no header, but a day that was started
+        # fresh has one; DictReader yields it as a row of its own names.
+        if row.get("symbol") == "symbol":
+            continue
+        try:
+            if int(row["snap_ts"]) in complete:
+                out.append(row)
+        except (TypeError, ValueError):
+            continue
     return out
+
+
+def _rows(path: Path, tolerant: bool = False):
+    """Every CSV row in a day file. `tolerant` stops at the first torn byte."""
+    with path.open("rb") as raw:
+        _lock(raw)                       # wait out an append rather than tear
+        try:
+            data = raw.read()
+        finally:
+            _unlock(raw)
+    with gzip.open(io.BytesIO(data), "rt", encoding="utf-8",
+                   errors="replace") as fh:
+        if not tolerant:
+            yield from csv.DictReader(fh)
+            return
+        reader = csv.DictReader(fh)
+        try:
+            yield from reader
+        except (EOFError, gzip.BadGzipFile, zlib.error, csv.Error):
+            return          # the tail is torn; everything before it still counts
 
 
 def coverage(root: Path | None = None) -> dict:

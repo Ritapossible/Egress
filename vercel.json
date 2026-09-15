@@ -26,5 +26,11 @@
         }
       ]
     }
-  ]
+  ],
+  "functions": {
+    "api/ask.py": {
+      "maxDuration": 30,
+      "includeFiles": "state/universe.json"
+    }
+  }
 }

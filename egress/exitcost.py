@@ -29,6 +29,7 @@ withdrawn, and a real order moves the book it is measuring.
 from __future__ import annotations
 
 import datetime as dt
+import math
 from dataclasses import dataclass, field, replace
 
 from . import market
@@ -41,6 +42,16 @@ UTC = dt.timezone.utc
 TAKER_FEE_BP = 10.0
 
 Level = tuple[float, float]          # (price, size in base units)
+
+
+def quotable(value: float | None) -> bool:
+    """False for None, NaN and infinity - the three ways a cost can be absent."""
+    return value is not None and math.isfinite(value)
+
+
+def jsonable(value: float | None) -> float | None:
+    """A float JSON can actually carry, or None. Never NaN, never infinity."""
+    return value if quotable(value) else None
 
 
 @dataclass(frozen=True)
@@ -72,14 +83,23 @@ class ExitQuote:
         return round(self.requested_usdt * self.total_bp / 1e4, 2)
 
     def to_record(self) -> dict:
+        """A JSON-safe view. Unquotable reads as null, never as NaN.
+
+        `NaN` is a valid Python float and an INVALID JSON token: `json.dumps`
+        emits a bare `NaN` that every conforming parser rejects, so a quote the
+        book could not price used to reach the browser as a parse error rather
+        than as the honest answer the desk had already computed.
+        """
         return {
             "symbol": self.symbol, "side": self.side,
             "requested_usdt": round(self.requested_usdt, 2),
             "filled_usdt": round(self.filled_usdt, 2),
             "quantity": round(self.quantity, 8),
             "vwap": self.vwap, "reference": self.reference,
-            "slippage_bp": self.slippage_bp, "fee_bp": self.fee_bp,
-            "total_bp": self.total_bp, "total_usdt": self.total_usdt,
+            "slippage_bp": jsonable(self.slippage_bp), "fee_bp": self.fee_bp,
+            "total_bp": jsonable(self.total_bp),
+            "total_usdt": jsonable(self.total_usdt),
+            "quotable": quotable(self.total_bp),
             "levels_used": self.levels_used, "book_usdt": round(self.book_usdt, 2),
             "exhausted": self.exhausted, "source": self.source,
             "at": self.at.isoformat(),
@@ -175,6 +195,18 @@ def for_symbol(symbol: str, notional_usdt: float, depth: int = 150,
     different facts and must never render as the same number.
     """
     bids, asks, source = market.depth_or_touch(symbol, depth)
+    return from_book(symbol, notional_usdt, bids, asks, source, fee_bp)
+
+
+def from_book(symbol: str, notional_usdt: float, bids: list[Level],
+              asks: list[Level], source: str,
+              fee_bp: float = TAKER_FEE_BP) -> ExitQuote:
+    """Quote against a book the caller already fetched.
+
+    Exists so one question costs one round trip: the desk needs the same book
+    for the quote, the slicing plan and the max-exit search, and fetching it
+    twice let those three describe two different moments of the market.
+    """
     result = quote(symbol, notional_usdt, bids, asks, fee_bp)
     extra = list(result.unverified)
     if source == "touch":
@@ -228,11 +260,15 @@ def sliced(symbol: str, notional_usdt: float, slices: int,
         raise ValueError("slices must be at least 1")
     one = quote(symbol, notional_usdt, bids, asks, fee_bp)
     per = quote(symbol, notional_usdt / slices, bids, asks, fee_bp)
-    best, worst = sorted((per.total_bp, one.total_bp))
+    # Every NaN comparison is False, so sorted() would silently keep input order
+    # and could report the worst case as the best one.
+    ends = [v for v in (per.total_bp, one.total_bp) if quotable(v)]
+    best, worst = (min(ends), max(ends)) if len(ends) == 2 else (None, None)
     return {
         "symbol": symbol, "slices": slices,
         "notional_usdt": round(notional_usdt, 2),
         "best_case_bp": best, "worst_case_bp": worst,
+        "quotable": best is not None,
         "basis": "estimated",
         "assumption_best": "the book fully refills between clips",
         "assumption_worst": "the book never refills (identical to one clip)",

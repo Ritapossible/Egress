@@ -24,6 +24,19 @@ CATEGORY = "SPOT"
 
 HTTP_TIMEOUT_S = 25
 HTTP_RETRIES = 3
+
+# The crawler can afford to wait; a user staring at a form cannot, and Vercel
+# kills the function long before the crawler's budget is spent. 3 retries x 25s
+# plus backoff is 81s per call - past any serverless limit on its own.
+#
+# The whole request path must fit inside FUNCTION_BUDGET_S (vercel.json's
+# maxDuration). Worst case is reader + orderbook + ticker fallback:
+#     15 + 6 + 6 = 27s < 30s
+# A retry is not worth it here: failing fast with a stated reason beats holding
+# a form open. `tests/test_config.py` asserts this arithmetic still holds.
+REQUEST_TIMEOUT_S = 6
+REQUEST_RETRIES = 1
+FUNCTION_BUDGET_S = 30
 USER_AGENT = "egress/0.1 (+https://github.com/Ritapossible/Egress)"
 
 # 5 minutes. Fast enough to resolve the US open and close to the bar, slow

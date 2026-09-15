@@ -72,23 +72,40 @@ def feed_agreement(symbol: str) -> dict:
     }
 
 
-def touch_by_bar(symbol: str, day: dt.date, root: Path | None = None) -> dict[int, float]:
-    """{bar_start_ms: USDT resting at the best bid when that bar opened}."""
+def touch_by_bar(symbol: str, day: dt.date | list[dt.date] | None = None,
+                 root: Path | None = None) -> dict[int, float]:
+    """{bar_start_ms: USDT resting at the best bid when that bar opened}.
+
+    `day` may be one date or several; omitting it reads every day the record
+    holds. A single-day default was the bug: the candle feed reaches back about
+    eight hours, so just after 00:00 UTC there were no quotes recorded for
+    "today" to pair it against and every symbol scored zero bars.
+    """
+    if day is None:
+        days = store.days(root)
+    else:
+        days = [day] if isinstance(day, dt.date) else list(day)
     out: dict[int, float] = {}
-    for row in store.read_day(day, root):
-        if row["symbol"] != symbol:
-            continue
-        value = facts.touch_usdt(row)
-        if value is None:
-            continue
-        out.setdefault(_bar_of(int(row["snap_ts"])), value)
+    for one in days:
+        for row in store.read_day(one, root):
+            if row["symbol"] != symbol:
+                continue
+            value = facts.touch_usdt(row)
+            if value is None:
+                continue
+            out.setdefault(_bar_of(int(row["snap_ts"])), value)
     return out
 
 
-def for_symbol(symbol: str, day: dt.date | None = None,
+def for_symbol(symbol: str, day: dt.date | list[dt.date] | None = None,
                root: Path | None = None) -> dict:
-    """Quoted touch against printed volume, bar by bar - if the feeds agree."""
-    day = day or dt.datetime.now(UTC).date()
+    """Quoted touch against printed volume, bar by bar - if the feeds agree.
+
+    `day` narrows to one date or a set of them; omitting it uses the whole
+    record, which is what the page wants. Only bars that overlap a recorded
+    quote are paired, so reading extra days costs nothing but never leaves the
+    check with nothing to pair against.
+    """
     agreement = feed_agreement(symbol)
     if not agreement.get("agrees"):
         return {"symbol": symbol, "bars": 0, "excluded": True,
@@ -98,7 +115,7 @@ def for_symbol(symbol: str, day: dt.date | None = None,
     quoted = touch_by_bar(symbol, day, root)
     if not quoted:
         return {"symbol": symbol, "bars": 0,
-                "reason": "no recorded quotes for this symbol on this day"}
+                "reason": "no recorded quotes for this symbol"}
     try:
         bars = market.candles(symbol, "5m", 100)
     except market.MarketUnavailable as exc:
@@ -128,7 +145,8 @@ def for_symbol(symbol: str, day: dt.date | None = None,
             "pairs": paired}
 
 
-def run(symbols: list[str] | None = None, day: dt.date | None = None,
+def run(symbols: list[str] | None = None,
+        day: dt.date | list[dt.date] | None = None,
         root: Path | None = None) -> dict:
     kinds = {s: r["type"] for s, r in universe.load(root).items()}
     symbols = symbols or ["RNVDAUSDT", "RTSLAUSDT", "RAAPLUSDT", "RMSFTUSDT",

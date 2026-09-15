@@ -351,7 +351,7 @@ DESK_JS = """/* The desk's only script. Progressive: with JS off the form posts 
       + '</p><dl>';
     html += row('Symbol', data.symbol || '-');
     html += row('Position', Number(q.requested_usdt || 0).toLocaleString() + ' USDT');
-    if (q.total_bp === q.total_bp) {
+    if (q.quotable) {
       var floor = (q.exhausted || q.source === 'touch') ? '>' : '';
       html += row('One clip', floor + Number(q.total_bp).toFixed(0) + ' bp');
       html += row('In USDT', floor + Number(q.total_usdt).toLocaleString());
@@ -369,8 +369,9 @@ DESK_JS = """/* The desk's only script. Progressive: with JS off the form posts 
       html += '<dl>';
       data.plan.forEach(function (p) {
         html += row(p.slices + (p.slices === 1 ? ' clip' : ' clips'),
-          Number(p.best_case_bp).toFixed(0) + ' to '
-          + Number(p.worst_case_bp).toFixed(0) + ' bp');
+          p.quotable ? (Number(p.best_case_bp).toFixed(0) + ' to '
+                        + Number(p.worst_case_bp).toFixed(0) + ' bp')
+                     : 'unquotable');
       });
       html += '</dl>';
     }
@@ -456,7 +457,7 @@ def _example_rows(examples: list[dict]) -> str:
                        f"<td>{pill}</td><td class='n' colspan='3'>"
                        f"{html.escape(row['error'])}</td></tr>")
             continue
-        cost = ("unquotable" if row["total_bp"] != row["total_bp"]
+        cost = ("unquotable" if not exitcost.quotable(row.get("total_bp"))
                 else f"{'&gt;' if row.get('floor') else ''}{row['total_bp']:,.0f} bp")
         src = "top of book only" if row["source"] == "touch" else row["source"]
         out.append(

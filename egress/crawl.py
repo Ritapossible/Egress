@@ -44,7 +44,15 @@ def snapshot(root=None, verbose: bool = True) -> dict:
         return {"ok": False, "reason": exc.reason, "snap_ts": snap_ts}
 
     stored = store.rows_from(rows, snap_ts)
-    path = store.append(stored, snap_ts, root)
+    try:
+        path = store.append(stored, snap_ts, root)
+    except OSError as exc:
+        # A full disk or a read-only mount ends this snapshot, not the shift.
+        # Nothing was recorded in the manifest, so the gap stays visible.
+        if verbose:
+            print(f"[{dt.datetime.now(UTC):%H:%M:%S}] WRITE FAILED - {exc}",
+                  flush=True)
+        return {"ok": False, "reason": f"write failed: {exc}", "snap_ts": snap_ts}
     took = time.time() - started
     if verbose:
         print(f"[{dt.datetime.now(UTC):%H:%M:%S}] {len(stored):,} rows "
@@ -97,8 +105,14 @@ def main(argv: list[str] | None = None) -> int:
         return 0
     if args.loop:
         # Refreshed at the top of every run: listings come and go, and knowing
-        # when a symbol appeared is part of the record.
-        universe.snapshot()
+        # when a symbol appeared is part of the record (git keeps the versions).
+        # A venue blip here must NOT cost the shift - the previous universe is
+        # still on disk and the quotes are the part that cannot be caught up.
+        try:
+            universe.snapshot()
+        except market.MarketUnavailable as exc:
+            print(f"universe refresh failed ({exc.reason}); "
+                  f"crawling on with the stored one", flush=True)
         result = loop(args.hours, args.interval)
         print(json.dumps(result))
         return 0 if result["taken"] else 1

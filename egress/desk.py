@@ -14,15 +14,30 @@ from __future__ import annotations
 
 import datetime as dt
 
-from . import exitcost, llm, sessions, universe
+from . import exitcost, llm, market, sessions, universe
 
 UTC = dt.timezone.utc
 SLICE_CHOICES = (1, 4, 12)
 
 
+def listed_symbols() -> dict[str, dict]:
+    """The listed universe, from the record or straight from the venue.
+
+    `universe.load()` returns {} when the file is absent - which on a
+    deployment that did not ship `state/universe.json` would make EVERY valid
+    ticker answer "not listed": a confident wrong answer, the one failure mode
+    this project exists to avoid. So an empty load is treated as a missing
+    file, not as an empty market, and the venue is asked directly.
+    """
+    stored = universe.load()
+    if stored:
+        return stored
+    return universe.classify(market.instruments(quick=True))
+
+
 def resolve(ticker: str, symbols: dict[str, dict] | None = None) -> str | None:
     """US ticker -> a listed tokenized-stock symbol, or None. Never invented."""
-    listed = symbols if symbols is not None else universe.load()
+    listed = symbols if symbols is not None else listed_symbols()
     wanted = ticker.strip().upper()
     for candidate in (f"R{wanted}USDT", f"{wanted}USDT"):
         row = listed.get(candidate)
@@ -49,7 +64,12 @@ def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
                         "for example: what does leaving 40,000 USDT of TSLA cost?")
         return out
 
-    symbol = resolve(spec["ticker"], symbols)
+    try:
+        symbol = resolve(spec["ticker"], symbols)
+    except market.MarketUnavailable as exc:
+        out["error"] = ("the listed universe could not be read, so no ticker "
+                        f"can be resolved right now: {exc.reason}")
+        return out
     if not symbol:
         out["error"] = (f"{spec['ticker']} is not listed as a tokenized stock on "
                         f"this venue right now, so there is nothing to price.")
@@ -57,11 +77,20 @@ def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
     out["symbol"] = symbol
 
     notional = spec["notional_usdt"]
-    quote = exitcost.for_symbol(symbol, notional)
+    # ONE fetch for the whole answer. The quote, the plan and the max-exit
+    # search must describe the same book, and a venue that will not answer is a
+    # stated result rather than an exception - this function promises that.
+    try:
+        bids, asks, source = market.depth_or_touch(symbol, quick=True)
+    except market.MarketUnavailable as exc:
+        out["error"] = (f"the venue would not return a book for {symbol}: "
+                        f"{exc.reason}")
+        return out
+
+    quote = exitcost.from_book(symbol, notional, bids, asks, source)
     out["quote"] = quote.to_record()
 
     if quote.reference and quote.reference > 0:
-        bids, asks, _ = _book(symbol)
         out["max_exit_200bp"] = exitcost.max_exit(bids, asks, 200.0)
         out["plan"] = [exitcost.sliced(symbol, notional, n, bids, asks)
                        for n in SLICE_CHOICES]
@@ -71,19 +100,10 @@ def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
     return out
 
 
-def _book(symbol: str) -> tuple[list, list, str]:
-    """The book, or an empty one. A venue that will not answer is not a crash."""
-    from . import market
-    try:
-        return market.depth_or_touch(symbol)
-    except market.MarketUnavailable:
-        return [], [], "none"
-
-
 def _reading(out: dict) -> str:
     """One plain sentence, built from the numbers rather than from the model."""
     quote = out.get("quote") or {}
-    if not quote or quote.get("total_bp") != quote.get("total_bp"):
+    if not quote or not quote.get("quotable"):
         return "There is no two-sided market here, so no exit can be priced."
     floor = ">" if quote.get("exhausted") or quote.get("source") == "touch" else ""
     cost = f"{floor}{quote['total_bp']:,.0f} bp ({floor}{quote['total_usdt']:,.0f} USDT)"
