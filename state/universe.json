@@ -1,9 +1,9 @@
 {
- "captured": "2026-09-15T11:28:18.967506+00:00",
+ "captured": "2026-09-16T11:14:20.832156+00:00",
  "counts": {
   "crypto": 584,
   "metal": 2,
-  "stock": 1175
+  "stock": 1655
  },
  "symbols": {
   "0GUSDT": {
@@ -3246,6 +3246,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RABCBUSDT": {
+   "band": "0.1",
+   "base": "rABCB",
+   "launch_ms": "1789117370485",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RABCLUSDT": {
+   "band": "0.1",
+   "base": "rABCL",
+   "launch_ms": "1789117486900",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RABEVUSDT": {
    "band": "0.1",
    "base": "rABEV",
@@ -3278,6 +3294,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RACADUSDT": {
+   "band": "0.1",
+   "base": "rACAD",
+   "launch_ms": "1789117316860",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RACGLUSDT": {
    "band": "0.1",
    "base": "rACGL",
@@ -3294,6 +3318,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RACIUSDT": {
+   "band": "0.1",
+   "base": "rACI",
+   "launch_ms": "1789117392279",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RACIWUSDT": {
+   "band": "0.1",
+   "base": "rACIW",
+   "launch_ms": "1789117368740",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RACMRUSDT": {
+   "band": "0.1",
+   "base": "rACMR",
+   "launch_ms": "1789117389576",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RACMUSDT": {
    "band": "0.1",
    "base": "rACM",
@@ -3306,6 +3354,14 @@
    "band": "0.1",
    "base": "rACN",
    "launch_ms": "1781016697354",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RACTUSDT": {
+   "band": "0.1",
+   "base": "rACT",
+   "launch_ms": "1789117371249",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -3355,6 +3411,14 @@
    "base": "rADSK",
    "launch_ms": "1781188775473",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RADTUSDT": {
+   "band": "0.1",
+   "base": "rADT",
+   "launch_ms": "1789117342606",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -3446,6 +3510,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RAGCOUSDT": {
+   "band": "0.1",
+   "base": "rAGCO",
+   "launch_ms": "1789117486934",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RAGGUSDT": {
    "band": "0.1",
    "base": "rAGG",
@@ -3470,6 +3542,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RAGUSDT": {
+   "band": "0.1",
+   "base": "rAG",
+   "launch_ms": "1789117486515",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAGXUSDT": {
+   "band": "0.1",
+   "base": "rAGX",
+   "launch_ms": "1789117487033",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RAHRUSDT": {
    "band": "0.1",
    "base": "rAHR",
@@ -3490,6 +3578,14 @@
    "band": "0.1",
    "base": "rAIPO",
    "launch_ms": "1781779108843",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAIRUSDT": {
+   "band": "0.1",
+   "base": "rAIR",
+   "launch_ms": "1789117343111",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -3566,10 +3662,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RALHUSDT": {
+   "band": "0.1",
+   "base": "rALH",
+   "launch_ms": "1789117342972",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RALKSUSDT": {
    "band": "0.1",
    "base": "rALKS",
    "launch_ms": "1788765865520",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RALKUSDT": {
+   "band": "0.1",
+   "base": "rALK",
+   "launch_ms": "1789117343137",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -3595,6 +3707,14 @@
    "base": "rALLY",
    "launch_ms": "1788765718510",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RALMUSDT": {
+   "band": "0.1",
+   "base": "rALM",
+   "launch_ms": "1789117316168",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -3626,6 +3746,14 @@
    "band": "0.1",
    "base": "rAMAT",
    "launch_ms": "1780383461094",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAMBAUSDT": {
+   "band": "0.1",
+   "base": "rAMBA",
+   "launch_ms": "1789117486888",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -3718,10 +3846,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RAMRXUSDT": {
+   "band": "0.1",
+   "base": "rAMRX",
+   "launch_ms": "1789117343508",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RAMRZUSDT": {
    "band": "0.1",
    "base": "rAMRZ",
    "launch_ms": "1785831196924",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAMTMUSDT": {
+   "band": "0.1",
+   "base": "rAMTM",
+   "launch_ms": "1789117342699",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -3742,6 +3886,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RANDGUSDT": {
+   "band": "0.1",
+   "base": "rANDG",
+   "launch_ms": "1789117319465",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RANETUSDT": {
    "band": "0.1",
    "base": "rANET",
@@ -3750,10 +3902,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RANUSDT": {
+   "band": "0.1",
+   "base": "rAN",
+   "launch_ms": "1789117372039",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RAONUSDT": {
    "band": "0.1",
    "base": "rAON",
    "launch_ms": "1781188686819",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAOSUSDT": {
+   "band": "0.1",
+   "base": "rAOS",
+   "launch_ms": "1789117486575",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -3806,6 +3974,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RAPPFUSDT": {
+   "band": "0.1",
+   "base": "rAPPF",
+   "launch_ms": "1789117371360",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RAPPUSDT": {
    "band": "0.1",
    "base": "rAPP",
@@ -3819,6 +3995,14 @@
    "base": "rAPTV",
    "launch_ms": "1788765716776",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAQNUSDT": {
+   "band": "0.1",
+   "base": "rAQN",
+   "launch_ms": "1789117317146",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -3878,6 +4062,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RAROCUSDT": {
+   "band": "0.1",
+   "base": "rAROC",
+   "launch_ms": "1789117390478",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RARUSDT": {
    "band": "0.1",
    "base": "rAR",
@@ -3910,6 +4102,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RASBUSDT": {
+   "band": "0.1",
+   "base": "rASB",
+   "launch_ms": "1789117369120",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RASMLUSDT": {
    "band": "0.1",
    "base": "rASML",
@@ -3922,6 +4122,14 @@
    "band": "0.1",
    "base": "rASND",
    "launch_ms": "1788765758435",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RASRUSDT": {
+   "band": "0.1",
+   "base": "rASR",
+   "launch_ms": "1789117486984",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -3958,6 +4166,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RATATUSDT": {
+   "band": "0.1",
+   "base": "rATAT",
+   "launch_ms": "1789117316361",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RATIUSDT": {
    "band": "0.1",
    "base": "rATI",
@@ -3974,6 +4190,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RATRUSDT": {
+   "band": "0.1",
+   "base": "rATR",
+   "launch_ms": "1789117486429",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RATSUSDT": {
    "band": "0.02",
    "base": "RATS",
@@ -3981,6 +4205,22 @@
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
+  },
+  "RAUBUSDT": {
+   "band": "0.1",
+   "base": "rAUB",
+   "launch_ms": "1789117370368",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAUGOUSDT": {
+   "band": "0.1",
+   "base": "rAUGO",
+   "launch_ms": "1789117317732",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
   },
   "RAURUSDT": {
    "band": "0.1",
@@ -4003,6 +4243,14 @@
    "base": "rAU",
    "launch_ms": "1781188618745",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAVALUSDT": {
+   "band": "0.1",
+   "base": "rAVAL",
+   "launch_ms": "1789117369196",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -4038,10 +4286,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RAVTRUSDT": {
+   "band": "0.1",
+   "base": "rAVTR",
+   "launch_ms": "1789117392081",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAVTUSDT": {
+   "band": "0.1",
+   "base": "rAVT",
+   "launch_ms": "1789117391732",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RAVYUSDT": {
    "band": "0.1",
    "base": "rAVY",
    "launch_ms": "1788765675293",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAWIUSDT": {
+   "band": "0.1",
+   "base": "rAWI",
+   "launch_ms": "1789117390266",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4070,10 +4342,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RAXSUSDT": {
+   "band": "0.1",
+   "base": "rAXS",
+   "launch_ms": "1789117487070",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAXTAUSDT": {
+   "band": "0.1",
+   "base": "rAXTA",
+   "launch_ms": "1789117391259",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RAXTIUSDT": {
    "band": "0.1",
    "base": "rAXTI",
    "launch_ms": "1780322400000",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAXUSDT": {
+   "band": "0.1",
+   "base": "rAX",
+   "launch_ms": "1789117343570",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4110,6 +4406,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RAZZUSDT": {
+   "band": "0.1",
+   "base": "rAZZ",
+   "launch_ms": "1789117317107",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RBABAUSDT": {
    "band": "0.1",
    "base": "rBABA",
@@ -4122,6 +4426,14 @@
    "band": "0.1",
    "base": "rBAC",
    "launch_ms": "1781016747522",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBAHUSDT": {
+   "band": "0.1",
+   "base": "rBAH",
+   "launch_ms": "1789117486260",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4230,6 +4542,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RBCOUSDT": {
+   "band": "0.1",
+   "base": "rBCO",
+   "launch_ms": "1789117317302",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBCPCUSDT": {
+   "band": "0.1",
+   "base": "rBCPC",
+   "launch_ms": "1789117343058",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBCUSDT": {
+   "band": "0.1",
+   "base": "rBC",
+   "launch_ms": "1789117342712",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RBDXUSDT": {
    "band": "0.1",
    "base": "rBDX",
@@ -4278,6 +4614,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RBGCUSDT": {
+   "band": "0.1",
+   "base": "rBGC",
+   "launch_ms": "1789117343216",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RBGUSDT": {
    "band": "0.1",
    "base": "rBG",
@@ -4310,6 +4654,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RBILLUSDT": {
+   "band": "0.1",
+   "base": "rBILL",
+   "launch_ms": "1789117316323",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RBINCUSDT": {
    "band": "0.1",
    "base": "rBINC",
@@ -4318,10 +4670,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RBIOUSDT": {
+   "band": "0.1",
+   "base": "rBIO",
+   "launch_ms": "1789117486417",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBIPCUSDT": {
+   "band": "0.1",
+   "base": "rBIPC",
+   "launch_ms": "1789117343545",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RBIPUSDT": {
    "band": "0.1",
    "base": "rBIP",
    "launch_ms": "1788765758291",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBIRKUSDT": {
+   "band": "0.1",
+   "base": "rBIRK",
+   "launch_ms": "1789117486598",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4350,6 +4726,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RBKHUSDT": {
+   "band": "0.1",
+   "base": "rBKH",
+   "launch_ms": "1789117368858",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RBKNGUSDT": {
    "band": "0.1",
    "base": "rBKNG",
@@ -4374,6 +4758,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RBLCOUSDT": {
+   "band": "0.1",
+   "base": "rBLCO",
+   "launch_ms": "1789117368970",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBLDRUSDT": {
+   "band": "0.1",
+   "base": "rBLDR",
+   "launch_ms": "1789117486357",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RBLKUSDT": {
    "band": "0.1",
    "base": "rBLK",
@@ -4382,10 +4782,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RBLLNUSDT": {
+   "band": "0.1",
+   "base": "rBLLN",
+   "launch_ms": "1789117368474",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RBLSHUSDT": {
    "band": "0.1",
    "base": "rBLSH",
    "launch_ms": "1781016733512",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBLTEUSDT": {
+   "band": "0.1",
+   "base": "rBLTE",
+   "launch_ms": "1789117369626",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBMAUSDT": {
+   "band": "0.1",
+   "base": "rBMA",
+   "launch_ms": "1789117369047",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4410,6 +4834,14 @@
    "band": "0.1",
    "base": "rBMY",
    "launch_ms": "1781102060796",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBNDUSDT": {
+   "band": "0.1",
+   "base": "rBND",
+   "launch_ms": "1789117486876",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4446,6 +4878,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RBOKFUSDT": {
+   "band": "0.1",
+   "base": "rBOKF",
+   "launch_ms": "1789117487008",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBOOTUSDT": {
+   "band": "0.1",
+   "base": "rBOOT",
+   "launch_ms": "1789117342686",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RBOTZUSDT": {
    "band": "0.1",
    "base": "rBOTZ",
@@ -4466,6 +4914,14 @@
    "band": "0.1",
    "base": "rBP",
    "launch_ms": "1781101685561",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBRCUSDT": {
+   "band": "0.1",
+   "base": "rBRC",
+   "launch_ms": "1789117316131",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4491,6 +4947,14 @@
    "base": "rBRO",
    "launch_ms": "1788765760658",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBRSLUSDT": {
+   "band": "0.1",
+   "base": "rBRSL",
+   "launch_ms": "1789117316743",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -4582,6 +5046,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RBULLUSDT": {
+   "band": "0.1",
+   "base": "rBULL",
+   "launch_ms": "1789117486864",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RBURLUSDT": {
    "band": "0.1",
    "base": "rBURL",
@@ -4594,6 +5066,14 @@
    "band": "0.1",
    "base": "rB",
    "launch_ms": "1781188525862",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBVNUSDT": {
+   "band": "0.1",
+   "base": "rBVN",
+   "launch_ms": "1789117393160",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4622,10 +5102,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RBXSLUSDT": {
+   "band": "0.1",
+   "base": "rBXSL",
+   "launch_ms": "1789117343483",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RBXUSDT": {
    "band": "0.1",
    "base": "rBX",
    "launch_ms": "1781101676173",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RBYDUSDT": {
+   "band": "0.1",
+   "base": "rBYD",
+   "launch_ms": "1789117371583",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4638,6 +5134,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RCACCUSDT": {
+   "band": "0.1",
+   "base": "rCACC",
+   "launch_ms": "1789117389737",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCACIUSDT": {
    "band": "0.1",
    "base": "rCACI",
@@ -4646,10 +5150,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RCAEUSDT": {
+   "band": "0.1",
+   "base": "rCAE",
+   "launch_ms": "1789117486465",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCAGUSDT": {
+   "band": "0.1",
+   "base": "rCAG",
+   "launch_ms": "1789117391179",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RCAHUSDT": {
    "band": "0.1",
    "base": "rCAH",
    "launch_ms": "1781188803893",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCAIUSDT": {
+   "band": "0.1",
+   "base": "rCAI",
+   "launch_ms": "1789117319762",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCAMTUSDT": {
+   "band": "0.1",
+   "base": "rCAMT",
+   "launch_ms": "1789117371621",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4678,6 +5214,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RCARUSDT": {
+   "band": "0.1",
+   "base": "rCAR",
+   "launch_ms": "1789117343521",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCASYUSDT": {
    "band": "0.1",
    "base": "rCASY",
@@ -4690,6 +5234,14 @@
    "band": "0.1",
    "base": "rCAVA",
    "launch_ms": "1780928166585",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCBCUSDT": {
+   "band": "0.1",
+   "base": "rCBC",
+   "launch_ms": "1789117392914",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4714,6 +5266,22 @@
    "band": "0.02",
    "base": "rCBRS",
    "launch_ms": "1780405581297",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCBSHUSDT": {
+   "band": "0.1",
+   "base": "rCBSH",
+   "launch_ms": "1789117487094",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCBTUSDT": {
+   "band": "0.1",
+   "base": "rCBT",
+   "launch_ms": "1789117318237",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4790,6 +5358,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RCECOUSDT": {
+   "band": "0.1",
+   "base": "rCECO",
+   "launch_ms": "1789117319688",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCEGUSDT": {
    "band": "0.1",
    "base": "rCEG",
@@ -4798,10 +5374,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RCELCUSDT": {
+   "band": "0.1",
+   "base": "rCELC",
+   "launch_ms": "1789117342880",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCELHUSDT": {
    "band": "0.1",
    "base": "rCELH",
    "launch_ms": "1780928163792",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCENXUSDT": {
+   "band": "0.1",
+   "base": "rCENX",
+   "launch_ms": "1789117317879",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCEUSDT": {
+   "band": "0.1",
+   "base": "rCE",
+   "launch_ms": "1789117343203",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4838,10 +5438,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RCGONUSDT": {
+   "band": "0.1",
+   "base": "rCGON",
+   "launch_ms": "1789117371730",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCGUSDT": {
    "band": "0.1",
    "base": "rCG",
    "launch_ms": "1788765757219",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCHDNUSDT": {
+   "band": "0.1",
+   "base": "rCHDN",
+   "launch_ms": "1789117369274",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4854,10 +5470,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RCHEUSDT": {
+   "band": "0.1",
+   "base": "rCHE",
+   "launch_ms": "1789117389655",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCHHUSDT": {
+   "band": "0.1",
+   "base": "rCHH",
+   "launch_ms": "1789117342564",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCHKPUSDT": {
    "band": "0.1",
    "base": "rCHKP",
    "launch_ms": "1788765718881",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCHRDUSDT": {
+   "band": "0.1",
+   "base": "rCHRD",
+   "launch_ms": "1789117391380",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4882,6 +5522,14 @@
    "band": "0.1",
    "base": "rCHT",
    "launch_ms": "1788765797849",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCHYMUSDT": {
+   "band": "0.1",
+   "base": "rCHYM",
+   "launch_ms": "1789117486441",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -4918,6 +5566,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RCIGIUSDT": {
+   "band": "0.1",
+   "base": "rCIGI",
+   "launch_ms": "1789117342550",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCIGUSDT": {
+   "band": "0.1",
+   "base": "rCIG",
+   "launch_ms": "1789117370601",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RCINFUSDT": {
    "band": "0.1",
    "base": "rCINF",
@@ -4931,6 +5595,14 @@
    "base": "rCI",
    "launch_ms": "1781188547580",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCLFUSDT": {
+   "band": "0.1",
+   "base": "rCLF",
+   "launch_ms": "1789117343595",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -4955,6 +5627,22 @@
    "base": "rCLOI",
    "launch_ms": "1781016821931",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCLOVUSDT": {
+   "band": "0.1",
+   "base": "rCLOV",
+   "launch_ms": "1789117486852",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCLSKUSDT": {
+   "band": "0.1",
+   "base": "rCLSK",
+   "launch_ms": "1789117486840",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -4990,10 +5678,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RCMBTUSDT": {
+   "band": "0.1",
+   "base": "rCMBT",
+   "launch_ms": "1789117317807",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RCMCSAUSDT": {
    "band": "0.1",
    "base": "rCMCSA",
    "launch_ms": "1781101839297",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCMCUSDT": {
+   "band": "0.1",
+   "base": "rCMC",
+   "launch_ms": "1789117391771",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5018,6 +5722,14 @@
    "band": "0.1",
    "base": "rCMI",
    "launch_ms": "1781101584151",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCMSAUSDT": {
+   "band": "0.1",
+   "base": "rCMSA",
+   "launch_ms": "1789117369973",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5070,6 +5782,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RCNOUSDT": {
+   "band": "0.1",
+   "base": "rCNO",
+   "launch_ms": "1789117342435",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCNPUSDT": {
    "band": "0.1",
    "base": "rCNP",
@@ -5086,10 +5806,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RCNXUSDT": {
+   "band": "0.1",
+   "base": "rCNX",
+   "launch_ms": "1789117318421",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCOCOUSDT": {
+   "band": "0.1",
+   "base": "rCOCO",
+   "launch_ms": "1789117316206",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCOFUSDT": {
    "band": "0.1",
    "base": "rCOF",
    "launch_ms": "1780656062746",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCOGTUSDT": {
+   "band": "0.1",
+   "base": "rCOGT",
+   "launch_ms": "1789117371813",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5123,6 +5867,22 @@
    "base": "rCOLB",
    "launch_ms": "1788765866613",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCOLDUSDT": {
+   "band": "0.1",
+   "base": "rCOLD",
+   "launch_ms": "1789117317769",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCOMPUSDT": {
+   "band": "0.1",
+   "base": "rCOMP",
+   "launch_ms": "1789117487141",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -5174,6 +5934,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RCORZUSDT": {
+   "band": "0.1",
+   "base": "rCORZ",
+   "launch_ms": "1789117392201",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCOSTUSDT": {
    "band": "0.1",
    "base": "rCOST",
@@ -5182,10 +5950,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RCPAUSDT": {
+   "band": "0.1",
+   "base": "rCPA",
+   "launch_ms": "1789117369468",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCPAYUSDT": {
    "band": "0.1",
    "base": "rCPAY",
    "launch_ms": "1788765796176",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCPBUSDT": {
+   "band": "0.1",
+   "base": "rCPB",
+   "launch_ms": "1789117390055",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5246,6 +6030,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RCRCUSDT": {
+   "band": "0.1",
+   "base": "rCRC",
+   "launch_ms": "1789117319392",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCRDOUSDT": {
    "band": "0.1",
    "base": "rCRDO",
@@ -5278,6 +6070,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RCROXUSDT": {
+   "band": "0.1",
+   "base": "rCROX",
+   "launch_ms": "1789117389411",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCRSPUSDT": {
    "band": "0.1",
    "base": "rCRSP",
@@ -5298,6 +6098,14 @@
    "band": "0.1",
    "base": "rCR",
    "launch_ms": "1788765675764",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCRUSUSDT": {
+   "band": "0.1",
+   "base": "rCRUS",
+   "launch_ms": "1789117392717",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5346,6 +6154,14 @@
    "band": "0.1",
    "base": "rCSL",
    "launch_ms": "1788765718215",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCSWUSDT": {
+   "band": "0.1",
+   "base": "rCSW",
+   "launch_ms": "1789117318726",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5406,6 +6222,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RCUZUSDT": {
+   "band": "0.1",
+   "base": "rCUZ",
+   "launch_ms": "1789117342738",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCVCOUSDT": {
+   "band": "0.1",
+   "base": "rCVCO",
+   "launch_ms": "1789117316439",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCVEUSDT": {
    "band": "0.1",
    "base": "rCVE",
@@ -5414,10 +6246,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RCVLTUSDT": {
+   "band": "0.1",
+   "base": "rCVLT",
+   "launch_ms": "1789117370830",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RCVNAUSDT": {
    "band": "0.1",
    "base": "rCVNA",
    "launch_ms": "1780401458446",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCVSAUSDT": {
+   "band": "0.1",
+   "base": "rCVSA",
+   "launch_ms": "1789117318164",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5434,6 +6282,22 @@
    "band": "0.1",
    "base": "rCVX",
    "launch_ms": "1781016831356",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCWENUSDT": {
+   "band": "0.1",
+   "base": "rCWEN",
+   "launch_ms": "1789117391060",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCWSTUSDT": {
+   "band": "0.1",
+   "base": "rCWST",
+   "launch_ms": "1789117371068",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5462,6 +6326,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RCZRUSDT": {
+   "band": "0.1",
+   "base": "rCZR",
+   "launch_ms": "1789117370446",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RDALUSDT": {
    "band": "0.1",
    "base": "rDAL",
@@ -5486,10 +6358,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RDAVEUSDT": {
+   "band": "0.1",
+   "base": "rDAVE",
+   "launch_ms": "1789117342593",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RDBCUSDT": {
    "band": "0.1",
    "base": "rDBC",
    "launch_ms": "1781016828799",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RDBXUSDT": {
+   "band": "0.1",
+   "base": "rDBX",
+   "launch_ms": "1789117391418",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5506,6 +6394,14 @@
    "band": "0.1",
    "base": "rDDOG",
    "launch_ms": "1780401612952",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RDDSUSDT": {
+   "band": "0.1",
+   "base": "rDDS",
+   "launch_ms": "1789117486587",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5546,6 +6442,14 @@
    "band": "0.1",
    "base": "rDE",
    "launch_ms": "1781016840285",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RDFTXUSDT": {
+   "band": "0.1",
+   "base": "rDFTX",
+   "launch_ms": "1789117368553",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5606,6 +6510,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RDIODUSDT": {
+   "band": "0.1",
+   "base": "rDIOD",
+   "launch_ms": "1789117316016",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RDISUSDT": {
    "band": "0.1",
    "base": "rDIS",
@@ -5638,11 +6550,27 @@
    "status": "online",
    "type": "stock"
   },
+  "RDLBUSDT": {
+   "band": "0.1",
+   "base": "rDLB",
+   "launch_ms": "1789117318984",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RDLLLUSDT": {
    "band": "0.1",
    "base": "rDLLL",
    "launch_ms": "1781016904220",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RDLOUSDT": {
+   "band": "0.1",
+   "base": "rDLO",
+   "launch_ms": "1789117316991",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -5670,6 +6598,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RDNTHUSDT": {
+   "band": "0.1",
+   "base": "rDNTH",
+   "launch_ms": "1789117343410",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RDOCNUSDT": {
    "band": "0.1",
    "base": "rDOCN",
@@ -5694,6 +6630,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RDOOUSDT": {
+   "band": "0.1",
+   "base": "rDOO",
+   "launch_ms": "1789117316706",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RDOVUSDT": {
    "band": "0.1",
    "base": "rDOV",
@@ -5706,6 +6650,22 @@
    "band": "0.1",
    "base": "rDOW",
    "launch_ms": "1786448231268",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RDOXUSDT": {
+   "band": "0.1",
+   "base": "rDOX",
+   "launch_ms": "1789117368323",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RDPCUSDT": {
+   "band": "0.1",
+   "base": "rDPC",
+   "launch_ms": "1789117371473",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5738,6 +6698,14 @@
    "band": "0.1",
    "base": "rDRS",
    "launch_ms": "1788765674241",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RDSGXUSDT": {
+   "band": "0.1",
+   "base": "rDSGX",
+   "launch_ms": "1789117371026",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5830,10 +6798,26 @@
    "status": "online",
    "type": "stock"
   },
+  "REATUSDT": {
+   "band": "0.1",
+   "base": "rEAT",
+   "launch_ms": "1789117486527",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "REBAYUSDT": {
    "band": "0.1",
    "base": "rEBAY",
    "launch_ms": "1781102017593",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REBCUSDT": {
+   "band": "0.1",
+   "base": "rEBC",
+   "launch_ms": "1789117342985",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5845,6 +6829,14 @@
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
+  },
+  "RECGUSDT": {
+   "band": "0.1",
+   "base": "rECG",
+   "launch_ms": "1789117391017",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
   },
   "RECHOUSDT": {
    "band": "0.1",
@@ -5886,10 +6878,26 @@
    "status": "online",
    "type": "crypto"
   },
+  "REDUUSDT": {
+   "band": "0.1",
+   "base": "rEDU",
+   "launch_ms": "1789117486236",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "REEMUSDT": {
    "band": "0.1",
    "base": "rEEM",
    "launch_ms": "1781016865371",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REEUSDT": {
+   "band": "0.1",
+   "base": "rEE",
+   "launch_ms": "1789117317418",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5906,6 +6914,14 @@
    "band": "0.1",
    "base": "rEFX",
    "launch_ms": "1787642916389",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REGOUSDT": {
+   "band": "0.1",
+   "base": "rEGO",
+   "launch_ms": "1789117393237",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -5946,6 +6962,14 @@
    "band": "0.1",
    "base": "rELAN",
    "launch_ms": "1788765716859",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RELFUSDT": {
+   "band": "0.1",
+   "base": "rELF",
+   "launch_ms": "1789117486829",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6006,6 +7030,14 @@
    "status": "online",
    "type": "stock"
   },
+  "REMNUSDT": {
+   "band": "0.1",
+   "base": "rEMN",
+   "launch_ms": "1789117486198",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "REMRUSDT": {
    "band": "0.1",
    "base": "rEMR",
@@ -6038,6 +7070,14 @@
    "status": "online",
    "type": "crypto"
   },
+  "RENICUSDT": {
+   "band": "0.1",
+   "base": "rENIC",
+   "launch_ms": "1789117370564",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RENLTUSDT": {
    "band": "0.1",
    "base": "rENLT",
@@ -6062,6 +7102,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RENSUSDT": {
+   "band": "0.1",
+   "base": "rENS",
+   "launch_ms": "1789117392515",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RENTGUSDT": {
    "band": "0.1",
    "base": "rENTG",
@@ -6070,10 +7118,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RENVAUSDT": {
+   "band": "0.1",
+   "base": "rENVA",
+   "launch_ms": "1789117368894",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "REOGUSDT": {
    "band": "0.1",
    "base": "rEOG",
    "launch_ms": "1781188600518",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REPAMUSDT": {
+   "band": "0.1",
+   "base": "rEPAM",
+   "launch_ms": "1789117318052",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REPRTUSDT": {
+   "band": "0.1",
+   "base": "rEPRT",
+   "launch_ms": "1789117390940",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REPRUSDT": {
+   "band": "0.1",
+   "base": "rEPR",
+   "launch_ms": "1789117318459",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6094,11 +7174,35 @@
    "status": "online",
    "type": "stock"
   },
+  "REQPTUSDT": {
+   "band": "0.1",
+   "base": "rEQPT",
+   "launch_ms": "1789117316053",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "REQTUSDT": {
    "band": "0.1",
    "base": "rEQT",
    "launch_ms": "1784888306320",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REQXUSDT": {
+   "band": "0.1",
+   "base": "rEQX",
+   "launch_ms": "1789117392837",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RERASUSDT": {
+   "band": "0.1",
+   "base": "rERAS",
+   "launch_ms": "1789117343630",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -6126,6 +7230,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RESABUSDT": {
+   "band": "0.1",
+   "base": "rESAB",
+   "launch_ms": "1789117343386",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RESEUSDT": {
+   "band": "0.1",
+   "base": "rESE",
+   "launch_ms": "1789117486946",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RESIUSDT": {
    "band": "0.1",
    "base": "rESI",
@@ -6142,6 +7262,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RESNTUSDT": {
+   "band": "0.1",
+   "base": "rESNT",
+   "launch_ms": "1789117370174",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RESOLVUSDT": {
    "band": "0.02",
    "base": "RESOLV",
@@ -6154,6 +7282,14 @@
    "band": "0.1",
    "base": "rESS",
    "launch_ms": "1788765759365",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RESTCUSDT": {
+   "band": "0.1",
+   "base": "rESTC",
+   "launch_ms": "1789117389493",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6186,6 +7322,14 @@
    "band": "0.1",
    "base": "rETR",
    "launch_ms": "1781188821996",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RETSYUSDT": {
+   "band": "0.1",
+   "base": "rETSY",
+   "launch_ms": "1789117486161",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6226,6 +7370,22 @@
    "band": "0.1",
    "base": "rEWJ",
    "launch_ms": "1780582874821",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REWTUSDT": {
+   "band": "0.1",
+   "base": "rEWT",
+   "launch_ms": "1789117486818",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REWTXUSDT": {
+   "band": "0.1",
+   "base": "rEWTX",
+   "launch_ms": "1789117317380",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6278,6 +7438,14 @@
    "status": "online",
    "type": "stock"
   },
+  "REXLSUSDT": {
+   "band": "0.1",
+   "base": "rEXLS",
+   "launch_ms": "1789117316820",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "REXODUSDT": {
    "band": "0.1",
    "base": "rEXOD",
@@ -6302,10 +7470,26 @@
    "status": "online",
    "type": "stock"
   },
+  "REXPUSDT": {
+   "band": "0.1",
+   "base": "rEXP",
+   "launch_ms": "1789117371213",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "REXRUSDT": {
    "band": "0.1",
    "base": "rEXR",
    "launch_ms": "1788765797736",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "REXTRUSDT": {
+   "band": "0.1",
+   "base": "rEXTR",
+   "launch_ms": "1789117316592",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6317,6 +7501,14 @@
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
+  },
+  "RFAFUSDT": {
+   "band": "0.1",
+   "base": "rFAF",
+   "launch_ms": "1789117391963",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
   },
   "RFANGUSDT": {
    "band": "0.1",
@@ -6350,6 +7542,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RFBINUSDT": {
+   "band": "0.1",
+   "base": "rFBIN",
+   "launch_ms": "1789117370288",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RFCFSUSDT": {
    "band": "0.1",
    "base": "rFCFS",
@@ -6362,6 +7562,14 @@
    "band": "0.1",
    "base": "rFCNCA",
    "launch_ms": "1788765796362",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RFCNUSDT": {
+   "band": "0.1",
+   "base": "rFCN",
+   "launch_ms": "1789117342421",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6398,6 +7606,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RFELEUSDT": {
+   "band": "0.1",
+   "base": "rFELE",
+   "launch_ms": "1789117318346",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RFERGUSDT": {
    "band": "0.1",
    "base": "rFERG",
@@ -6422,6 +7638,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RFFINUSDT": {
+   "band": "0.1",
+   "base": "rFFIN",
+   "launch_ms": "1789117342620",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RFFIVUSDT": {
    "band": "0.1",
    "base": "rFFIV",
@@ -6434,6 +7658,14 @@
    "band": "0.1",
    "base": "rFGDL",
    "launch_ms": "1781016901577",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RFHIUSDT": {
+   "band": "0.1",
+   "base": "rFHI",
+   "launch_ms": "1789117317223",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6510,6 +7742,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RFLGUSDT": {
+   "band": "0.1",
+   "base": "rFLG",
+   "launch_ms": "1789117370949",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RFLHYUSDT": {
    "band": "0.1",
    "base": "rFLHY",
@@ -6518,10 +7758,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RFLNCUSDT": {
+   "band": "0.1",
+   "base": "rFLNC",
+   "launch_ms": "1789117486805",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RFLQLUSDT": {
    "band": "0.1",
    "base": "rFLQL",
    "launch_ms": "1781016945198",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RFLRUSDT": {
+   "band": "0.1",
+   "base": "rFLR",
+   "launch_ms": "1789117391537",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6566,6 +7822,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RFNBUSDT": {
+   "band": "0.1",
+   "base": "rFNB",
+   "launch_ms": "1789117390729",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RFNDUSDT": {
+   "band": "0.1",
+   "base": "rFND",
+   "launch_ms": "1789117369778",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RFNFUSDT": {
    "band": "0.1",
    "base": "rFNF",
@@ -6586,6 +7858,14 @@
    "band": "0.1",
    "base": "rFORM",
    "launch_ms": "1788765865408",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RFOURUSDT": {
+   "band": "0.1",
+   "base": "rFOUR",
+   "launch_ms": "1789117342747",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6630,6 +7910,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RFROUSDT": {
+   "band": "0.1",
+   "base": "rFRO",
+   "launch_ms": "1789117486620",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RFRTUSDT": {
    "band": "0.1",
    "base": "rFRT",
@@ -6642,6 +7930,14 @@
    "band": "0.1",
    "base": "rFR",
    "launch_ms": "1788765865445",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RFRVOUSDT": {
+   "band": "0.1",
+   "base": "rFRVO",
+   "launch_ms": "1789117393276",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6670,10 +7966,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RFSSUSDT": {
+   "band": "0.1",
+   "base": "rFSS",
+   "launch_ms": "1789117391925",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RFSVUSDT": {
+   "band": "0.1",
+   "base": "rFSV",
+   "launch_ms": "1789117389931",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RFTAIUSDT": {
    "band": "0.1",
    "base": "rFTAI",
    "launch_ms": "1786448260640",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RFTDRUSDT": {
+   "band": "0.1",
+   "base": "rFTDR",
+   "launch_ms": "1789117343190",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6718,6 +8038,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RFULTUSDT": {
+   "band": "0.1",
+   "base": "rFULT",
+   "launch_ms": "1789117318762",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RFUSDT": {
    "band": "0.1",
    "base": "rF",
@@ -6738,7 +8066,7 @@
    "band": "0.1",
    "base": "rFWDI",
    "launch_ms": "1783406741266",
-   "min_order_usdt": "10",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -6766,10 +8094,50 @@
    "status": "online",
    "type": "stock"
   },
+  "RGAPUSDT": {
+   "band": "0.1",
+   "base": "rGAP",
+   "launch_ms": "1789117391883",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGATXUSDT": {
+   "band": "0.1",
+   "base": "rGATX",
+   "launch_ms": "1789117371768",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGBCIUSDT": {
+   "band": "0.1",
+   "base": "rGBCI",
+   "launch_ms": "1789117390686",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGBTGUSDT": {
+   "band": "0.1",
+   "base": "rGBTG",
+   "launch_ms": "1789117342462",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RGDDYUSDT": {
    "band": "0.1",
    "base": "rGDDY",
    "launch_ms": "1788765674901",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGDSUSDT": {
+   "band": "0.1",
+   "base": "rGDS",
+   "launch_ms": "1789117389894",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6846,6 +8214,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RGGALUSDT": {
+   "band": "0.1",
+   "base": "rGGAL",
+   "launch_ms": "1789117486924",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RGGBUSDT": {
    "band": "0.1",
    "base": "rGGB",
@@ -6858,6 +8234,14 @@
    "band": "0.1",
    "base": "rGGG",
    "launch_ms": "1788765675531",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGHCUSDT": {
+   "band": "0.1",
+   "base": "rGHC",
+   "launch_ms": "1789117342920",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6910,10 +8294,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RGLBEUSDT": {
+   "band": "0.1",
+   "base": "rGLBE",
+   "launch_ms": "1789117389533",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RGLDUSDT": {
    "band": "0.1",
    "base": "rGLD",
    "launch_ms": "1780400997229",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGLNGUSDT": {
+   "band": "0.1",
+   "base": "rGLNG",
+   "launch_ms": "1789117343097",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -6998,6 +8398,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RGNTXUSDT": {
+   "band": "0.1",
+   "base": "rGNTX",
+   "launch_ms": "1789117342894",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGOLFUSDT": {
+   "band": "0.1",
+   "base": "rGOLF",
+   "launch_ms": "1789117371657",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RGOOGLUSDT": {
    "band": "0.1",
    "base": "rGOOGL",
@@ -7026,6 +8442,14 @@
    "band": "0.1",
    "base": "rGRAB",
    "launch_ms": "1780582419620",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGRFSUSDT": {
+   "band": "0.1",
+   "base": "rGRFS",
+   "launch_ms": "1789117342450",
    "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
@@ -7070,10 +8494,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RGTESUSDT": {
+   "band": "0.1",
+   "base": "rGTES",
+   "launch_ms": "1789117371436",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RGTLBUSDT": {
    "band": "0.1",
    "base": "rGTLB",
    "launch_ms": "1785139539589",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGTXUSDT": {
+   "band": "0.1",
+   "base": "rGTX",
+   "launch_ms": "1789117369663",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGUSDT": {
+   "band": "0.1",
+   "base": "rG",
+   "launch_ms": "1789117343012",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RGVAUSDT": {
+   "band": "0.1",
+   "base": "rGVA",
+   "launch_ms": "1789117343085",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7094,6 +8550,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RGXOUSDT": {
+   "band": "0.1",
+   "base": "rGXO",
+   "launch_ms": "1789117368435",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RHALOUSDT": {
    "band": "0.1",
    "base": "rHALO",
@@ -7106,6 +8570,14 @@
    "band": "0.1",
    "base": "rHAL",
    "launch_ms": "1784888247669",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHASIUSDT": {
+   "band": "0.1",
+   "base": "rHASI",
+   "launch_ms": "1789117342408",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7138,6 +8610,14 @@
    "band": "0.1",
    "base": "rHCA",
    "launch_ms": "1781101959219",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHCCUSDT": {
+   "band": "0.1",
+   "base": "rHCC",
+   "launch_ms": "1789117316781",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7182,6 +8662,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RHESMUSDT": {
+   "band": "0.1",
+   "base": "rHESM",
+   "launch_ms": "1789117486490",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHGTYUSDT": {
+   "band": "0.1",
+   "base": "rHGTY",
+   "launch_ms": "1789117316477",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHHHUSDT": {
+   "band": "0.1",
+   "base": "rHHH",
+   "launch_ms": "1789117316402",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RHIGUSDT": {
    "band": "0.1",
    "base": "rHIG",
@@ -7218,6 +8722,14 @@
    "band": "0.1",
    "base": "rHLI",
    "launch_ms": "1788765866384",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHLNEUSDT": {
+   "band": "0.1",
+   "base": "rHLNE",
+   "launch_ms": "1789117317941",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7262,6 +8774,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RHNGEUSDT": {
+   "band": "0.1",
+   "base": "rHNGE",
+   "launch_ms": "1789117391576",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHOMBUSDT": {
+   "band": "0.1",
+   "base": "rHOMB",
+   "launch_ms": "1789117369389",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RHONAUSDT": {
    "band": "0.1",
    "base": "rHONA",
@@ -7302,10 +8830,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RHQYUSDT": {
+   "band": "0.1",
+   "base": "rHQY",
+   "launch_ms": "1789117486453",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHRBUSDT": {
+   "band": "0.1",
+   "base": "rHRB",
+   "launch_ms": "1789117343032",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHRIUSDT": {
+   "band": "0.1",
+   "base": "rHRI",
+   "launch_ms": "1789117342503",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RHRLUSDT": {
    "band": "0.1",
    "base": "rHRL",
    "launch_ms": "1788765718137",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHRUSDT": {
+   "band": "0.1",
+   "base": "rHR",
+   "launch_ms": "1789117392119",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7382,10 +8942,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RHWCUSDT": {
+   "band": "0.1",
+   "base": "rHWC",
+   "launch_ms": "1789117370870",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RHWMUSDT": {
    "band": "0.1",
    "base": "rHWM",
    "launch_ms": "1781101604063",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RHXLUSDT": {
+   "band": "0.1",
+   "base": "rHXL",
+   "launch_ms": "1789117392993",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7403,6 +8979,14 @@
    "base": "rHYS",
    "launch_ms": "1781017043836",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RIAGUSDT": {
+   "band": "0.1",
+   "base": "rIAG",
+   "launch_ms": "1789117487129",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -7446,6 +9030,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RIBOCUSDT": {
+   "band": "0.1",
+   "base": "rIBOC",
+   "launch_ms": "1789117319321",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RIBPUSDT": {
+   "band": "0.1",
+   "base": "rIBP",
+   "launch_ms": "1789117370250",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RIBRXUSDT": {
+   "band": "0.1",
+   "base": "rIBRX",
+   "launch_ms": "1789117486793",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RICEUSDT": {
    "band": "0.1",
    "base": "rICE",
@@ -7466,6 +9074,30 @@
    "band": "0.1",
    "base": "rICLR",
    "launch_ms": "1788765717235",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RICLUSDT": {
+   "band": "0.1",
+   "base": "rICL",
+   "launch_ms": "1789117371547",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RIDAUSDT": {
+   "band": "0.1",
+   "base": "rIDA",
+   "launch_ms": "1789117486995",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RIDCCUSDT": {
+   "band": "0.1",
+   "base": "rIDCC",
+   "launch_ms": "1789117390816",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7502,6 +9134,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RIEPUSDT": {
+   "band": "0.1",
+   "base": "rIEP",
+   "launch_ms": "1789117342867",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RIESCUSDT": {
    "band": "0.1",
    "base": "rIESC",
@@ -7522,6 +9162,14 @@
    "band": "0.1",
    "base": "rIFF",
    "launch_ms": "1788765759401",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RIFSUSDT": {
+   "band": "0.1",
+   "base": "rIFS",
+   "launch_ms": "1789117390182",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7574,6 +9222,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RIMVTUSDT": {
+   "band": "0.1",
+   "base": "rIMVT",
+   "launch_ms": "1789117486369",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RINCEUSDT": {
    "band": "0.1",
    "base": "rINCE",
@@ -7598,6 +9254,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RINDVUSDT": {
+   "band": "0.1",
+   "base": "rINDV",
+   "launch_ms": "1789117319539",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RINFQUSDT": {
    "band": "0.1",
    "base": "rINFQ",
@@ -7614,10 +9278,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RINGMUSDT": {
+   "band": "0.1",
+   "base": "rINGM",
+   "launch_ms": "1789117390564",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RINGRUSDT": {
+   "band": "0.1",
+   "base": "rINGR",
+   "launch_ms": "1789117371104",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RINODUSDT": {
+   "band": "0.1",
+   "base": "rINOD",
+   "launch_ms": "1789117486781",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RINSMUSDT": {
    "band": "0.1",
    "base": "rINSM",
    "launch_ms": "1786965602454",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RINSWUSDT": {
+   "band": "0.1",
+   "base": "rINSW",
+   "launch_ms": "1789117316244",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7662,6 +9358,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RIPGPUSDT": {
+   "band": "0.1",
+   "base": "rIPGP",
+   "launch_ms": "1789117317457",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RIPUSDT": {
    "band": "0.1",
    "base": "rIP",
@@ -7682,6 +9386,14 @@
    "band": "0.1",
    "base": "rIQV",
    "launch_ms": "1785140289409",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RIRDMUSDT": {
+   "band": "0.1",
+   "base": "rIRDM",
+   "launch_ms": "1789117342998",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7822,6 +9534,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RJANUSDT": {
+   "band": "0.1",
+   "base": "rJAN",
+   "launch_ms": "1789117487020",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RJAZZUSDT": {
    "band": "0.1",
    "base": "rJAZZ",
@@ -7851,6 +9571,14 @@
    "base": "rJBS",
    "launch_ms": "1788765798638",
    "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RJBTMUSDT": {
+   "band": "0.1",
+   "base": "rJBTM",
+   "launch_ms": "1789117392317",
+   "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
   },
@@ -7950,10 +9678,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RJSMUSDT": {
+   "band": "0.1",
+   "base": "rJSM",
+   "launch_ms": "1789117319133",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RJUSDT": {
    "band": "0.1",
    "base": "rJ",
    "launch_ms": "1788765719698",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RJXNUSDT": {
+   "band": "0.1",
+   "base": "rJXN",
+   "launch_ms": "1789117487058",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKBRUSDT": {
+   "band": "0.1",
+   "base": "rKBR",
+   "launch_ms": "1789117318200",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -7982,6 +9734,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RKEXUSDT": {
+   "band": "0.1",
+   "base": "rKEX",
+   "launch_ms": "1789117393352",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RKEYSUSDT": {
    "band": "0.1",
    "base": "rKEYS",
@@ -8002,6 +9762,14 @@
    "band": "0.1",
    "base": "rKGC",
    "launch_ms": "1785140282707",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKGSUSDT": {
+   "band": "0.1",
+   "base": "rKGS",
+   "launch_ms": "1789117390094",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8046,6 +9814,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RKLICUSDT": {
+   "band": "0.1",
+   "base": "rKLIC",
+   "launch_ms": "1789117368286",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RKMBUSDT": {
    "band": "0.1",
    "base": "rKMB",
@@ -8058,6 +9834,46 @@
    "band": "0.1",
    "base": "rKMI",
    "launch_ms": "1781188681351",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKMXUSDT": {
+   "band": "0.1",
+   "base": "rKMX",
+   "launch_ms": "1789117486285",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKNFUSDT": {
+   "band": "0.1",
+   "base": "rKNF",
+   "launch_ms": "1789117317575",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKNSAUSDT": {
+   "band": "0.1",
+   "base": "rKNSA",
+   "launch_ms": "1789117319060",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKNSLUSDT": {
+   "band": "0.1",
+   "base": "rKNSL",
+   "launch_ms": "1789117486405",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKNTKUSDT": {
+   "band": "0.1",
+   "base": "rKNTK",
+   "launch_ms": "1789117486563",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8086,6 +9902,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RKRCUSDT": {
+   "band": "0.1",
+   "base": "rKRC",
+   "launch_ms": "1789117318127",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKRGUSDT": {
+   "band": "0.1",
+   "base": "rKRG",
+   "launch_ms": "1789117369546",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKRMNUSDT": {
+   "band": "0.1",
+   "base": "rKRMN",
+   "launch_ms": "1789117370099",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RKRUSDT": {
    "band": "0.1",
    "base": "rKR",
@@ -8110,10 +9950,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RKSSUSDT": {
+   "band": "0.1",
+   "base": "rKSS",
+   "launch_ms": "1789117486768",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RKSTRUSDT": {
    "band": "0.1",
    "base": "rKSTR",
    "launch_ms": "1784014150109",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKTBUSDT": {
+   "band": "0.1",
+   "base": "rKTB",
+   "launch_ms": "1789117319097",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8126,10 +9982,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RKTUSDT": {
+   "band": "0.1",
+   "base": "rKT",
+   "launch_ms": "1789117486958",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RKVUEUSDT": {
    "band": "0.1",
    "base": "rKVUE",
    "launch_ms": "1784888260164",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RKVYOUSDT": {
+   "band": "0.1",
+   "base": "rKVYO",
+   "launch_ms": "1789117343151",
    "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
@@ -8166,6 +10038,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RLADUSDT": {
+   "band": "0.1",
+   "base": "rLAD",
+   "launch_ms": "1789117392355",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RLAMRUSDT": {
    "band": "0.1",
    "base": "rLAMR",
@@ -8174,10 +10054,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RLAURUSDT": {
+   "band": "0.1",
+   "base": "rLAUR",
+   "launch_ms": "1789117368360",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RLAZRUSDT": {
    "band": "0.1",
    "base": "rLAZR",
    "launch_ms": "1786027463193",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLBTYBUSDT": {
+   "band": "0.1",
+   "base": "rLBTYB",
+   "launch_ms": "1789117315969",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLBUSDT": {
+   "band": "0.1",
+   "base": "rLB",
+   "launch_ms": "1789117370527",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8206,10 +10110,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RLEAUSDT": {
+   "band": "0.1",
+   "base": "rLEA",
+   "launch_ms": "1789117390860",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RLECOUSDT": {
    "band": "0.1",
    "base": "rLECO",
    "launch_ms": "1788765718436",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLEGNUSDT": {
+   "band": "0.1",
+   "base": "rLEGN",
+   "launch_ms": "1789117342645",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8243,6 +10163,22 @@
    "base": "rLGHL",
    "launch_ms": "1789045642523",
    "min_order_usdt": "15",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLGNDUSDT": {
+   "band": "0.1",
+   "base": "rLGND",
+   "launch_ms": "1789117370911",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLGNUSDT": {
+   "band": "0.1",
+   "base": "rLGN",
+   "launch_ms": "1789117392676",
+   "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
   },
@@ -8302,6 +10238,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RLIVNUSDT": {
+   "band": "0.1",
+   "base": "rLIVN",
+   "launch_ms": "1789117318309",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLKQUSDT": {
+   "band": "0.1",
+   "base": "rLKQ",
+   "launch_ms": "1789117389369",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RLLYUSDT": {
    "band": "0.1",
    "base": "rLLY",
@@ -8326,10 +10278,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RLMNDUSDT": {
+   "band": "0.1",
+   "base": "rLMND",
+   "launch_ms": "1789117343458",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RLMTUSDT": {
    "band": "0.1",
    "base": "rLMT",
    "launch_ms": "1780928139041",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLNCUSDT": {
+   "band": "0.1",
+   "base": "rLNC",
+   "launch_ms": "1789117486296",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8342,10 +10310,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RLNTHUSDT": {
+   "band": "0.1",
+   "base": "rLNTH",
+   "launch_ms": "1789117391219",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RLNTUSDT": {
    "band": "0.1",
    "base": "rLNT",
    "launch_ms": "1787643015909",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLOARUSDT": {
+   "band": "0.1",
+   "base": "rLOAR",
+   "launch_ms": "1789117390644",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8382,6 +10366,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RLPXUSDT": {
+   "band": "0.1",
+   "base": "rLPX",
+   "launch_ms": "1789117342802",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RLQDAUSDT": {
    "band": "0.1",
    "base": "rLQDA",
@@ -8402,6 +10394,14 @@
    "band": "0.1",
    "base": "rLSCC",
    "launch_ms": "1787642937352",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLSTRUSDT": {
+   "band": "0.1",
+   "base": "rLSTR",
+   "launch_ms": "1789117392240",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8435,6 +10435,14 @@
    "base": "rLULU",
    "launch_ms": "1788765718324",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLUMNUSDT": {
+   "band": "0.1",
+   "base": "rLUMN",
+   "launch_ms": "1789117390350",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -8494,11 +10502,27 @@
    "status": "online",
    "type": "stock"
   },
+  "RLWUSDT": {
+   "band": "0.1",
+   "base": "rLW",
+   "launch_ms": "1789117389452",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RLYBUSDT": {
    "band": "0.1",
    "base": "rLYB",
    "launch_ms": "1786965573779",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RLYFTUSDT": {
+   "band": "0.1",
+   "base": "rLYFT",
+   "launch_ms": "1789117369857",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -8518,10 +10542,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RMAASUSDT": {
+   "band": "0.1",
+   "base": "rMAAS",
+   "launch_ms": "1789117319205",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RMAAUSDT": {
    "band": "0.1",
    "base": "rMAA",
    "launch_ms": "1788765757107",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMACUSDT": {
+   "band": "0.1",
+   "base": "rMAC",
+   "launch_ms": "1789117392555",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8538,6 +10578,14 @@
    "band": "0.1",
    "base": "rMAIR",
    "launch_ms": "1788765758661",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMANEUSDT": {
+   "band": "0.1",
+   "base": "rMANE",
+   "launch_ms": "1789117318653",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8574,11 +10622,35 @@
    "status": "online",
    "type": "stock"
   },
+  "RMATXUSDT": {
+   "band": "0.1",
+   "base": "rMATX",
+   "launch_ms": "1789117370989",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RMAUSDT": {
    "band": "0.1",
    "base": "rMA",
    "launch_ms": "1780582345607",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMBGLUSDT": {
+   "band": "0.1",
+   "base": "rMBGL",
+   "launch_ms": "1789117370050",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMBLYUSDT": {
+   "band": "0.1",
+   "base": "rMBLY",
+   "launch_ms": "1789117486608",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -8610,6 +10682,30 @@
    "band": "0.1",
    "base": "rMCO",
    "launch_ms": "1781188506362",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMCUSDT": {
+   "band": "0.1",
+   "base": "rMC",
+   "launch_ms": "1789117319357",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMCYUSDT": {
+   "band": "0.1",
+   "base": "rMCY",
+   "launch_ms": "1789117370712",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMDAUSDT": {
+   "band": "0.1",
+   "base": "rMDA",
+   "launch_ms": "1789117316953",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8650,6 +10746,14 @@
    "band": "0.1",
    "base": "rMDT",
    "launch_ms": "1781101752975",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMDUUSDT": {
+   "band": "0.1",
+   "base": "rMDU",
+   "launch_ms": "1789117317656",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8710,11 +10814,43 @@
    "status": "online",
    "type": "stock"
   },
+  "RMGYUSDT": {
+   "band": "0.1",
+   "base": "rMGY",
+   "launch_ms": "1789117342527",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMHKUSDT": {
+   "band": "0.1",
+   "base": "rMHK",
+   "launch_ms": "1789117389816",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RMICCUSDT": {
    "band": "0.1",
    "base": "rMICC",
    "launch_ms": "1788765673696",
    "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMIDDUSDT": {
+   "band": "0.1",
+   "base": "rMIDD",
+   "launch_ms": "1789117370639",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMIRMUSDT": {
+   "band": "0.1",
+   "base": "rMIRM",
+   "launch_ms": "1789117392393",
+   "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
   },
@@ -8758,10 +10894,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RMMEDUSDT": {
+   "band": "0.1",
+   "base": "rMMED",
+   "launch_ms": "1789117318091",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RMMMUSDT": {
    "band": "0.1",
    "base": "rMMM",
    "launch_ms": "1781101933889",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMMSIUSDT": {
+   "band": "0.1",
+   "base": "rMMSI",
+   "launch_ms": "1789117316898",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMMYTUSDT": {
+   "band": "0.1",
+   "base": "rMMYT",
+   "launch_ms": "1789117343446",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8794,6 +10954,22 @@
    "band": "0.1",
    "base": "rMOH",
    "launch_ms": "1788765717121",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMORNUSDT": {
+   "band": "0.1",
+   "base": "rMORN",
+   "launch_ms": "1789117390012",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMOSUSDT": {
+   "band": "0.1",
+   "base": "rMOS",
+   "launch_ms": "1789117391809",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8838,6 +11014,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RMRCYUSDT": {
+   "band": "0.1",
+   "base": "rMRCY",
+   "launch_ms": "1789117369739",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RMRKUSDT": {
    "band": "0.1",
    "base": "rMRK",
@@ -8854,6 +11038,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RMRPUSDT": {
+   "band": "0.1",
+   "base": "rMRP",
+   "launch_ms": "1789117319021",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RMRSHUSDT": {
    "band": "0.1",
    "base": "rMRSH",
@@ -8866,6 +11058,22 @@
    "band": "0.1",
    "base": "rMRVL",
    "launch_ms": "1780383393078",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMRXUSDT": {
+   "band": "0.1",
+   "base": "rMRX",
+   "launch_ms": "1789117318910",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMSAUSDT": {
+   "band": "0.1",
+   "base": "rMSA",
+   "launch_ms": "1789117389615",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8898,6 +11106,14 @@
    "band": "0.1",
    "base": "rMSI",
    "launch_ms": "1781188736039",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMSMUSDT": {
+   "band": "0.1",
+   "base": "rMSM",
+   "launch_ms": "1789117391455",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8950,10 +11166,50 @@
    "status": "online",
    "type": "stock"
   },
+  "RMTDRUSDT": {
+   "band": "0.1",
+   "base": "rMTDR",
+   "launch_ms": "1789117389972",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RMTDUSDT": {
    "band": "0.1",
    "base": "rMTD",
    "launch_ms": "1786448305534",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMTGUSDT": {
+   "band": "0.1",
+   "base": "rMTG",
+   "launch_ms": "1789117370329",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMTHUSDT": {
+   "band": "0.1",
+   "base": "rMTH",
+   "launch_ms": "1789117342489",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMTNUSDT": {
+   "band": "0.1",
+   "base": "rMTN",
+   "launch_ms": "1789117343423",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMTRNUSDT": {
+   "band": "0.1",
+   "base": "rMTRN",
+   "launch_ms": "1789117342958",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -8982,10 +11238,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RMURUSDT": {
+   "band": "0.1",
+   "base": "rMUR",
+   "launch_ms": "1789117342725",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RMUSAUSDT": {
    "band": "0.1",
    "base": "rMUSA",
    "launch_ms": "1788765673636",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMUSDT": {
+   "band": "0.1",
+   "base": "rM",
+   "launch_ms": "1789117370210",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9006,6 +11278,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RMWHUSDT": {
+   "band": "0.1",
+   "base": "rMWH",
+   "launch_ms": "1789117343582",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMXLUSDT": {
+   "band": "0.1",
+   "base": "rMXL",
+   "launch_ms": "1789117486755",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RMYRGUSDT": {
+   "band": "0.1",
+   "base": "rMYRG",
+   "launch_ms": "1789117371890",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RNAKAUSDT": {
    "band": "0.1",
    "base": "rNAKA",
@@ -9018,6 +11314,14 @@
    "band": "0.1",
    "base": "rNASA",
    "launch_ms": "1780927993075",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNAVNUSDT": {
+   "band": "0.1",
+   "base": "rNAVN",
+   "launch_ms": "1789117486743",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9086,10 +11390,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RNEUSDT": {
+   "band": "0.1",
+   "base": "rNE",
+   "launch_ms": "1789117390433",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNEUUSDT": {
+   "band": "0.1",
+   "base": "rNEU",
+   "launch_ms": "1789117391614",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNFGUSDT": {
+   "band": "0.1",
+   "base": "rNFG",
+   "launch_ms": "1789117486211",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RNFLXUSDT": {
    "band": "0.1",
    "base": "rNFLX",
    "launch_ms": "1780401383070",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNICEUSDT": {
+   "band": "0.1",
+   "base": "rNICE",
+   "launch_ms": "1789117370791",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9118,6 +11454,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RNJRUSDT": {
+   "band": "0.1",
+   "base": "rNJR",
+   "launch_ms": "1789117370011",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RNKEUSDT": {
    "band": "0.1",
    "base": "rNKE",
@@ -9139,6 +11483,22 @@
    "base": "rNMR",
    "launch_ms": "1788765797082",
    "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNNEUSDT": {
+   "band": "0.1",
+   "base": "rNNE",
+   "launch_ms": "1789117486731",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNNIUSDT": {
+   "band": "0.1",
+   "base": "rNNI",
+   "launch_ms": "1789117319429",
+   "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
   },
@@ -9166,10 +11526,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RNOVTUSDT": {
+   "band": "0.1",
+   "base": "rNOVT",
+   "launch_ms": "1789117343276",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNOVUSDT": {
+   "band": "0.1",
+   "base": "rNOV",
+   "launch_ms": "1789117391300",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RNOWUSDT": {
    "band": "0.1",
    "base": "rNOW",
    "launch_ms": "1780401582955",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNPOUSDT": {
+   "band": "0.1",
+   "base": "rNPO",
+   "launch_ms": "1789117391338",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNPUSDT": {
+   "band": "0.1",
+   "base": "rNP",
+   "launch_ms": "1789117317614",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9227,6 +11619,14 @@
    "base": "rNTRS",
    "launch_ms": "1788765798215",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNTSKUSDT": {
+   "band": "0.1",
+   "base": "rNTSK",
+   "launch_ms": "1789117343022",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -9294,6 +11694,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RNVSTUSDT": {
+   "band": "0.1",
+   "base": "rNVST",
+   "launch_ms": "1789117316285",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RNVSUSDT": {
    "band": "0.1",
    "base": "rNVS",
@@ -9302,10 +11710,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RNVTSUSDT": {
+   "band": "0.1",
+   "base": "rNVTS",
+   "launch_ms": "1789117486717",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RNVTUSDT": {
    "band": "0.1",
    "base": "rNVT",
    "launch_ms": "1785831385179",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNWEUSDT": {
+   "band": "0.1",
+   "base": "rNWE",
+   "launch_ms": "1789117317977",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9334,10 +11758,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RNXEUSDT": {
+   "band": "0.1",
+   "base": "rNXE",
+   "launch_ms": "1789117369936",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RNXPIUSDT": {
    "band": "0.1",
    "base": "rNXPI",
    "launch_ms": "1780401567322",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RNXSTUSDT": {
+   "band": "0.1",
+   "base": "rNXST",
+   "launch_ms": "1789117343326",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9366,6 +11806,14 @@
    "status": "online",
    "type": "crypto"
   },
+  "ROBDCUSDT": {
+   "band": "0.1",
+   "base": "rOBDC",
+   "launch_ms": "1789117343400",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "ROBOUSDT": {
    "band": "0.1",
    "base": "ROBO",
@@ -9373,6 +11821,14 @@
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
+  },
+  "ROCTVUSDT": {
+   "band": "0.1",
+   "base": "rOCTV",
+   "launch_ms": "1789117318273",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
   },
   "ROCUSDT": {
    "band": "0.1",
@@ -9390,10 +11846,26 @@
    "status": "online",
    "type": "stock"
   },
+  "ROGCUSDT": {
+   "band": "0.1",
+   "base": "rOGC",
+   "launch_ms": "1789117343470",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "ROGEUSDT": {
    "band": "0.1",
    "base": "rOGE",
    "launch_ms": "1788765945495",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "ROGSUSDT": {
+   "band": "0.1",
+   "base": "rOGS",
+   "launch_ms": "1789117342816",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9410,6 +11882,14 @@
    "band": "0.1",
    "base": "rOIH",
    "launch_ms": "1781016870813",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "ROIIUSDT": {
+   "band": "0.1",
+   "base": "rOII",
+   "launch_ms": "1789117316632",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9446,10 +11926,26 @@
    "status": "online",
    "type": "crypto"
   },
+  "ROMABUSDT": {
+   "band": "0.1",
+   "base": "rOMAB",
+   "launch_ms": "1789117342947",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "ROMCUSDT": {
    "band": "0.1",
    "base": "rOMC",
    "launch_ms": "1786965543337",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "ROMFUSDT": {
+   "band": "0.1",
+   "base": "rOMF",
+   "launch_ms": "1789117391099",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9526,6 +12022,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RORAUSDT": {
+   "band": "0.1",
+   "base": "rORA",
+   "launch_ms": "1789117389856",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RORCLUSDT": {
    "band": "0.1",
    "base": "rORCL",
@@ -9542,10 +12046,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RORKAUSDT": {
+   "band": "0.1",
+   "base": "rORKA",
+   "launch_ms": "1789117342908",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RORLYUSDT": {
    "band": "0.1",
    "base": "rORLY",
    "launch_ms": "1781188610455",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RORUSDT": {
+   "band": "0.1",
+   "base": "rOR",
+   "launch_ms": "1789117343373",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9582,6 +12102,22 @@
    "status": "online",
    "type": "stock"
   },
+  "ROTEXUSDT": {
+   "band": "0.1",
+   "base": "rOTEX",
+   "launch_ms": "1789117368665",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "ROTFUSDT": {
+   "band": "0.1",
+   "base": "rOTF",
+   "launch_ms": "1789117319282",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "ROTISUSDT": {
    "band": "0.1",
    "base": "rOTIS",
@@ -9594,6 +12130,22 @@
    "band": "0.1",
    "base": "rO",
    "launch_ms": "1781188766348",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "ROUSTUSDT": {
+   "band": "0.1",
+   "base": "rOUST",
+   "launch_ms": "1789117486705",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "ROUTUSDT": {
+   "band": "0.1",
+   "base": "rOUT",
+   "launch_ms": "1789117369233",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9622,6 +12174,14 @@
    "status": "online",
    "type": "stock"
   },
+  "ROZKUSDT": {
+   "band": "0.1",
+   "base": "rOZK",
+   "launch_ms": "1789117343556",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RPAASUSDT": {
    "band": "0.1",
    "base": "rPAAS",
@@ -9638,10 +12198,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RPACSUSDT": {
+   "band": "0.1",
+   "base": "rPACS",
+   "launch_ms": "1789117391142",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RPACUSDT": {
    "band": "0.1",
    "base": "rPAC",
    "launch_ms": "1788765718625",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPAGPUSDT": {
+   "band": "0.1",
+   "base": "rPAGP",
+   "launch_ms": "1789117369508",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9662,6 +12238,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RPAMUSDT": {
+   "band": "0.1",
+   "base": "rPAM",
+   "launch_ms": "1789117317843",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RPANWUSDT": {
    "band": "0.1",
    "base": "rPANW",
@@ -9670,10 +12254,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RPATHUSDT": {
+   "band": "0.1",
+   "base": "rPATH",
+   "launch_ms": "1789117486693",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RPAVEUSDT": {
    "band": "0.1",
    "base": "rPAVE",
    "launch_ms": "1781016854826",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPAYCUSDT": {
+   "band": "0.1",
+   "base": "rPAYC",
+   "launch_ms": "1789117391651",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9698,6 +12298,14 @@
    "band": "0.1",
    "base": "rPBA",
    "launch_ms": "1788765797424",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPBFUSDT": {
+   "band": "0.1",
+   "base": "rPBF",
+   "launch_ms": "1789117390978",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9734,6 +12342,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RPCORUSDT": {
+   "band": "0.1",
+   "base": "rPCOR",
+   "launch_ms": "1789117390226",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPCTYUSDT": {
+   "band": "0.1",
+   "base": "rPCTY",
+   "launch_ms": "1789117390389",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPCVXUSDT": {
+   "band": "0.1",
+   "base": "rPCVX",
+   "launch_ms": "1789117486913",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RPDBCUSDT": {
    "band": "0.1",
    "base": "rPDBC",
@@ -9750,10 +12382,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RPECOUSDT": {
+   "band": "0.1",
+   "base": "rPECO",
+   "launch_ms": "1789117343264",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPEGAUSDT": {
+   "band": "0.1",
+   "base": "rPEGA",
+   "launch_ms": "1789117343301",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RPEGUSDT": {
    "band": "0.1",
    "base": "rPEG",
    "launch_ms": "1782797758615",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPENGUSDT": {
+   "band": "0.1",
+   "base": "rPENG",
+   "launch_ms": "1789117486680",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -9795,6 +12451,14 @@
    "base": "rPFG",
    "launch_ms": "1788765796401",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPFHUSDT": {
+   "band": "0.1",
+   "base": "rPFH",
+   "launch_ms": "1789117371694",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -9846,6 +12510,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RPIPRUSDT": {
+   "band": "0.1",
+   "base": "rPIPR",
+   "launch_ms": "1789117342395",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPIUSDT": {
+   "band": "0.1",
+   "base": "rPI",
+   "launch_ms": "1789117317495",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RPKGUSDT": {
    "band": "0.1",
    "base": "rPKG",
@@ -9883,6 +12563,14 @@
    "base": "rPLUG",
    "launch_ms": "1780401467690",
    "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPLXSUSDT": {
+   "band": "0.1",
+   "base": "rPLXS",
+   "launch_ms": "1789117391496",
+   "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
   },
@@ -9942,6 +12630,38 @@
    "status": "online",
    "type": "stock"
   },
+  "RPOOLUSDT": {
+   "band": "0.1",
+   "base": "rPOOL",
+   "launch_ms": "1789117486186",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPORUSDT": {
+   "band": "0.1",
+   "base": "rPOR",
+   "launch_ms": "1789117370753",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPOWLUSDT": {
+   "band": "0.1",
+   "base": "rPOWL",
+   "launch_ms": "1789117486667",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPPCUSDT": {
+   "band": "0.1",
+   "base": "rPPC",
+   "launch_ms": "1789117390901",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RPPGUSDT": {
    "band": "0.1",
    "base": "rPPG",
@@ -9974,6 +12694,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RPRIMUSDT": {
+   "band": "0.1",
+   "base": "rPRIM",
+   "launch_ms": "1789117318799",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RPRIUSDT": {
    "band": "0.1",
    "base": "rPRI",
@@ -9986,6 +12714,14 @@
    "band": "0.1",
    "base": "rPRMB",
    "launch_ms": "1788765865484",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPRMUSDT": {
+   "band": "0.1",
+   "base": "rPRM",
+   "launch_ms": "1789117343351",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10022,6 +12758,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RPSMTUSDT": {
+   "band": "0.1",
+   "base": "rPSMT",
+   "launch_ms": "1789117369702",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPSNUSDT": {
+   "band": "0.1",
+   "base": "rPSN",
+   "launch_ms": "1789117369429",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RPSOUSDT": {
    "band": "0.1",
    "base": "rPSO",
@@ -10050,6 +12802,30 @@
    "band": "0.1",
    "base": "rPSX",
    "launch_ms": "1781188613315",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPTCTUSDT": {
+   "band": "0.1",
+   "base": "rPTCT",
+   "launch_ms": "1789117390771",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPTGXUSDT": {
+   "band": "0.1",
+   "base": "rPTGX",
+   "launch_ms": "1789117486971",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RPTRNUSDT": {
+   "band": "0.1",
+   "base": "rPTRN",
+   "launch_ms": "1789117342776",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10110,10 +12886,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RQGENUSDT": {
+   "band": "0.1",
+   "base": "rQGEN",
+   "launch_ms": "1789117487118",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RQLDUSDT": {
    "band": "0.1",
    "base": "rQLD",
    "launch_ms": "1784619076248",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RQLYSUSDT": {
+   "band": "0.1",
+   "base": "rQLYS",
+   "launch_ms": "1789117343288",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10138,6 +12930,14 @@
    "band": "0.1",
    "base": "rQQQ",
    "launch_ms": "1780322400000",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RQRVOUSDT": {
+   "band": "0.1",
+   "base": "rQRVO",
+   "launch_ms": "1789117392796",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10182,6 +12982,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RRALUSDT": {
+   "band": "0.1",
+   "base": "rRAL",
+   "launch_ms": "1789117393121",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RRAMUSDT": {
    "band": "0.1",
    "base": "rRAM",
@@ -10222,6 +13030,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RRCATUSDT": {
+   "band": "0.1",
+   "base": "rRCAT",
+   "launch_ms": "1789117486654",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RRCIUSDT": {
    "band": "0.1",
    "base": "rRCI",
@@ -10242,6 +13058,22 @@
    "band": "0.1",
    "base": "rRDDT",
    "launch_ms": "1780401350285",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRDNTUSDT": {
+   "band": "0.1",
+   "base": "rRDNT",
+   "launch_ms": "1789117342633",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRDNUSDT": {
+   "band": "0.1",
+   "base": "rRDN",
+   "launch_ms": "1789117342854",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10286,10 +13118,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RRELYUSDT": {
+   "band": "0.1",
+   "base": "rRELY",
+   "launch_ms": "1789117342673",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RREMXUSDT": {
    "band": "0.1",
    "base": "rREMX",
    "launch_ms": "1780655508768",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RREXRUSDT": {
+   "band": "0.1",
+   "base": "rREXR",
+   "launch_ms": "1789117486321",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RREYNUSDT": {
+   "band": "0.1",
+   "base": "rREYN",
+   "launch_ms": "1789117343605",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RREZIUSDT": {
+   "band": "0.1",
+   "base": "rREZI",
+   "launch_ms": "1789117343338",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10310,11 +13174,35 @@
    "status": "online",
    "type": "stock"
   },
+  "RRGENUSDT": {
+   "band": "0.1",
+   "base": "rRGEN",
+   "launch_ms": "1789117486551",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RRGTIUSDT": {
    "band": "0.1",
    "base": "rRGTI",
    "launch_ms": "1780383900230",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRHPUSDT": {
+   "band": "0.1",
+   "base": "rRHP",
+   "launch_ms": "1789117486344",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRIGUSDT": {
+   "band": "0.1",
+   "base": "rRIG",
+   "launch_ms": "1789117369817",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -10331,6 +13219,14 @@
    "base": "rRIO",
    "launch_ms": "1781101837038",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRITMUSDT": {
+   "band": "0.1",
+   "base": "rRITM",
+   "launch_ms": "1789117342789",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -10366,6 +13262,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RRLIUSDT": {
+   "band": "0.1",
+   "base": "rRLI",
+   "launch_ms": "1789117368513",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RRLUSDT": {
    "band": "0.1",
    "base": "rRL",
@@ -10394,6 +13298,14 @@
    "band": "0.1",
    "base": "rRNR",
    "launch_ms": "1788765718399",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RROADUSDT": {
+   "band": "0.1",
+   "base": "rROAD",
+   "launch_ms": "1789117343229",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10462,6 +13374,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RRRCUSDT": {
+   "band": "0.1",
+   "base": "rRRC",
+   "launch_ms": "1789117487106",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRRRUSDT": {
+   "band": "0.1",
+   "base": "rRRR",
+   "launch_ms": "1789117390603",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RRRXUSDT": {
    "band": "0.1",
    "base": "rRRX",
@@ -10474,6 +13402,14 @@
    "band": "0.1",
    "base": "rRSG",
    "launch_ms": "1781188631509",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRSIUSDT": {
+   "band": "0.1",
+   "base": "rRSI",
+   "launch_ms": "1789117486392",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10502,10 +13438,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RRUNUSDT": {
+   "band": "0.1",
+   "base": "rRUN",
+   "launch_ms": "1789117486643",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RRUSDT": {
    "band": "0.1",
    "base": "rR",
    "launch_ms": "1788765671862",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRUSHAUSDT": {
+   "band": "0.1",
+   "base": "rRUSHA",
+   "launch_ms": "1789117369314",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRUSHBUSDT": {
+   "band": "0.1",
+   "base": "rRUSHB",
+   "launch_ms": "1789117369587",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10526,6 +13486,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RRXOUSDT": {
+   "band": "0.1",
+   "base": "rRXO",
+   "launch_ms": "1789117317693",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RRXTUSDT": {
    "band": "0.1",
    "base": "rRXT",
@@ -10542,11 +13510,43 @@
    "status": "online",
    "type": "stock"
   },
+  "RRYNUSDT": {
+   "band": "0.1",
+   "base": "rRYN",
+   "launch_ms": "1789117371967",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RRYTMUSDT": {
+   "band": "0.1",
+   "base": "rRYTM",
+   "launch_ms": "1789117392636",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSAIAUSDT": {
    "band": "0.1",
    "base": "rSAIA",
    "launch_ms": "1788765674164",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSAICUSDT": {
+   "band": "0.1",
+   "base": "rSAIC",
+   "launch_ms": "1789117319725",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSAILUSDT": {
+   "band": "0.1",
+   "base": "rSAIL",
+   "launch_ms": "1789117486381",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -10598,10 +13598,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RSBRAUSDT": {
+   "band": "0.1",
+   "base": "rSBRA",
+   "launch_ms": "1789117342660",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RSBSUSDT": {
    "band": "0.1",
    "base": "rSBS",
    "launch_ms": "1788765760067",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSBSWUSDT": {
+   "band": "0.1",
+   "base": "rSBSW",
+   "launch_ms": "1789117369896",
    "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
@@ -10646,6 +13662,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RSEBUSDT": {
+   "band": "0.1",
+   "base": "rSEB",
+   "launch_ms": "1789117318016",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSEDGUSDT": {
    "band": "0.1",
    "base": "rSEDG",
@@ -10658,6 +13682,14 @@
    "band": "0.1",
    "base": "rSEIC",
    "launch_ms": "1788765674282",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSEIUSDT": {
+   "band": "0.1",
+   "base": "rSEI",
+   "launch_ms": "1789117342539",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10678,10 +13710,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RSFBSUSDT": {
+   "band": "0.1",
+   "base": "rSFBS",
+   "launch_ms": "1789117318835",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSFDUSDT": {
    "band": "0.1",
    "base": "rSFD",
    "launch_ms": "1788765945304",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSFMUSDT": {
+   "band": "0.1",
+   "base": "rSFM",
+   "launch_ms": "1789117393034",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10691,6 +13739,14 @@
    "base": "rSF",
    "launch_ms": "1788765674202",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSGHCUSDT": {
+   "band": "0.1",
+   "base": "rSGHC",
+   "launch_ms": "1789117486223",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -10707,6 +13763,14 @@
    "base": "rSGOV",
    "launch_ms": "1781016452959",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSHCUSDT": {
+   "band": "0.1",
+   "base": "rSHC",
+   "launch_ms": "1789117343045",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -10750,6 +13814,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RSIGIUSDT": {
+   "band": "0.1",
+   "base": "rSIGI",
+   "launch_ms": "1789117369351",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSIMOUSDT": {
    "band": "0.1",
    "base": "rSIMO",
@@ -10758,10 +13830,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RSIMUSDT": {
+   "band": "0.1",
+   "base": "rSIM",
+   "launch_ms": "1789117318537",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSIRIUSDT": {
    "band": "0.1",
    "base": "rSIRI",
    "launch_ms": "1788765672060",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSITEUSDT": {
+   "band": "0.1",
+   "base": "rSITE",
+   "launch_ms": "1789117318948",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10798,6 +13886,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RSKTUSDT": {
+   "band": "0.1",
+   "base": "rSKT",
+   "launch_ms": "1789117318578",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSKYUSDT": {
+   "band": "0.1",
+   "base": "rSKY",
+   "launch_ms": "1789117317030",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSLABUSDT": {
+   "band": "0.1",
+   "base": "rSLAB",
+   "launch_ms": "1789117392161",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSLBUSDT": {
    "band": "0.1",
    "base": "rSLB",
@@ -10811,6 +13923,30 @@
    "base": "rSLF",
    "launch_ms": "1788765798983",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSLGNUSDT": {
+   "band": "0.1",
+   "base": "rSLGN",
+   "launch_ms": "1789117319501",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSLMUSDT": {
+   "band": "0.1",
+   "base": "rSLM",
+   "launch_ms": "1789117319243",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSLSUSDT": {
+   "band": "0.1",
+   "base": "rSLS",
+   "launch_ms": "1789117371510",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -10862,6 +13998,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RSMUSDT": {
+   "band": "0.1",
+   "base": "rSM",
+   "launch_ms": "1789117392005",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSNAPUSDT": {
    "band": "0.1",
    "base": "rSNAP",
@@ -10882,6 +14026,14 @@
    "band": "0.1",
    "base": "rSNDK",
    "launch_ms": "1780322400000",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSNDRUSDT": {
+   "band": "0.1",
+   "base": "rSNDR",
+   "launch_ms": "1789117371930",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -10942,6 +14094,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RSOBOUSDT": {
+   "band": "0.1",
+   "base": "rSOBO",
+   "launch_ms": "1789117486247",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSOFIUSDT": {
    "band": "0.1",
    "base": "rSOFI",
@@ -10970,6 +14130,14 @@
    "band": "0.1",
    "base": "rSOLV",
    "launch_ms": "1788765718064",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSONUSDT": {
+   "band": "0.1",
+   "base": "rSON",
+   "launch_ms": "1789117343250",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -11046,6 +14214,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RSPHRUSDT": {
+   "band": "0.1",
+   "base": "rSPHR",
+   "launch_ms": "1789117343072",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSPMOUSDT": {
    "band": "0.1",
    "base": "rSPMO",
@@ -11102,10 +14278,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RSRADUSDT": {
+   "band": "0.1",
+   "base": "rSRAD",
+   "launch_ms": "1789117342380",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RSREUSDT": {
    "band": "0.1",
    "base": "rSRE",
    "launch_ms": "1781188699398",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSRRKUSDT": {
+   "band": "0.1",
+   "base": "rSRRK",
+   "launch_ms": "1789117389776",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -11126,6 +14318,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RSSDUSDT": {
+   "band": "0.1",
+   "base": "rSSD",
+   "launch_ms": "1789117393314",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSSLUSDT": {
+   "band": "0.1",
+   "base": "rSSL",
+   "launch_ms": "1789117391691",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RSSNCUSDT": {
    "band": "0.1",
    "base": "rSSNC",
@@ -11139,6 +14347,30 @@
    "base": "rSSPC",
    "launch_ms": "1784619085405",
    "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSSRMUSDT": {
+   "band": "0.1",
+   "base": "rSSRM",
+   "launch_ms": "1789117369009",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSTAGUSDT": {
+   "band": "0.1",
+   "base": "rSTAG",
+   "launch_ms": "1789117392875",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSTEPUSDT": {
+   "band": "0.1",
+   "base": "rSTEP",
+   "launch_ms": "1789117342933",
+   "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
   },
@@ -11174,6 +14406,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RSTNUSDT": {
+   "band": "0.1",
+   "base": "rSTN",
+   "launch_ms": "1789117486333",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSTRCUSDT": {
    "band": "0.1",
    "base": "rSTRC",
@@ -11195,6 +14435,30 @@
    "base": "rSTT",
    "launch_ms": "1781188725542",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSTUSDT": {
+   "band": "0.1",
+   "base": "rST",
+   "launch_ms": "1789117372003",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSTVNUSDT": {
+   "band": "0.1",
+   "base": "rSTVN",
+   "launch_ms": "1789117343433",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSTWDUSDT": {
+   "band": "0.1",
+   "base": "rSTWD",
+   "launch_ms": "1789117370676",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -11238,6 +14502,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RSUSDT": {
+   "band": "0.1",
+   "base": "rS",
+   "launch_ms": "1789117371285",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RSUUSDT": {
    "band": "0.1",
    "base": "rSU",
@@ -11278,6 +14550,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RSWXUSDT": {
+   "band": "0.1",
+   "base": "rSWX",
+   "launch_ms": "1789117390309",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSXTUSDT": {
+   "band": "0.1",
+   "base": "rSXT",
+   "launch_ms": "1789117342360",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSYFUSDT": {
    "band": "0.1",
    "base": "rSYF",
@@ -11302,11 +14590,35 @@
    "status": "online",
    "type": "stock"
   },
+  "RSYNAUSDT": {
+   "band": "0.1",
+   "base": "rSYNA",
+   "launch_ms": "1789117318873",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSYREUSDT": {
+   "band": "0.1",
+   "base": "rSYRE",
+   "launch_ms": "1789117486539",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RSYYUSDT": {
    "band": "0.1",
    "base": "rSYY",
    "launch_ms": "1784014471981",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTACUSDT": {
+   "band": "0.1",
+   "base": "rTAC",
+   "launch_ms": "1789117317069",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -11318,10 +14630,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RTALUSDT": {
+   "band": "0.1",
+   "base": "rTAL",
+   "launch_ms": "1789117368703",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RTANUSDT": {
    "band": "0.1",
    "base": "rTAN",
    "launch_ms": "1780655974754",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTAPUSDT": {
+   "band": "0.1",
+   "base": "rTAP",
+   "launch_ms": "1789117392953",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTBBBUSDT": {
+   "band": "0.1",
+   "base": "rTBBB",
+   "launch_ms": "1789117342760",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTCBIUSDT": {
+   "band": "0.1",
+   "base": "rTCBI",
+   "launch_ms": "1789117317535",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -11398,6 +14742,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RTENBUSDT": {
+   "band": "0.1",
+   "base": "rTENB",
+   "launch_ms": "1789117316668",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTEOUSDT": {
+   "band": "0.1",
+   "base": "rTEO",
+   "launch_ms": "1789117369083",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RTERUSDT": {
    "band": "0.1",
    "base": "rTER",
@@ -11406,10 +14766,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RTEUSDT": {
+   "band": "0.1",
+   "base": "rTE",
+   "launch_ms": "1789117486631",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RTEVAUSDT": {
    "band": "0.1",
    "base": "rTEVA",
    "launch_ms": "1788765798488",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTEXUSDT": {
+   "band": "0.1",
+   "base": "rTEX",
+   "launch_ms": "1789117393077",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -11430,6 +14806,38 @@
    "status": "online",
    "type": "stock"
   },
+  "RTFPMUSDT": {
+   "band": "0.1",
+   "base": "rTFPM",
+   "launch_ms": "1789117368589",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTFSLUSDT": {
+   "band": "0.1",
+   "base": "rTFSL",
+   "launch_ms": "1789117342580",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTFXUSDT": {
+   "band": "0.1",
+   "base": "rTFX",
+   "launch_ms": "1789117370408",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTGSUSDT": {
+   "band": "0.1",
+   "base": "rTGS",
+   "launch_ms": "1789117318497",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RTGTUSDT": {
    "band": "0.1",
    "base": "rTGT",
@@ -11438,10 +14846,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RTGTXUSDT": {
+   "band": "0.1",
+   "base": "rTGTX",
+   "launch_ms": "1789117487045",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RTHCUSDT": {
    "band": "0.1",
    "base": "rTHC",
    "launch_ms": "1788765757959",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTHGUSDT": {
+   "band": "0.1",
+   "base": "rTHG",
+   "launch_ms": "1789117393199",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -11475,6 +14899,14 @@
    "base": "rTJX",
    "launch_ms": "1781101854646",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTKCUSDT": {
+   "band": "0.1",
+   "base": "rTKC",
+   "launch_ms": "1789117342844",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -11550,6 +14982,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RTNGXUSDT": {
+   "band": "0.1",
+   "base": "rTNGX",
+   "launch_ms": "1789117318689",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTNLUSDT": {
+   "band": "0.1",
+   "base": "rTNL",
+   "launch_ms": "1789117318384",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RTOLUSDT": {
    "band": "0.1",
    "base": "rTOL",
@@ -11598,6 +15046,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RTREXUSDT": {
+   "band": "0.1",
+   "base": "rTREX",
+   "launch_ms": "1789117319613",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RTRGPUSDT": {
    "band": "0.1",
    "base": "rTRGP",
@@ -11618,6 +15074,14 @@
    "band": "0.1",
    "base": "rTRMB",
    "launch_ms": "1788765675333",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTRNOUSDT": {
+   "band": "0.1",
+   "base": "rTRNO",
+   "launch_ms": "1789117392757",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -11702,6 +15166,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RTTANUSDT": {
+   "band": "0.1",
+   "base": "rTTAN",
+   "launch_ms": "1789117486174",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RTTCUSDT": {
    "band": "0.1",
    "base": "rTTC",
@@ -11715,6 +15187,14 @@
    "base": "rTTD",
    "launch_ms": "1780927976564",
    "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTTEKUSDT": {
+   "band": "0.1",
+   "base": "rTTEK",
+   "launch_ms": "1789117486503",
+   "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
   },
@@ -11758,6 +15238,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RTVTXUSDT": {
+   "band": "0.1",
+   "base": "rTVTX",
+   "launch_ms": "1789117343164",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RTWLOUSDT": {
    "band": "0.1",
    "base": "rTWLO",
@@ -11766,10 +15254,34 @@
    "status": "online",
    "type": "stock"
   },
+  "RTWSTUSDT": {
+   "band": "0.1",
+   "base": "rTWST",
+   "launch_ms": "1789117368396",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RTWUSDT": {
    "band": "0.1",
    "base": "rTW",
    "launch_ms": "1788765796099",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTXGUSDT": {
+   "band": "0.1",
+   "base": "rTXG",
+   "launch_ms": "1789117343241",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RTXNMUSDT": {
+   "band": "0.1",
+   "base": "rTXNM",
+   "launch_ms": "1789117371177",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -11838,6 +15350,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RUBSIUSDT": {
+   "band": "0.1",
+   "base": "rUBSI",
+   "launch_ms": "1789117371323",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RUCBUSDT": {
+   "band": "0.1",
+   "base": "rUCB",
+   "launch_ms": "1789117316092",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RUCTTUSDT": {
+   "band": "0.1",
+   "base": "rUCTT",
+   "launch_ms": "1789117317185",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RUDRUSDT": {
    "band": "0.1",
    "base": "rUDR",
@@ -11850,6 +15386,30 @@
    "band": "0.1",
    "base": "rUEC",
    "launch_ms": "1780655490432",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RUFPIUSDT": {
+   "band": "0.1",
+   "base": "rUFPI",
+   "launch_ms": "1789117319652",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RUGIUSDT": {
+   "band": "0.1",
+   "base": "rUGI",
+   "launch_ms": "1789117486273",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RUGPUSDT": {
+   "band": "0.1",
+   "base": "rUGP",
+   "launch_ms": "1789117371850",
    "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
@@ -11918,6 +15478,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RUNFUSDT": {
+   "band": "0.1",
+   "base": "rUNF",
+   "launch_ms": "1789117342514",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RUNGUSDT": {
    "band": "0.1",
    "base": "rUNG",
@@ -11962,6 +15530,14 @@
    "band": "0.1",
    "base": "rURA",
    "launch_ms": "1780655428199",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RURBNUSDT": {
+   "band": "0.1",
+   "base": "rURBN",
+   "launch_ms": "1789117370137",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -12054,11 +15630,43 @@
    "status": "online",
    "type": "stock"
   },
+  "RVALUSDT": {
+   "band": "0.1",
+   "base": "rVAL",
+   "launch_ms": "1789117343532",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVCTRUSDT": {
+   "band": "0.1",
+   "base": "rVCTR",
+   "launch_ms": "1789117368782",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVCYTUSDT": {
+   "band": "0.1",
+   "base": "rVCYT",
+   "launch_ms": "1789117318618",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RVEEVUSDT": {
    "band": "0.1",
    "base": "rVEEV",
    "launch_ms": "1781016571893",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVFCUSDT": {
+   "band": "0.1",
+   "base": "rVFC",
+   "launch_ms": "1789117390139",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -12110,10 +15718,26 @@
    "status": "online",
    "type": "stock"
   },
+  "RVIPSUSDT": {
+   "band": "0.1",
+   "base": "rVIPS",
+   "launch_ms": "1789117390521",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RVIRTUSDT": {
    "band": "0.1",
    "base": "rVIRT",
    "launch_ms": "1788765945452",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVISTUSDT": {
+   "band": "0.1",
+   "base": "rVIST",
+   "launch_ms": "1789117392431",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -12123,6 +15747,14 @@
    "base": "rVIV",
    "launch_ms": "1788765760289",
    "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVKTXUSDT": {
+   "band": "0.1",
+   "base": "rVKTX",
+   "launch_ms": "1789117317340",
+   "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
   },
@@ -12139,6 +15771,14 @@
    "base": "rVLTO",
    "launch_ms": "1788765760510",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVLYUSDT": {
+   "band": "0.1",
+   "base": "rVLY",
+   "launch_ms": "1789117486478",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -12162,6 +15802,14 @@
    "band": "0.1",
    "base": "rVNOM",
    "launch_ms": "1788765720428",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVNOUSDT": {
+   "band": "0.1",
+   "base": "rVNO",
+   "launch_ms": "1789117392044",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -12214,6 +15862,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RVRNSUSDT": {
+   "band": "0.1",
+   "base": "rVRNS",
+   "launch_ms": "1789117343124",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RVRSKUSDT": {
    "band": "0.1",
    "base": "rVRSK",
@@ -12250,6 +15906,30 @@
    "band": "0.1",
    "base": "rVSAT",
    "launch_ms": "1788765867120",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVSECUSDT": {
+   "band": "0.1",
+   "base": "rVSEC",
+   "launch_ms": "1789117368821",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVSHUSDT": {
+   "band": "0.1",
+   "base": "rVSH",
+   "launch_ms": "1789117368626",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RVSNTUSDT": {
+   "band": "0.1",
+   "base": "rVSNT",
+   "launch_ms": "1789117342829",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -12310,6 +15990,14 @@
    "status": "online",
    "type": "crypto"
   },
+  "RVVVUSDT": {
+   "band": "0.1",
+   "base": "rVVV",
+   "launch_ms": "1789117342476",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RVXUSUSDT": {
    "band": "0.1",
    "base": "rVXUS",
@@ -12358,10 +16046,26 @@
    "status": "online",
    "type": "crypto"
   },
+  "RWAYUSDT": {
+   "band": "0.1",
+   "base": "rWAY",
+   "launch_ms": "1789117317262",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RWBDUSDT": {
    "band": "0.1",
    "base": "rWBD",
    "launch_ms": "1781188509704",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RWBIUSDT": {
+   "band": "0.1",
+   "base": "rWBI",
+   "launch_ms": "1789117316552",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -12430,6 +16134,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RWEXUSDT": {
+   "band": "0.1",
+   "base": "rWEX",
+   "launch_ms": "1789117343617",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RWFCUSDT": {
    "band": "0.1",
    "base": "rWFC",
@@ -12438,10 +16150,42 @@
    "status": "online",
    "type": "stock"
   },
+  "RWFGUSDT": {
+   "band": "0.1",
+   "base": "rWFG",
+   "launch_ms": "1789117343178",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RWFRDUSDT": {
+   "band": "0.1",
+   "base": "rWFRD",
+   "launch_ms": "1789117369159",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RWFUSDT": {
    "band": "0.1",
    "base": "rWF",
    "launch_ms": "1788765720313",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RWHDUSDT": {
+   "band": "0.1",
+   "base": "rWHD",
+   "launch_ms": "1789117316516",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RWHUSDT": {
+   "band": "0.1",
+   "base": "rWH",
+   "launch_ms": "1789117368932",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -12518,6 +16262,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RWSCUSDT": {
+   "band": "0.1",
+   "base": "rWSC",
+   "launch_ms": "1789117319577",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RWSEUSDT": {
    "band": "0.1",
    "base": "rWSE",
@@ -12554,6 +16306,14 @@
    "band": "0.1",
    "base": "rWTFC",
    "launch_ms": "1788765672917",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RWTMUSDT": {
+   "band": "0.1",
+   "base": "rWTM",
+   "launch_ms": "1789117343363",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -12638,6 +16398,22 @@
    "status": "online",
    "type": "stock"
   },
+  "RXENEUSDT": {
+   "band": "0.1",
+   "base": "rXENE",
+   "launch_ms": "1789117389695",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RXEUSDT": {
+   "band": "0.1",
+   "base": "rXE",
+   "launch_ms": "1789117371140",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RXLKUSDT": {
    "band": "0.1",
    "base": "rXLK",
@@ -12658,6 +16434,14 @@
    "band": "0.1",
    "base": "rXLV",
    "launch_ms": "1784619100717",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RXMTRUSDT": {
+   "band": "0.1",
+   "base": "rXMTR",
+   "launch_ms": "1789117343313",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -12683,6 +16467,14 @@
    "base": "rXPO",
    "launch_ms": "1785831392138",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RXPUSDT": {
+   "band": "0.1",
+   "base": "rXP",
+   "launch_ms": "1789117487082",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -12726,6 +16518,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RYOUUSDT": {
+   "band": "0.1",
+   "base": "rYOU",
+   "launch_ms": "1789117391846",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RYPFUSDT": {
    "band": "0.1",
    "base": "rYPF",
@@ -12766,6 +16566,30 @@
    "status": "online",
    "type": "stock"
   },
+  "RZETAUSDT": {
+   "band": "0.1",
+   "base": "rZETA",
+   "launch_ms": "1789117343496",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RZGNUSDT": {
+   "band": "0.1",
+   "base": "rZGN",
+   "launch_ms": "1789117368246",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RZGUSDT": {
+   "band": "0.1",
+   "base": "rZG",
+   "launch_ms": "1789117392474",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
   "RZIONUSDT": {
    "band": "0.1",
    "base": "rZION",
@@ -12802,6 +16626,22 @@
    "band": "0.1",
    "base": "rZTS",
    "launch_ms": "1784888315346",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RZUSDT": {
+   "band": "0.1",
+   "base": "rZ",
+   "launch_ms": "1789117392596",
+   "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RZWSUSDT": {
+   "band": "0.1",
+   "base": "rZWS",
+   "launch_ms": "1789117486309",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
