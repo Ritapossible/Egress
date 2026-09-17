@@ -1,7 +1,7 @@
 {
- "captured": "2026-09-16T11:14:20.832156+00:00",
+ "captured": "2026-09-17T11:22:28.181632+00:00",
  "counts": {
-  "crypto": 584,
+  "crypto": 585,
   "metal": 2,
   "stock": 1655
  },
@@ -2492,6 +2492,14 @@
    "launch_ms": "1750755600000",
    "min_order_usdt": "1",
    "status": "online",
+   "type": "crypto"
+  },
+  "MHAUSDT": {
+   "band": "200",
+   "base": "MHA",
+   "launch_ms": "1789646400000",
+   "min_order_usdt": "1",
+   "status": "listed",
    "type": "crypto"
   },
   "MINAUSDT": {
