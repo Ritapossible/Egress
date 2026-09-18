@@ -416,6 +416,18 @@ DESK_JS = """/* The desk's only script. Progressive: with JS off the form posts 
     html += row('Depth source',
       q.source === 'touch' ? 'top of book only' : (q.source || '-'));
     html += row('Market phase', data.phase || '-');
+    // The comparison's own working. A reader who is told the spread is "wider
+    // than usual for this name" is owed the two numbers that produced it.
+    var v = data.verdict || {};
+    if (v.quote_spread_bp !== null && v.quote_spread_bp !== undefined) {
+      html += row('Quote spread now', Number(v.quote_spread_bp).toFixed(2) + ' bp');
+    }
+    if (v.p50_bp) {
+      html += row('This name, ' + (v.phase || '') + ' median',
+        Number(v.p50_bp).toFixed(2) + ' bp over ' + v.snapshots + ' readings');
+      html += row('This name, ' + (v.phase || '') + ' p90',
+        Number(v.p90_bp).toFixed(2) + ' bp');
+    }
     html += row('Basis', 'estimated from the displayed book, not a fill');
     html += '</dl>';
 
@@ -1357,6 +1369,9 @@ def write(out: Path | None = None) -> Path:
     # here so a question costs a small file read rather than a full record read.
     try:
         facts.save_benchmark(snapshots=f["snapshots"])
+        # Per-symbol marks are read from the whole record rather than
+        # from the summaries, so they are built here and not passed in.
+        facts.save_symbol_marks()
     except facts.BenchmarkEmpty as exc:
         # Loud, and the pages still build on the benchmark already on disk.
         print(f"WARNING: benchmark not updated - {exc}")

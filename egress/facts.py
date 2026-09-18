@@ -10,6 +10,7 @@ from __future__ import annotations
 import datetime as dt
 import json
 import statistics as st
+from collections import deque
 from pathlib import Path
 
 from . import config, exitcost, market, sessions, store, universe, validate
@@ -183,6 +184,103 @@ def worked_example(symbols: list[str], notional: float = 25_000.0) -> list[dict]
         record["floor"] = quote.exhausted or quote.source == "touch"
         out.append(record)
     return out
+
+
+# A symbol's own recent spread history, per phase.
+#
+# KEEP is a bounded window, not the whole record: unbounded accumulation across
+# ~2,200 symbols and a thousand snapshots is hundreds of megabytes, and the
+# question being answered is "is this name quoting unusually wide RIGHT NOW",
+# which is about recent behaviour rather than all of history.
+#
+# MIN_MARKS is the floor below which a percentile is noise dressed as a fact. A
+# p50 from four observations is not a typical value, and publishing it would be
+# the same sin as the cross-sectional median it replaces.
+SYMBOL_MARK_KEEP = 96
+SYMBOL_MARK_MIN = 12
+
+
+def by_symbol_phase(root: Path | None = None, keep: int = SYMBOL_MARK_KEEP,
+                    min_marks: int = SYMBOL_MARK_MIN) -> dict:
+    """Each symbol's own recent spread distribution, by phase.
+
+    This exists because the desk was comparing the wrong things. It divided a
+    size-aware exit COST by a cross-sectional median SPREAD and called the
+    result "10x cheaper" - two different quantities, and a comparison the
+    evidence page explicitly forbids ("a median spread is not a cost; it is the
+    price of the first share, not of the position"). It also flattered any
+    liquid name, because the denominator included symbols where the requested
+    size is unfillable at any displayed price: those contribute a wide spread,
+    never a cost.
+
+    The honest comparison is like for like and, better, about the name actually
+    being asked about: this symbol's quote now against this symbol's own
+    typical quote in this phase.
+    """
+    window: dict[tuple[str, str], deque] = {}
+    phase_of: dict[int, str] = {}
+    for day in store.days(root):
+        for row in store.read_day(day, root):
+            value = spread_bp(row)
+            if value is None:
+                continue
+            # Phase is per snapshot, and there are ~2.2M rows: deriving it per
+            # row costs a datetime and a holiday lookup each time.
+            stamp = int(row["snap_ts"])
+            phase = phase_of.get(stamp)
+            if phase is None:
+                phase = phase_of[stamp] = sessions.phase(
+                    dt.datetime.fromtimestamp(stamp / 1000, UTC))
+            key = (row["symbol"], phase)
+            seen = window.get(key)
+            if seen is None:
+                seen = window[key] = deque(maxlen=keep)
+            seen.append(value)
+
+    out: dict[str, dict] = {}
+    for (symbol, phase), values in window.items():
+        if len(values) < min_marks:
+            continue
+        ordered = sorted(values)
+        out.setdefault(symbol, {})[phase] = {
+            "p50": round(_percentile(ordered, 0.5), 2),
+            "p90": round(_percentile(ordered, 0.9), 2),
+            "n": len(ordered),
+        }
+    return out
+
+
+def save_symbol_marks(root: Path | None = None,
+                      marks: dict | None = None) -> Path:
+    """Write the per-symbol marks, never replacing a populated file with nothing.
+
+    Same guard, and for the same reason, as save_benchmark: an empty file
+    raises no error anywhere and silently removes the comparison from every
+    answer on the live site.
+    """
+    root = root or config.STATE
+    root.mkdir(parents=True, exist_ok=True)
+    path = root / "symbol_marks.json"
+    computed = by_symbol_phase(root) if marks is None else marks
+    if not computed and path.exists():
+        try:
+            standing = json.loads(path.read_text()).get("symbols")
+        except (OSError, ValueError):
+            standing = None
+        if standing:
+            raise BenchmarkEmpty(
+                f"computed no symbol marks; keeping the {len(standing)} "
+                f"already in {path.name} rather than blanking the desk")
+    path.write_text(json.dumps(
+        {"generated": dt.datetime.now(UTC).isoformat(timespec="seconds"),
+          "keep": keep_note(), "symbols": computed},
+        indent=1, sort_keys=True))
+    return path
+
+
+def keep_note() -> dict:
+    """The window the marks were taken over, so the page can state it."""
+    return {"observations": SYMBOL_MARK_KEEP, "minimum": SYMBOL_MARK_MIN}
 
 
 def benchmark(snapshots: list[dict] | None = None) -> dict:

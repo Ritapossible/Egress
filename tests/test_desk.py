@@ -250,72 +250,130 @@ class ClientFixturesStayInSync(unittest.TestCase):
 
 
 class TheVerdict(unittest.TestCase):
-    """The answer leads with a judgement, and the judgement comes from the
-    record - not from a threshold somebody typed into a template."""
+    """The comparison is like for like: this name's quote against this name's
+    own recent quotes in the same phase.
+
+    It used to divide a size-aware exit COST by a cross-sectional median
+    SPREAD and call the result "10x cheaper than the median tokenized stock".
+    Two different quantities - the evidence page says so itself, that a median
+    spread is the price of the first share and not of the position - and it
+    flattered every liquid name, because the denominator carried symbols where
+    the size asked for is unfillable at any displayed price.
+    """
 
     MARKS: ClassVar[dict] = {
-        "overnight": {"stock_median_bp": 160.0, "snapshots": 141},
-        "open": {"stock_median_bp": 8.0, "snapshots": 62}}
+        "RTSLAUSDT": {"overnight": {"p50": 4.0, "p90": 9.0, "n": 96},
+                      "open": {"p50": 1.0, "p90": 2.0, "n": 96}},
+        "RNEWUSDT": {"overnight": {"p50": 50.0, "p90": 90.0, "n": 4}},
+    }
 
     def test_the_bands_read_the_way_a_desk_would_say_them(self):
-        for total_bp, expected in ((16.0, "cheap"), (80.0, "cheap"),
-                                   (160.0, "about typical"),
-                                   (400.0, "expensive"),
-                                   (2000.0, "very expensive")):
-            with self.subTest(bp=total_bp):
+        for spread, expected in ((2.0, "tighter than usual"),
+                                 (4.0, "about usual"),
+                                 (6.0, "about usual"),
+                                 (12.0, "wider than usual"),
+                                 (400.0, "far wider than usual")):
+            with self.subTest(bp=spread):
                 self.assertEqual(
-                    desk._verdict(total_bp, "overnight", self.MARKS)["label"],
-                    expected)
+                    desk._verdict(spread, "overnight", "RTSLAUSDT",
+                                  self.MARKS)["label"], expected)
 
-    def test_the_same_cost_is_judged_against_its_own_phase(self):
-        """16 bp is cheap at night and expensive while New York is open.
+    def test_the_same_quote_is_judged_against_its_own_phase(self):
+        """4 bp is normal for this name at night and very wide while open."""
+        self.assertEqual(
+            desk._verdict(4.0, "overnight", "RTSLAUSDT", self.MARKS)["label"],
+            "about usual")
+        self.assertEqual(
+            desk._verdict(4.0, "open", "RTSLAUSDT", self.MARKS)["label"],
+            "wider than usual")
 
-        This is the whole point of comparing per phase: an exit cost is only
-        good or bad relative to what the same market charges at the same hour.
+    def test_the_verdict_does_not_move_with_the_cost(self):
+        """The regression guard for the defect this replaced.
+
+        The cost of leaving 40,000 USDT and the cost of leaving 40 USDT differ
+        enormously and say nothing about whether the QUOTE is unusual. Only the
+        spread may reach this function at all, which is why it takes no cost.
         """
-        self.assertEqual(desk._verdict(16.0, "overnight", self.MARKS)["label"],
-                         "cheap")
-        self.assertEqual(desk._verdict(16.0, "open", self.MARKS)["label"],
-                         "expensive")
+        import inspect
+        params = list(inspect.signature(desk._verdict).parameters)
+        self.assertNotIn("total_bp", params)
+        self.assertEqual(params[0], "spread_bp")
 
-    def test_no_benchmark_means_no_verdict_rather_than_a_guess(self):
-        verdict = desk._verdict(16.0, "overnight", {})
+    def test_a_name_with_too_little_history_says_so(self):
+        """Silence would be worst exactly where it matters most: a new listing
+        is the position most likely to be expensive to leave."""
+        verdict = desk._verdict(120.0, "overnight", "RNEWUSDT", self.MARKS)
         self.assertEqual(verdict["label"], "")
-        self.assertIsNone(verdict["median_bp"])
+        sentence = desk._context(verdict, "RNEWUSDT")
+        self.assertIn("not enough recorded history", sentence)
+        self.assertIn("RNEWUSDT", sentence)
+
+    def test_the_desk_floor_matches_the_one_the_marks_are_built_with(self):
+        """Two constants, deliberately not one import - so this catches drift."""
+        from egress import facts
+        self.assertEqual(desk.MIN_MARKS, facts.SYMBOL_MARK_MIN)
+
+    def test_no_marks_means_no_verdict_rather_than_a_guess(self):
+        verdict = desk._verdict(4.0, "overnight", "RTSLAUSDT", {})
+        self.assertEqual(verdict["label"], "")
+        self.assertIsNone(verdict["p50_bp"])
 
     def test_an_unknown_phase_does_not_invent_a_comparison(self):
-        self.assertEqual(desk._verdict(16.0, "holiday", self.MARKS)["label"], "")
-
-    def test_the_context_sentence_states_the_figure_behind_it(self):
-        verdict = desk._verdict(16.0, "overnight", self.MARKS)
-        sentence = desk._context({}, verdict, "overnight")
-        self.assertIn("10x cheaper", sentence)
-        self.assertIn("160 bp", sentence)
-        self.assertIn("141", sentence)
-
-    def test_no_context_without_a_benchmark(self):
         self.assertEqual(
-            desk._context({}, desk._verdict(16.0, "x", {}), "x"), "")
+            desk._verdict(4.0, "holiday", "RTSLAUSDT", self.MARKS)["label"], "")
 
-    def test_a_missing_benchmark_file_is_not_an_error(self):
+    def test_an_unquotable_book_produces_no_sentence(self):
+        verdict = desk._verdict(None, "overnight", "RTSLAUSDT", self.MARKS)
+        self.assertEqual(desk._context(verdict, "RTSLAUSDT"), "")
+
+    def test_the_context_sentence_states_the_figures_behind_it(self):
+        verdict = desk._verdict(2.0, "overnight", "RTSLAUSDT", self.MARKS)
+        sentence = desk._context(verdict, "RTSLAUSDT")
+        self.assertIn("2.00 bp", sentence)
+        self.assertIn("4.00 bp", sentence)
+        self.assertIn("96", sentence)
+        self.assertIn("RTSLAUSDT", sentence)
+        self.assertIn("tighter than usual", sentence)
+
+    def test_the_tail_is_called_out_when_the_quote_clears_p90(self):
+        loud = desk._context(
+            desk._verdict(20.0, "overnight", "RTSLAUSDT", self.MARKS),
+            "RTSLAUSDT")
+        self.assertIn("nine in ten", loud)
+        quiet = desk._context(
+            desk._verdict(5.0, "overnight", "RTSLAUSDT", self.MARKS),
+            "RTSLAUSDT")
+        self.assertNotIn("nine in ten", quiet)
+
+    def test_a_missing_marks_file_is_not_an_error(self):
         with mock.patch.object(desk.config, "STATE", Path("/nonexistent")):
-            self.assertEqual(desk.benchmark(), {})
+            self.assertEqual(desk.symbol_marks(), {})
 
-    def test_the_benchmark_is_read_from_the_record_not_typed(self):
+    def test_the_marks_are_read_from_the_record_not_typed(self):
         """Perturb the file, and the verdict must follow."""
         import json as _json
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
-            (root / "benchmark.json").write_text(_json.dumps(
-                {"phases": {"overnight": {"stock_median_bp": 4.0,
-                                          "snapshots": 9}}}))
+            (root / "symbol_marks.json").write_text(_json.dumps(
+                {"symbols": {"RTSLAUSDT": {"overnight": {"p50": 40.0,
+                                                         "p90": 90.0,
+                                                         "n": 96}}}}))
             with mock.patch.object(desk.config, "STATE", root):
-                marks = desk.benchmark()
-        # 16 bp against a 4 bp median is 4x - expensive, not cheap. The same
-        # 16 bp against the real 163 bp median reads "cheap".
-        self.assertEqual(desk._verdict(16.0, "overnight", marks)["label"],
-                         "expensive")
+                marks = desk.symbol_marks()
+        # 4 bp against a 40 bp median is a tenth - tight, where the same 4 bp
+        # against the fixture's 4 bp median reads "about usual".
+        self.assertEqual(
+            desk._verdict(4.0, "overnight", "RTSLAUSDT", marks)["label"],
+            "tighter than usual")
+
+    def test_the_spread_comes_off_the_book_the_quote_was_walked_from(self):
+        self.assertAlmostEqual(
+            desk.quote_spread_bp([["99.0", "10"]], [["101.0", "10"]]), 200.0, 1)
+        for bids, asks in (([], [["1", "1"]]), ([["1", "1"]], []),
+                           ([["101", "1"]], [["99", "1"]])):
+            with self.subTest(book=(bids, asks)):
+                self.assertIsNone(desk.quote_spread_bp(bids, asks))
 
 
 class TheAdvice(unittest.TestCase):

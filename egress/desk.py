@@ -137,10 +137,11 @@ def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
     record = out["quote"]
     out["reading"] = _reading(out)
     if record.get("quotable"):
-        verdict = _verdict(record["total_bp"], out["phase"], benchmark())
+        verdict = _verdict(quote_spread_bp(bids, asks), out["phase"],
+                           symbol, symbol_marks())
         out["verdict"] = verdict
-        out["headline"] = _headline(record, verdict)
-        out["context"] = _context(record, verdict, out["phase"])
+        out["headline"] = _headline(record)
+        out["context"] = _context(verdict, symbol)
         out["advice"] = _advice(out, record)
         out["depth_note"] = _depth_note(record)
     else:
@@ -161,48 +162,109 @@ def benchmark(root=None) -> dict:
         return {}
 
 
-# Where an exit sits against the median for its own market phase. The bands are
-# a judgement about wording, not a measurement, so they are named here rather
-# than buried in a formatter.
-BANDS = ((0.5, "cheap"), (1.5, "about typical"), (4.0, "expensive"))
+# Where a quote sits against THIS NAME'S own recent quotes in the same phase.
+#
+# What this replaced: the desk used to divide a size-aware exit COST by a
+# cross-sectional median SPREAD and report "10x cheaper than the median
+# tokenized stock". Those are different quantities, and the evidence page says
+# so in as many words - a median spread is the price of the first share, not of
+# the position. It also flattered every liquid name, because the denominator
+# included symbols where the requested size is unfillable at any displayed
+# price: those contribute a wide spread and never a cost at all.
+#
+# So the comparison is now like for like, and about the name actually asked
+# about. The cost is reported on its own and divided by nothing.
+BANDS = ((0.6, "tighter than usual"), (1.5, "about usual"),
+         (4.0, "wider than usual"))
+WIDEST = "far wider than usual"
+
+# The desk enforces the same floor the marks are built with, rather than
+# trusting the file. A p50 from four readings is noise wearing the costume of a
+# fact, and publishing one would repeat the sin this comparison replaced.
+# tests/test_desk.py asserts this stays equal to facts.SYMBOL_MARK_MIN, which is
+# not imported here: the serverless function should not pull in the whole
+# record-reading stack to learn one integer.
+MIN_MARKS = 12
 
 # Below this a saving rounds to 0 or 1 bp and is not worth the round
 # trips, the timing risk, or the sentence.
 WORTH_SPLITTING_BP = 2.0
 
 
-def _verdict(total_bp: float, phase: str, marks: dict) -> dict:
-    """One word for how this exit compares, and the figure behind it."""
-    row = marks.get(phase) or {}
-    median = row.get("stock_median_bp")
-    if not median or median <= 0:
-        return {"label": "", "median_bp": None, "ratio": None,
-                "snapshots": row.get("snapshots")}
-    ratio = total_bp / median
-    label = "very expensive"
+def symbol_marks(root=None) -> dict:
+    """Per-symbol, per-phase spread percentiles. Absent is fine.
+
+    Without it the desk simply stops offering a comparison rather than
+    inventing one, which is the same contract benchmark() has.
+    """
+    path = (root or config.STATE) / "symbol_marks.json"
+    try:
+        return json.loads(path.read_text()).get("symbols", {})
+    except (OSError, ValueError):
+        return {}
+
+
+def quote_spread_bp(bids: list, asks: list) -> float | None:
+    """The touch spread of the book just fetched, in basis points.
+
+    This is the quantity the marks are made of, so it is the only thing that
+    may be compared against them.
+    """
+    if not bids or not asks:
+        return None
+    bid, ask = float(bids[0][0]), float(asks[0][0])
+    if bid <= 0 or ask <= 0 or ask <= bid:
+        return None
+    return (ask - bid) / ((ask + bid) / 2) * 1e4
+
+
+def _verdict(spread_bp: float | None, phase: str, symbol: str,
+             marks: dict) -> dict:
+    """How this name is quoting against its own recent history in this phase."""
+    row = (marks.get(symbol) or {}).get(phase) or {}
+    typical, seen = row.get("p50"), row.get("n")
+    out = {"basis": "this symbol's own recent spread, same phase",
+           "phase": phase,
+           "quote_spread_bp": round(spread_bp, 2) if spread_bp is not None else None,
+           "p50_bp": typical, "p90_bp": row.get("p90"), "snapshots": seen,
+           "label": "", "ratio": None}
+    if (spread_bp is None or not typical or typical <= 0
+            or not seen or seen < MIN_MARKS):
+        return out
+    ratio = spread_bp / typical
+    label = WIDEST
     for ceiling, word in BANDS:
-        # Inclusive: exactly half the median cost is cheap, not "about typical".
         if ratio <= ceiling:
             label = word
             break
-    return {"label": label, "median_bp": median, "ratio": round(ratio, 2),
-            "snapshots": row.get("snapshots")}
+    out["ratio"] = round(ratio, 2)
+    out["label"] = label
+    return out
 
 
-def _context(quote: dict, verdict: dict, phase: str) -> str:
-    """The comparison sentence, or nothing if there is no record to compare to."""
+def _context(verdict: dict, symbol: str) -> str:
+    """The comparison sentence, or nothing when there is nothing to compare to.
+
+    A name with too little history gets an explicit statement of that rather
+    than silence: a new listing is the position most likely to be expensive to
+    leave, so "we cannot say yet" is the answer that matters most there.
+    """
     if not verdict.get("label"):
-        return ""
-    median, ratio = verdict["median_bp"], verdict["ratio"]
-    if ratio < 1:
-        scale = f"about {1 / ratio:,.0f}x cheaper than"
-    elif ratio < 1.5:
-        scale = "in line with"
-    else:
-        scale = f"about {ratio:,.0f}x more than"
-    return (f"That is {scale} the median tokenized stock in the same "
-            f"{phase} conditions ({median:,.0f} bp across "
-            f"{verdict['snapshots']:,} snapshots).")
+        if verdict.get("quote_spread_bp") is None:
+            return ""
+        return (f"There is not enough recorded history for {symbol} in the "
+                f"{verdict['phase']} phase to say whether that quote is normal "
+                f"for this name yet.")
+    now, typical = verdict["quote_spread_bp"], verdict["p50_bp"]
+    wide = verdict.get("p90_bp")
+    tail = ""
+    if wide and now > wide:
+        tail = (" That is wider than nine in ten of the recent readings for "
+                "this name in this phase.")
+    return (f"The quote itself is {now:,.2f} bp right now. This name's own "
+            f"{verdict['phase']} median is {typical:,.2f} bp across "
+            f"{verdict['snapshots']:,} readings, so the spread is "
+            f"{verdict['label']} for {symbol}.{tail}")
 
 
 def _advice(out: dict, quote: dict) -> str:
@@ -234,13 +296,20 @@ def _depth_note(quote: dict) -> str:
     return ""
 
 
-def _headline(quote: dict, verdict: dict) -> str:
-    """The first line: the number, the money, and what it means."""
+def _headline(quote: dict) -> str:
+    """The first line: the number and the money, compared to nothing.
+
+    It used to carry a one-word verdict - "17 bp - cheap" - earned by dividing
+    this cost by a median spread. The word now sits with the quote, in the
+    sentence underneath, where the thing it describes actually lives.
+    """
     floor = ">" if quote.get("exhausted") or quote.get("source") == "touch" else ""
-    label = f" - {verdict['label']}" if verdict.get("label") else ""
-    return (f"{floor}{quote['total_bp']:,.0f} bp{label}. "
-            f"About {floor}{quote['total_usdt']:,.0f} USDT to get out of "
-            f"{quote['requested_usdt']:,.0f}.")
+    fee = quote.get("fee_bp")
+    split = (f" {quote.get('slippage_bp', 0):,.1f} bp of that is the book, "
+             f"{fee:,.0f} bp the assumed taker fee." if fee else "")
+    return (f"{floor}{quote['total_bp']:,.0f} bp to leave "
+            f"{quote['requested_usdt']:,.0f} USDT - about "
+            f"{floor}{quote['total_usdt']:,.0f} USDT.{split}")
 
 
 def _reading(out: dict) -> str:

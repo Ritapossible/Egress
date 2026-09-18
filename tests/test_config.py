@@ -58,7 +58,8 @@ class RequestBudget(unittest.TestCase):
         source = "\n".join((ROOT / "egress" / name).read_text()
                             for name in ("desk.py", "universe.py"))
         wanted = set(re.findall(r'config\.STATE\) / "([^"]+\.json)"', source))
-        self.assertEqual(wanted, {"universe.json", "benchmark.json"},
+        self.assertEqual(wanted, {"universe.json", "benchmark.json",
+                                  "symbol_marks.json"},
                          "the desk reads a state file this test does not know "
                          "about - check it is in vercel.json includeFiles")
         pattern = self.included()

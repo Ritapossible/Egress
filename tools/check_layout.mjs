@@ -7,7 +7,19 @@
  *
  *   node tools/check_layout.mjs [--pages docs]
  */
-import { chromium } from 'playwright';
+import { createRequire } from 'node:module';
+import { execSync } from 'node:child_process';
+
+/* Resolve Playwright from a local install if there is one, otherwise the global
+ * root: this repo ships with no node_modules on purpose. */
+const { chromium } = (() => {
+  const roots = [import.meta.url];
+  try { roots.push(`${execSync('npm root -g').toString().trim()}/`); } catch { /* no npm */ }
+  for (const root of roots) {
+    try { return createRequire(root)('playwright'); } catch { /* next */ }
+  }
+  throw new Error('playwright not found - run `npm install playwright`');
+})();
 import { readdirSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
@@ -22,7 +34,7 @@ if (!pages.length) {
   process.exit(1);
 }
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
 let failures = 0;
 
 for (const width of widths) {

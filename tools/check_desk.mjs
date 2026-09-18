@@ -6,7 +6,20 @@
  *
  *   node tools/check_desk.mjs
  */
-import { chromium } from 'playwright';
+import { createRequire } from 'node:module';
+import { execSync } from 'node:child_process';
+
+/* Playwright is a developer tool, not a dependency of the product. Take it from
+ * a local install if there is one and otherwise from the global root, rather
+ * than adding it to a tree that ships with none. */
+const { chromium } = (() => {
+  const roots = [import.meta.url];
+  try { roots.push(`${execSync('npm root -g').toString().trim()}/`); } catch { /* no npm */ }
+  for (const root of roots) {
+    try { return createRequire(root)('playwright'); } catch { /* next */ }
+  }
+  throw new Error('playwright not found - run `npm install playwright`');
+})();
 import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
 import { resolve } from 'node:path';
@@ -22,7 +35,10 @@ const expect = {
   error:      ['.verdict.bad'],
 };
 
-const browser = await chromium.launch();
+/* CHROMIUM_PATH pins a browser already on the machine, for a sandbox whose
+ * Playwright build differs from the one it shipped with. */
+const browser = await chromium.launch(
+  process.env.CHROMIUM_PATH ? { executablePath: process.env.CHROMIUM_PATH } : {});
 const context = await browser.newContext({ viewport: { width: 390, height: 844 },
                                            isMobile: true });
 const page = await context.newPage();
