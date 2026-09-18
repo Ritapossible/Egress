@@ -1,7 +1,7 @@
 {
- "captured": "2026-09-17T11:22:28.181632+00:00",
+ "captured": "2026-09-18T10:56:16.290928+00:00",
  "counts": {
-  "crypto": 585,
+  "crypto": 581,
   "metal": 2,
   "stock": 1655
  },
@@ -930,14 +930,6 @@
    "band": "0.02",
    "base": "CAKE",
    "launch_ms": "1622533140000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "CAMPUSDT": {
-   "band": "0.02",
-   "base": "CAMP",
-   "launch_ms": "1756285200000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -2495,11 +2487,11 @@
    "type": "crypto"
   },
   "MHAUSDT": {
-   "band": "200",
+   "band": "0.1",
    "base": "MHA",
    "launch_ms": "1789646400000",
    "min_order_usdt": "1",
-   "status": "listed",
+   "status": "online",
    "type": "crypto"
   },
   "MINAUSDT": {
@@ -2842,14 +2834,6 @@
    "band": "0.02",
    "base": "OP",
    "launch_ms": "1654023600000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "ORBSUSDT": {
-   "band": "0.02",
-   "base": "ORBS",
-   "launch_ms": "1697205601000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -8653,14 +8637,6 @@
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
-  },
-  "RHEAUSDT": {
-   "band": "0.02",
-   "base": "RHEA",
-   "launch_ms": "1753884000000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
   },
   "RHEIUSDT": {
    "band": "0.1",
@@ -17234,14 +17210,6 @@
    "band": "0.02",
    "base": "TRX",
    "launch_ms": "1550736060000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "TURBOUSDT": {
-   "band": "0.02",
-   "base": "TURBO",
-   "launch_ms": "1683287588174",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
