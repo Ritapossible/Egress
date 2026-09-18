@@ -55,10 +55,26 @@ from the record on every crawl - nothing in this README is a measurement,
 because a number typed into a document goes stale the moment the record moves
 and nobody notices.
 
-What the record shows so far: the spread on a tokenized stock widens by more
-than an order of magnitude once New York closes, while the crypto control on the
-same matching engine and the same fee schedule does not move. Same venue, same
+What the record shows so far: the spread on a tokenized stock widens by roughly
+an order of magnitude once New York closes, while the crypto control on the same
+matching engine and the same fee schedule does not move. Same venue, same
 engine, same fees - so the effect is not venue-wide.
+
+**How long a name has been listed matters more than anything else measured
+here.** The headline medians cover names listed thirty days or more, with
+recent listings reported beside them rather than mixed in. That split is not
+tidiness: Bitget listed 480 tokenized stocks in a single wave and the median
+taken across every quoted name jumped by more than half, with nothing happening
+in the market at all. Split apart, recently listed names cost several times more
+to leave overnight than established ones - and a new listing is exactly the
+position a holder is least likely to know is expensive to leave. Both cohorts
+are published, and so is the blended figure, so the composition effect stays
+visible instead of being quietly corrected away.
+
+The listed universe is re-read hourly while the crawl runs, and the site says
+how old that count is whenever it is worth saying. Listings arrive in bulk; a
+count nobody can see the age of is the kind of stale number this project exists
+to avoid.
 
 **A few days is not a study.** Every table on the site prints the snapshot count
 behind it and the gaps in the record, so you can see how thin it still is.
