@@ -39,6 +39,8 @@
     // against, then whether to do anything about it.
     html += '<p class="verdict">' + esc(data.headline || data.reading || '') + '</p>';
     if (data.context) html += '<p class="ctx">' + esc(data.context) + '</p>';
+    // A name the site publicly calls unreliable says so where it is priced.
+    if (data.feed_note) html += '<p class="ctx">' + esc(data.feed_note) + '</p>';
     if (data.depth_note) html += '<p class="warn">' + esc(data.depth_note) + '</p>';
     if (data.advice) html += '<p class="advice">' + esc(data.advice) + '</p>';
 

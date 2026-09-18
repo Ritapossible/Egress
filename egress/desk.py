@@ -144,6 +144,12 @@ def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
         out["context"] = _context(verdict, symbol)
         out["advice"] = _advice(out, record)
         out["depth_note"] = _depth_note(record)
+        note = _feed_note(symbol, feed_flags())
+        if note:
+            out["feed_note"] = note
+            out["unverified"].append(
+                f"{symbol}: the venue's own volume feeds disagree about this "
+                f"symbol, so its reported turnover is not trustworthy")
     else:
         out["headline"] = "No two-sided market - this cannot be priced."
         out["context"] = ("The venue is not showing both a bid and an ask for "
@@ -202,6 +208,35 @@ def symbol_marks(root=None) -> dict:
         return json.loads(path.read_text()).get("symbols", {})
     except (OSError, ValueError):
         return {}
+
+
+def feed_flags(root=None) -> dict:
+    """Symbols the validation page names as having disagreeing volume feeds.
+
+    The site excluded these from its own validation and then priced them here
+    without a word. A holder asking about one is entitled to know the venue's
+    two volume feeds disagree about it, even though that does not touch the
+    book the cost was walked from.
+    """
+    path = (root or config.STATE) / "symbol_marks.json"
+    try:
+        return json.loads(path.read_text()).get("feed_flags", {})
+    except (OSError, ValueError):
+        return {}
+
+
+def _feed_note(symbol: str, flags: dict) -> str:
+    """Say it plainly, and say what it does and does not affect."""
+    row = flags.get(symbol)
+    if not row:
+        return ""
+    ratio = row.get("ratio")
+    scale = f" by a factor of {ratio:,.1f}" if ratio else ""
+    return (f"Note: {symbol} is one of the symbols this site excludes from its "
+            f"own validation, because the venue's two volume feeds disagree "
+            f"about it{scale}. The cost above is walked from the order book and "
+            f"is unaffected, but do not treat this name's reported turnover as "
+            f"reliable.")
 
 
 def quote_spread_bp(bids: list, asks: list) -> float | None:

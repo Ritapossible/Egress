@@ -20,6 +20,13 @@ UTC = dt.timezone.utc
 # that a hardcoded constant gets silently wrong for five months of the year.
 OPEN_ET = dt.time(9, 30)
 CLOSE_ET = dt.time(16, 0)
+# US extended hours. These matter because the claim being measured is about
+# whether a market maker can hedge: in pre and post there is a real, thin book
+# on the reference venue, and between 20:00 and 04:00 ET there is none at all.
+# Folding all three into one "overnight" bucket averaged a regime that has some
+# liquidity together with one that has none.
+PRE_OPEN_ET = dt.time(4, 0)
+POST_CLOSE_ET = dt.time(20, 0)
 
 # US daylight saving: second Sunday in March to first Sunday in November.
 # Computed rather than tabulated so this does not expire with a hardcoded year.
@@ -83,12 +90,40 @@ def is_open(when: dt.datetime) -> bool:
     return opens <= when.timetz().replace(tzinfo=None) < closes
 
 
+def eastern(when: dt.datetime) -> dt.datetime:
+    """The same instant in Eastern time.
+
+    The offset is chosen from the UTC date, which is what `is_open` already
+    does; keeping one convention matters more here than the half hour it can
+    misplace at the turn of a day, because the two must agree on where the
+    regular session starts and ends.
+    """
+    when = when.astimezone(UTC)
+    return when - dt.timedelta(hours=utc_offset_hours(when.date()))
+
+
 def phase(when: dt.datetime) -> str:
-    """open | overnight | weekend | holiday - the four regimes to compare."""
+    """open | pre | post | overnight | weekend | holiday.
+
+    Pre and post are split out because they are not the same regime as a shut
+    market. The reference venue quotes in both, thinly, so a maker can still
+    hedge; between 20:00 and 04:00 ET it cannot. Measuring them as one bucket
+    mixed a market with some liquidity into a claim about having none.
+    """
     when = when.astimezone(UTC)
     day = when.date()
     if day in HOLIDAYS:
         return "holiday"
     if day.weekday() > 4:
         return "weekend"
-    return "open" if is_open(when) else "overnight"
+    if is_open(when):
+        return "open"
+    # In Eastern time, not UTC: the post window is 16:00-20:00 ET, which is
+    # 20:00-00:00 UTC in summer, and a UTC comparison cannot express a window
+    # whose end wraps past midnight.
+    clock = eastern(when).time()
+    if PRE_OPEN_ET <= clock < OPEN_ET:
+        return "pre"
+    if CLOSE_ET <= clock < POST_CLOSE_ET:
+        return "post"
+    return "overnight"

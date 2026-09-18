@@ -446,3 +446,55 @@ class PreIpoListings(unittest.TestCase):
 
     def test_an_unlisted_ticker_stays_unlisted(self):
         self.assertIsNone(desk.resolve("ZZQQ", self.LISTED))
+
+
+class FeedDisagreement(unittest.TestCase):
+    """A name the site publicly calls unreliable says so where it is priced.
+
+    The validation page names the symbols whose two venue volume feeds
+    disagree, excludes them, and explains why. The desk then priced those same
+    names without a word, which left the site auditing a symbol in one place
+    and quietly trusting it in another.
+    """
+
+    FLAGS: ClassVar[dict] = {
+        "RTSLAUSDT": {"ratio": 2.4,
+                      "reason": "candle volume is 2.4x the ticker's 24h turnover"},
+    }
+
+    def test_a_flagged_symbol_is_named_and_the_factor_given(self):
+        note = desk._feed_note("RTSLAUSDT", self.FLAGS)
+        self.assertIn("RTSLAUSDT", note)
+        self.assertIn("2.4", note)
+        self.assertIn("volume feeds disagree", note)
+
+    def test_it_says_what_the_disagreement_does_not_affect(self):
+        """The cost is walked from the book, which the volume feeds do not touch.
+        Leaving that out would imply the quote itself is suspect."""
+        note = desk._feed_note("RTSLAUSDT", self.FLAGS)
+        self.assertIn("walked from the order book", note)
+        self.assertIn("unaffected", note)
+
+    def test_an_unflagged_symbol_gets_no_note(self):
+        self.assertEqual(desk._feed_note("RNVDAUSDT", self.FLAGS), "")
+
+    def test_a_missing_ratio_still_produces_a_warning(self):
+        note = desk._feed_note("X", {"X": {"reason": "feeds disagree"}})
+        self.assertIn("X", note)
+        self.assertNotIn("factor of", note)
+
+    def test_a_missing_marks_file_means_no_flags_rather_than_an_error(self):
+        with mock.patch.object(desk.config, "STATE", Path("/nonexistent")):
+            self.assertEqual(desk.feed_flags(), {})
+
+    def test_the_flags_are_read_from_the_file_not_typed(self):
+        import json as _json
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "symbol_marks.json").write_text(_json.dumps(
+                {"symbols": {}, "feed_flags": {"RZZZUSDT": {"ratio": 9.9,
+                                                            "reason": "r"}}}))
+            with mock.patch.object(desk.config, "STATE", root):
+                flags = desk.feed_flags()
+        self.assertIn("9.9", desk._feed_note("RZZZUSDT", flags))

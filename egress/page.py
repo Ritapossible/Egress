@@ -386,6 +386,8 @@ DESK_JS = """/* The desk's only script. Progressive: with JS off the form posts 
     // against, then whether to do anything about it.
     html += '<p class="verdict">' + esc(data.headline || data.reading || '') + '</p>';
     if (data.context) html += '<p class="ctx">' + esc(data.context) + '</p>';
+    // A name the site publicly calls unreliable says so where it is priced.
+    if (data.feed_note) html += '<p class="ctx">' + esc(data.feed_note) + '</p>';
     if (data.depth_note) html += '<p class="warn">' + esc(data.depth_note) + '</p>';
     if (data.advice) html += '<p class="advice">' + esc(data.advice) + '</p>';
 
@@ -562,6 +564,40 @@ def _phase_rows(phases: list[dict]) -> str:
             f"<td class='n'>{ratio}</td>"
             f"<td class='n'>{row['snapshots']}</td></tr>")
     return "\n".join(out)
+
+
+def _phase_note(phases: list[dict]) -> str:
+    """The result that splitting the closed window produced.
+
+    Pre and post used to be folded into one "overnight" bucket on the theory
+    that the reference market was shut. It is not quite shut in either: the
+    venue quotes thinly in both, so a maker can still hedge there, and the
+    guess was that separating them would make the closed-market figure worse.
+
+    The record says the opposite, and says it about pre-market specifically.
+    That is worth a paragraph rather than a quiet re-bucketing.
+    """
+    by = {r["phase"]: r for r in phases}
+    need = ("open", "pre", "post", "overnight")
+    if not all(by.get(k, {}).get("stock_established") for k in need):
+        return ""
+    val = {k: by[k]["stock_established"] for k in need}
+    if max(("pre", "post", "overnight"), key=lambda k: val[k]) != "pre":
+        return ""
+    return (
+        '\n    <h3 class="sub">The worst hour to leave is not the middle of '
+        'the night</h3>\n'
+        '    <p class="say">Splitting the closed window into pre-market, '
+        'after-hours and the genuinely shut hours was expected to flatter the '
+        'overnight figure: the reference venue quotes in pre and post, thinly, '
+        'so a maker can still hedge there. It did the opposite. Established '
+        f'names sit at <b>{val["open"]:,.1f} bp</b> while New York trades, '
+        f'<b>{val["overnight"]:,.1f} bp</b> in the shut hours, '
+        f'<b>{val["post"]:,.1f} bp</b> after the close - and '
+        f'<b>{val["pre"]:,.1f} bp</b> in the pre-market, the widest of the '
+        'four. The hour before the opening bell is the most expensive time to '
+        'leave a tokenized stock, and it is the hour a holder reacting to '
+        'overnight news is most likely to be trying to.</p>')
 
 
 def _composition_note(phases: list[dict]) -> str:
@@ -951,6 +987,7 @@ def evidence_body(f: dict) -> str:
     both columns moved together the effect would be venue-wide and this whole
     site would be wrong.</p>
 
+{_phase_note(f['phases'])}
 {_composition_note(f['phases'])}
 
     <div class="caveat">This is a record in progress, not a finished study. The
@@ -1371,7 +1408,7 @@ def write(out: Path | None = None) -> Path:
         facts.save_benchmark(snapshots=f["snapshots"])
         # Per-symbol marks are read from the whole record rather than
         # from the summaries, so they are built here and not passed in.
-        facts.save_symbol_marks()
+        facts.save_symbol_marks(flags=facts.feed_flags(f.get("validation")))
     except facts.BenchmarkEmpty as exc:
         # Loud, and the pages still build on the benchmark already on disk.
         print(f"WARNING: benchmark not updated - {exc}")

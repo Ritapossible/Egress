@@ -3,8 +3,8 @@
   "at": "2026-09-15T10:56:41+00:00",
   "basis": "estimated",
   "error": "the venue would not return a book for RTSLAUSDT: http 503",
-  "phase": "overnight",
-  "question": "q",
+  "phase": "post",
+  "question": "cost to exit 40000 USDT of TSLA",
   "spec": {
    "confident": true,
    "model": "stub",
@@ -17,11 +17,12 @@
   "advice": "Splitting the order into smaller ones does not help against this book.",
   "at": "2026-09-15T10:56:41+00:00",
   "basis": "estimated",
-  "context": "That is about 10x cheaper than the median tokenized stock in the same overnight conditions (163 bp across 141 snapshots).",
+  "context": "The quote itself is 13.96 bp right now. This name's own post median is 2.46 bp across 96 readings, so the spread is far wider than usual for RTSLAUSDT. That is wider than nine in ten of the recent readings for this name in this phase.",
   "depth_note": "The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
-  "headline": ">17 bp - cheap. About >68 USDT to get out of 40,000.",
+  "feed_note": "Note: RTSLAUSDT is one of the symbols this site excludes from its own validation, because the venue's two volume feeds disagree about it by a factor of 2.0. The cost above is walked from the order book and is unaffected, but do not treat this name's reported turnover as reliable.",
+  "headline": ">17 bp to leave 40,000 USDT - about >68 USDT. 7.0 bp of that is the book, 10 bp the assumed taker fee.",
   "max_exit_200bp": 358.0,
-  "phase": "overnight",
+  "phase": "post",
   "plan": [
    {
     "assumption_best": "the book fully refills between clips",
@@ -66,9 +67,9 @@
     "worst_case_bp": 16.98
    }
   ],
-  "question": "q",
+  "question": "cost to exit 40000 USDT of TSLA",
   "quote": {
-   "at": "2026-09-15T10:56:41.901949+00:00",
+   "at": "2026-09-18T22:08:11.390086+00:00",
    "basis": "estimated",
    "book_usdt": 358.0,
    "exhausted": true,
@@ -105,7 +106,7 @@
    ],
    "vwap": 358.0
   },
-  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about >17 bp (>68 USDT) in one clip, with the overnight book as it stands. The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
+  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about >17 bp (>68 USDT) in one clip, with the post book as it stands. The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
   "spec": {
    "confident": true,
    "model": "stub",
@@ -118,30 +119,36 @@
    "a real order moves the book this is measured against",
    "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs",
    "the displayed book absorbed only 0.9% of this position; the rest has no quoted price",
-   "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it"
+   "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it",
+   "RTSLAUSDT: the venue's own volume feeds disagree about this symbol, so its reported turnover is not trustworthy"
   ],
   "verdict": {
-   "label": "cheap",
-   "median_bp": 162.6,
-   "ratio": 0.1,
-   "snapshots": 141
+   "basis": "this symbol's own recent spread, same phase",
+   "label": "far wider than usual",
+   "p50_bp": 2.46,
+   "p90_bp": 5.02,
+   "phase": "post",
+   "quote_spread_bp": 13.96,
+   "ratio": 5.67,
+   "snapshots": 96
   }
  },
  "priced": {
-  "advice": "Splitting it up saves under 2 bp even if the book fully refills, so it is not worth the effort here.",
+  "advice": "Splitting the order into smaller ones does not help against this book.",
   "at": "2026-09-15T10:56:41+00:00",
   "basis": "estimated",
-  "context": "The quote itself is 1.92 bp right now. This name's own overnight median is 3.80 bp across 96 readings, so the spread is tighter than usual for RTSLAUSDT.",
+  "context": "The quote itself is 99.50 bp right now. This name's own post median is 2.46 bp across 96 readings, so the spread is far wider than usual for RTSLAUSDT. That is wider than nine in ten of the recent readings for this name in this phase.",
   "depth_note": "",
-  "headline": "17 bp to leave 40,000 USDT - about 67 USDT. 6.8 bp of that is the book, 10 bp the assumed taker fee.",
-  "max_exit_200bp": 617223.87,
-  "phase": "overnight",
+  "feed_note": "Note: RTSLAUSDT is one of the symbols this site excludes from its own validation, because the venue's two volume feeds disagree about it by a factor of 2.0. The cost above is walked from the order book and is unaffected, but do not treat this name's reported turnover as reliable.",
+  "headline": "60 bp to leave 40,000 USDT - about 239 USDT. 49.8 bp of that is the book, 10 bp the assumed taker fee.",
+  "max_exit_200bp": 99500.0,
+  "phase": "post",
   "plan": [
    {
     "assumption_best": "the book fully refills between clips",
     "assumption_worst": "the book never refills (identical to one clip)",
     "basis": "estimated",
-    "best_case_bp": 16.8,
+    "best_case_bp": 59.75,
     "notional_usdt": 40000.0,
     "quotable": true,
     "slices": 1,
@@ -149,13 +156,13 @@
     "unverified": [
      "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
     ],
-    "worst_case_bp": 16.8
+    "worst_case_bp": 59.75
    },
    {
     "assumption_best": "the book fully refills between clips",
     "assumption_worst": "the book never refills (identical to one clip)",
     "basis": "estimated",
-    "best_case_bp": 16.26,
+    "best_case_bp": 59.75,
     "notional_usdt": 40000.0,
     "quotable": true,
     "slices": 4,
@@ -163,13 +170,13 @@
     "unverified": [
      "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
     ],
-    "worst_case_bp": 16.8
+    "worst_case_bp": 59.75
    },
    {
     "assumption_best": "the book fully refills between clips",
     "assumption_worst": "the book never refills (identical to one clip)",
     "basis": "estimated",
-    "best_case_bp": 15.88,
+    "best_case_bp": 59.75,
     "notional_usdt": 40000.0,
     "quotable": true,
     "slices": 12,
@@ -177,18 +184,18 @@
     "unverified": [
      "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
     ],
-    "worst_case_bp": 16.8
+    "worst_case_bp": 59.75
    }
   ],
-  "question": "what does leaving 40000 USDT of TSLA cost?",
+  "question": "cost to exit 40000 USDT of TSLA",
   "quote": {
-   "at": "2026-09-18T21:36:29.933703+00:00",
+   "at": "2026-09-18T22:08:11.376334+00:00",
    "basis": "estimated",
-   "book_usdt": 617223.87,
+   "book_usdt": 99500.0,
    "exhausted": false,
    "fee_bp": 10.0,
-   "filled_usdt": 39972.81,
-   "levels_used": 6,
+   "filled_usdt": 39801.0,
+   "levels_used": 1,
    "limits": {
     "can_correct": [
      "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs"
@@ -198,24 +205,24 @@
      "a real order moves the book this is measured against"
     ]
    },
-   "quantity": 109.78605443,
+   "quantity": 398.00995025,
    "quotable": true,
-   "reference": 364.345,
+   "reference": 100.5,
    "requested_usdt": 40000.0,
    "side": "sell",
-   "slippage_bp": 6.8,
+   "slippage_bp": 49.75,
    "source": "orderbook",
    "symbol": "RTSLAUSDT",
-   "total_bp": 16.8,
-   "total_usdt": 67.2,
+   "total_bp": 59.75,
+   "total_usdt": 239.0,
    "unverified": [
     "displayed size is not guaranteed - quotes can be withdrawn before a fill",
     "a real order moves the book this is measured against",
     "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs"
    ],
-   "vwap": 364.09734
+   "vwap": 100.0
   },
-  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about 17 bp (67 USDT) in one clip, with the overnight book as it stands.",
+  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about 60 bp (239 USDT) in one clip, with the post book as it stands.",
   "spec": {
    "confident": true,
    "model": "stub",
@@ -226,16 +233,17 @@
   "unverified": [
    "displayed size is not guaranteed - quotes can be withdrawn before a fill",
    "a real order moves the book this is measured against",
-   "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs"
+   "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs",
+   "RTSLAUSDT: the venue's own volume feeds disagree about this symbol, so its reported turnover is not trustworthy"
   ],
   "verdict": {
    "basis": "this symbol's own recent spread, same phase",
-   "label": "tighter than usual",
-   "p50_bp": 3.8,
-   "p90_bp": 6.53,
-   "phase": "overnight",
-   "quote_spread_bp": 1.92,
-   "ratio": 0.51,
+   "label": "far wider than usual",
+   "p50_bp": 2.46,
+   "p90_bp": 5.02,
+   "phase": "post",
+   "quote_spread_bp": 99.5,
+   "ratio": 40.45,
    "snapshots": 96
   }
  },
@@ -244,10 +252,10 @@
   "basis": "estimated",
   "context": "The venue is not showing both a bid and an ask for this symbol right now, so there is no mid to measure an exit against.",
   "headline": "No two-sided market - this cannot be priced.",
-  "phase": "overnight",
-  "question": "q",
+  "phase": "post",
+  "question": "cost to exit 40000 USDT of TSLA",
   "quote": {
-   "at": "2026-09-15T10:56:41.902462+00:00",
+   "at": "2026-09-18T22:08:11.402954+00:00",
    "basis": "estimated",
    "book_usdt": 0.0,
    "exhausted": true,

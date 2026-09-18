@@ -19,10 +19,38 @@ def at(y, m, d, hh, mm=0):
 
 class Phases(unittest.TestCase):
     def test_a_weekday_crosses_open_and_close(self):
-        self.assertEqual(sessions.phase(at(2026, 9, 14, 13, 29)), "overnight")
+        self.assertEqual(sessions.phase(at(2026, 9, 14, 13, 29)), "pre")
         self.assertEqual(sessions.phase(at(2026, 9, 14, 13, 30)), "open")
         self.assertEqual(sessions.phase(at(2026, 9, 14, 19, 59)), "open")
-        self.assertEqual(sessions.phase(at(2026, 9, 14, 20, 0)), "overnight")
+        self.assertEqual(sessions.phase(at(2026, 9, 14, 20, 0)), "post")
+
+    def test_extended_hours_are_their_own_regimes(self):
+        """Pre and post are not a shut market: the reference venue quotes in
+        both, thinly, so a maker can still hedge. Measured on this record, pre
+        is the WIDEST phase of all - wider than 3am - which is precisely the
+        finding one lumped "overnight" bucket was averaging away."""
+        # 2026-09-14 is a Monday in EDT, so ET = UTC - 4.
+        self.assertEqual(sessions.phase(at(2026, 9, 14, 7, 59)), "overnight")
+        self.assertEqual(sessions.phase(at(2026, 9, 14, 8, 0)), "pre")
+        self.assertEqual(sessions.phase(at(2026, 9, 14, 13, 29)), "pre")
+        self.assertEqual(sessions.phase(at(2026, 9, 14, 20, 0)), "post")
+        self.assertEqual(sessions.phase(at(2026, 9, 14, 23, 59)), "post")
+
+    def test_the_post_window_survives_wrapping_past_midnight_utc(self):
+        """16:00-20:00 ET is 20:00-00:00 UTC in summer. A UTC-time comparison
+        cannot express a window whose end wraps, which is why the phase is
+        decided in Eastern time."""
+        self.assertEqual(sessions.phase(at(2026, 9, 14, 22, 0)), "post")
+        # 00:05 UTC Tuesday is 20:05 ET Monday - past the post close.
+        self.assertEqual(sessions.phase(at(2026, 9, 15, 0, 5)), "overnight")
+        self.assertEqual(sessions.phase(at(2026, 9, 15, 3, 0)), "overnight")
+
+    def test_extended_hours_do_not_leak_into_the_weekend(self):
+        """A Saturday is a shut market at every hour, quoted or not."""
+        for hour in (8, 13, 20, 23):
+            with self.subTest(hour=hour):
+                self.assertEqual(sessions.phase(at(2026, 9, 12 + 1, hour)),
+                                 "weekend")
 
     def test_weekends_are_never_open(self):
         for day, label in ((12, "weekend"), (13, "weekend")):
@@ -76,7 +104,10 @@ class DaylightSaving(unittest.TestCase):
         """The regression: 13:45 UTC in December is 08:45 in New York."""
         early = dt.datetime(2026, 12, 15, 13, 45, tzinfo=dt.timezone.utc)
         self.assertFalse(sessions.is_open(early))
-        self.assertEqual(sessions.phase(early), "overnight")
+        # 08:45 ET is inside the 04:00-09:30 pre-market window, and the point
+        # of the regression stands: it is NOT the regular session.
+        self.assertEqual(sessions.phase(early), "pre")
+        self.assertNotEqual(sessions.phase(early), "open")
         open_now = dt.datetime(2026, 12, 15, 14, 45, tzinfo=dt.timezone.utc)
         self.assertTrue(sessions.is_open(open_now))
 

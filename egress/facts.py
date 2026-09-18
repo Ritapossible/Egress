@@ -163,7 +163,11 @@ def phase_table(snapshots: list[dict]) -> list[dict]:
         if row["stock"] and row["crypto"]:
             row["ratio_all"] = round(row["stock"] / row["crypto"], 1)
         rows.append(row)
-    return sorted(rows, key=lambda r: r["phase"])
+    # Regime order, not alphabetical: a reader follows the trading day, and
+    # "open, overnight, post, pre" reads like a sorting accident.
+    order = {"open": 0, "pre": 1, "post": 2, "overnight": 3,
+             "weekend": 4, "holiday": 5}
+    return sorted(rows, key=lambda r: (order.get(r["phase"], 9), r["phase"]))
 
 
 def worked_example(symbols: list[str], notional: float = 25_000.0) -> list[dict]:
@@ -250,8 +254,25 @@ def by_symbol_phase(root: Path | None = None, keep: int = SYMBOL_MARK_KEEP,
     return out
 
 
+def feed_flags(validation: dict | None) -> dict:
+    """Symbols the validation refused to score, keyed for the desk to read.
+
+    The site names these on the validation page and then priced them on the
+    desk without a word. A name this project has publicly called unreliable
+    should say so where it is being used, not only where it is being audited.
+    """
+    out = {}
+    for row in (validation or {}).get("excluded_detail") or []:
+        symbol = row.get("symbol")
+        if symbol:
+            out[symbol] = {"ratio": row.get("feed_ratio"),
+                           "reason": row.get("reason", "")}
+    return out
+
+
 def save_symbol_marks(root: Path | None = None,
-                      marks: dict | None = None) -> Path:
+                      marks: dict | None = None,
+                      flags: dict | None = None) -> Path:
     """Write the per-symbol marks, never replacing a populated file with nothing.
 
     Same guard, and for the same reason, as save_benchmark: an empty file
@@ -273,7 +294,8 @@ def save_symbol_marks(root: Path | None = None,
                 f"already in {path.name} rather than blanking the desk")
     path.write_text(json.dumps(
         {"generated": dt.datetime.now(UTC).isoformat(timespec="seconds"),
-          "keep": keep_note(), "symbols": computed},
+         "keep": keep_note(), "symbols": computed,
+         "feed_flags": flags or {}},
         indent=1, sort_keys=True))
     return path
 
