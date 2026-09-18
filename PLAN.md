@@ -6,7 +6,7 @@ Deadline **2026-09-21 23:59 UTC+8**. Started 2026-09-14.
 
 ## The claim
 
-Bitget lists **1,175 tokenized US stocks**. You can enter any of them in one
+Bitget lists **1,655 tokenized US stocks** (1,175 when this was written on 14 Sep; the venue listed 480 more in one wave on 17 Sep, which is why nothing on the site types a count). You can enter any of them in one
 click. Egress measures what it costs to leave - at your size, on your timetable -
 and names the positions that have no exit at all.
 

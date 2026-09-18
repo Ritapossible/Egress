@@ -1212,7 +1212,7 @@ python -m egress.page</code></pre>
           instrument by the venue's own symbolType field. Guessing from the
           symbol name is wrong for dozens of symbols.</td></tr>
         <tr><td class="sym">sessions</td><td class="dim">Turns a timestamp into
-          open, overnight, weekend or holiday. Pure arithmetic, no
+          open, pre, post, overnight, weekend or holiday. Pure arithmetic, no
           network.</td></tr>
         <tr><td class="sym">store</td><td class="dim">The append-only record.
           Rows are written first and the snapshot is entered in the manifest
@@ -1345,9 +1345,20 @@ Content-Type: application/json
         <tr><td class="sym">floor</td><td class="dim">A cost marked
           <span class="sym">&gt;</span>: the displayed book ran out before the
           position did, so the true cost is at least this.</td></tr>
-        <tr><td class="sym">phase</td><td class="dim">open, overnight, weekend or
-          holiday, decided from the venue's own timestamp against US equity
-          market hours.</td></tr>
+        <tr><td class="sym">phase</td><td class="dim">open, pre, post,
+          overnight, weekend or holiday, decided from the venue's own timestamp
+          against US equity market hours. Pre is 04:00-09:30 ET and post is
+          16:00-20:00 ET: the reference venue quotes in both, thinly, so they
+          are not the same regime as the genuinely shut hours.</td></tr>
+        <tr><td class="sym">listed 30d+</td><td class="dim">A name listed on the
+          venue for at least thirty days, by its own launchTime. The headline
+          medians cover these; recently listed names are reported beside them,
+          because a median over whatever is listed today moves with the venue's
+          listing calendar rather than with its liquidity.</td></tr>
+        <tr><td class="sym">usual for this name</td><td class="dim">A quote
+          compared against that same symbol's own recent quotes in the same
+          phase, never against a cost or against other symbols. A median spread
+          is not a cost, so the two are never divided by one another.</td></tr>
         <tr><td class="sym">control</td><td class="dim">The crypto pairs. Same
           venue, same engine, same fees, no reason to care whether New York is
           open.</td></tr>

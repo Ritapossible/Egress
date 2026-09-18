@@ -158,16 +158,6 @@ def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
     return out
 
 
-def benchmark(root=None) -> dict:
-    """What a typical exit costs, per phase. Absent is fine - the desk just
-    stops offering the comparison rather than inventing one."""
-    path = (root or config.STATE) / "benchmark.json"
-    try:
-        return json.loads(path.read_text()).get("phases", {})
-    except (OSError, ValueError):
-        return {}
-
-
 # Where a quote sits against THIS NAME'S own recent quotes in the same phase.
 #
 # What this replaced: the desk used to divide a size-aware exit COST by a
@@ -201,7 +191,7 @@ def symbol_marks(root=None) -> dict:
     """Per-symbol, per-phase spread percentiles. Absent is fine.
 
     Without it the desk simply stops offering a comparison rather than
-    inventing one, which is the same contract benchmark() has.
+    inventing one, rather than reaching for a number it does not have.
     """
     path = (root or config.STATE) / "symbol_marks.json"
     try:

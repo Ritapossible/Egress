@@ -8,6 +8,7 @@ were expensive to learn and are cheap to forget.
 | Thing | Value |
 |---|---|
 | Spot instruments | **1,761** total: **1,175 stock**, **584 crypto**, **2 metal** |
+| Same, four days later | **2,240**: **1,655 stock** - Bitget listed 480 in one wave on 17 Sep. Counts in this table are dated observations, not standing facts; the site re-reads the listing hourly |
 | One `tickers` call | 582 KB, **0.81 s**, covers the entire universe |
 | Auth needed | **none** - `market` is `auth: public` in Bitget's own tool surface |
 | Endpoint base | `https://api.bitget.com/api/v3` |
@@ -219,13 +220,29 @@ orderbook`, `ONE CLIP: 18 bp` - and left the reader to interpret them. Every
 number was right and the panel still failed at its job, because "15 bp" means
 nothing without something to compare it to.
 
-It leads with a verdict now (cheap / about typical / expensive / very
-expensive), then the comparison that justifies it, then whether to act. The
-bands are a judgement about wording and are named in one place; the figure
-behind them is `state/benchmark.json`, derived from the record at build time,
-so the comparison moves when the record moves and is never typed. The same
-16 bp reads "cheap" overnight and "expensive" while New York is open - which is
-the entire point of comparing per phase.
+It leads with the cost, then the comparison, then whether to act.
+
+**The comparison was wrong for a while, and the way it was wrong is the lesson.**
+It divided a size-aware exit COST by a cross-sectional median SPREAD and
+reported "about 10x cheaper than the median tokenized stock". Two different
+quantities - the evidence page says so itself, that a median spread is the price
+of the first share and not of the position - so the site was contradicting its
+own method page on its own front page. It also flattered every liquid name,
+because the denominator carried symbols where the size being asked about is
+unfillable at any displayed price: those contribute a wide spread and never a
+cost at all.
+
+It now compares like with like, and about the name actually asked about: this
+symbol's quote right now against this symbol's own recent quotes in the same
+phase, from `state/symbol_marks.json`. The words are tighter / about / wider /
+far wider than usual **for that name**, and they attach to the quote rather than
+to the cost. A name with too little history is told so rather than met with
+silence - a new listing is the position most likely to be expensive to leave.
+
+`tests/test_desk.py` pins that the verdict cannot move with the cost: `_verdict`
+takes no cost argument at all, asserted by inspecting its signature. Dividing
+two things that are not the same quantity passes every test that only checks
+arithmetic, so the guard has to be about the shape of the call.
 
 Everything that was on the panel is still one tap away under "Show the working".
 Honesty was never the problem; ordering was.

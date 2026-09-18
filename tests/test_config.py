@@ -51,15 +51,18 @@ class RequestBudget(unittest.TestCase):
         """Found the hard way, twice.
 
         Without state/universe.json every valid ticker answers "not listed".
-        Without state/benchmark.json the verdict and the comparison vanish -
-        which shipped, because includeFiles named one file rather than the set.
-        So this reads the source for the paths instead of trusting a list.
+        Without the marks the verdict and the comparison vanish - which shipped
+        once, because includeFiles named one file rather than the set. So this
+        reads the source for the paths instead of trusting a list.
+
+        benchmark.json left this set when the desk stopped reading it: the
+        comparison moved to each symbol's own history, and a loader nothing
+        called was still making the file look like a runtime dependency.
         """
         source = "\n".join((ROOT / "egress" / name).read_text()
                             for name in ("desk.py", "universe.py"))
         wanted = set(re.findall(r'config\.STATE\) / "([^"]+\.json)"', source))
-        self.assertEqual(wanted, {"universe.json", "benchmark.json",
-                                  "symbol_marks.json"},
+        self.assertEqual(wanted, {"universe.json", "symbol_marks.json"},
                          "the desk reads a state file this test does not know "
                          "about - check it is in vercel.json includeFiles")
         pattern = self.included()

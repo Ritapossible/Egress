@@ -23,7 +23,8 @@
                     └─► state/manifest.jsonl
                              │
                              ▼
-                 egress/sessions.py    open | overnight | weekend | holiday
+                 egress/sessions.py    open | pre | post | overnight |
+                                       weekend | holiday
                              │          (analysis only - the crawler never imports it)
                              ▼
                     estimator  ·  research desk  ·  page
@@ -99,6 +100,22 @@ more sit near 66 bp; names listed more recently sit near 589 bp. Listing age
 predicts overnight spread better than anything else measured here. The cohort is
 decided per snapshot from the venue's own `launchTime`, so a name joins the
 headline on its own thirtieth day and nothing is re-dated by hand.
+
+### 4c. Extended hours are their own regimes
+
+Everything outside 09:30-16:00 ET used to be one `overnight` bucket. That put
+the hours when the reference venue quotes thinly in the same average as the
+hours it does not quote at all, and the expectation was that separating them
+would flatter the closed-market figure.
+
+The record said the opposite. Established names: **open 5.9 bp, overnight
+59.3 bp, post 63.5 bp, pre 94.5 bp**. The pre-market is the widest of the four -
+worse than three in the morning - and it is the hour a holder reacting to
+overnight news is most likely to be trying to leave.
+
+Phase is decided in **Eastern time, not UTC**. The post window is 16:00-20:00 ET,
+which is 20:00-00:00 UTC in summer, and `opens <= t < closes` cannot express a
+window whose end wraps past midnight: it would have silently matched nothing.
 
 ### 5. Zero runtime dependencies
 
