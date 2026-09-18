@@ -369,10 +369,11 @@ pre code{background:none;padding:0}
 
     <div class="scroll">
     <table class="tbl">
-      <thead><tr><th>Market phase</th><th>Tokenized stock</th>
-      <th>Crypto control</th><th>Ratio</th><th>Snapshots</th></tr></thead>
-      <tbody><tr><td class='sym'>open</td><td class='n'>8.1 bp</td><td class='n'>11.9 bp</td><td class='n'>0.7x</td><td class='n'>342</td></tr>
-<tr><td class='sym'>overnight</td><td class='n'>198.6 bp</td><td class='n'>11.7 bp</td><td class='n'>17.0x</td><td class='n'>715</td></tr></tbody>
+      <thead><tr><th>Market phase</th><th>Listed 30d+</th>
+      <th>Listed under 30d</th><th>Crypto control</th><th>Ratio</th>
+      <th>Snapshots</th></tr></thead>
+      <tbody><tr><td class='sym'>open</td><td class='n'>5.9 bp</td><td class='n'>10.1 bp</td><td class='n'>11.9 bp</td><td class='n'>0.5x</td><td class='n'>342</td></tr>
+<tr><td class='sym'>overnight</td><td class='n'>68.1 bp</td><td class='n'>585.2 bp</td><td class='n'>11.7 bp</td><td class='n'>5.8x</td><td class='n'>715</td></tr></tbody>
     </table>
     </div>
 
@@ -381,6 +382,16 @@ pre code{background:none;padding:0}
     schedule. Their liquidity has no reason to care whether the NYSE is open. If
     both columns moved together the effect would be venue-wide and this whole
     site would be wrong.</p>
+
+
+    <h3 class="sub">Why the split, and what it found</h3>
+    <p class="say">Splitting by how long a name has been listed was not
+    cosmetic. Overnight, names listed thirty days or more sit at
+    <b>68 bp</b>; names listed more recently sit at
+    <b>585 bp</b> - <b>9x wider</b>. A median over every listed name blends the two into 199 bp, which is why it moves when Bitget lists in bulk rather than when liquidity changes. Listing age
+    predicts overnight spread better than anything else measured here, and a
+    new listing is exactly the position a holder is least likely to know is
+    expensive to leave.</p>
 
     <div class="caveat">This is a record in progress, not a finished study. The
     snapshot count behind each row is printed above so you can see how thin it
@@ -420,7 +431,7 @@ pre code{background:none;padding:0}
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-09-18 19:37 UTC from
+      <p class="prov"><i></i>Generated 2026-09-18 19:42 UTC from
       1,057 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
