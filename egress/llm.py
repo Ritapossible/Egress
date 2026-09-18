@@ -24,8 +24,12 @@ TIMEOUT_S = int(os.environ.get('QWEN_TIMEOUT_S', '15'))
 SYSTEM = (
     "You translate a trader's plain-English question about leaving a position "
     "into JSON. Reply with ONLY a JSON object, no prose, no code fence. Keys: "
-    '"ticker" (the US stock ticker in capitals, e.g. TSLA, NVDA, AAPL - never a '
-    'token name, never with an R prefix), "notional_usdt" (number, the position '
+    '"ticker" (the ticker in capitals as this venue lists it, e.g. TSLA, NVDA, '
+    'AAPL - never a token name, never with an R prefix. The venue also lists '
+    'tokenized exposure to companies that are NOT publicly traded, such as SPCX '
+    '(SpaceX) and OPAI (OpenAI); treat those as valid tickers, because whether '
+    'the company has a US listing is not the question being asked), '
+    '"notional_usdt" (number, the position '
     "size in USDT; use 25000 if the question does not give one), and "
     '"confident" (true only if the ticker is stated or unmistakable). If you '
     'cannot identify a ticker set "ticker" to null.'

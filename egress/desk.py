@@ -49,15 +49,26 @@ def listed_symbols() -> dict[str, dict]:
     return fetched
 
 
+def _listings(ticker: str, listed: dict[str, dict]) -> list[str]:
+    """Every live tokenized-stock symbol this ticker could mean, best first.
+
+    PRE* is the third form and it is not decoration: Bitget lists tokenized
+    exposure to companies that are not publicly traded, and those carry no `r`
+    prefix. OPAI exists only as PREOPAIUSDT, so without this the desk told a
+    holder of a listed instrument that it was not listed - the confident wrong
+    answer this project exists to avoid.
+    """
+    wanted = ticker.strip().upper()
+    return [c for c in (f"R{wanted}USDT", f"{wanted}USDT", f"PRE{wanted}USDT")
+            if (row := listed.get(c))
+            and row.get("type") == "stock" and row.get("status") == "online"]
+
+
 def resolve(ticker: str, symbols: dict[str, dict] | None = None) -> str | None:
     """US ticker -> a listed tokenized-stock symbol, or None. Never invented."""
     listed = symbols if symbols is not None else listed_symbols()
-    wanted = ticker.strip().upper()
-    for candidate in (f"R{wanted}USDT", f"{wanted}USDT"):
-        row = listed.get(candidate)
-        if row and row.get("type") == "stock" and row.get("status") == "online":
-            return candidate
-    return None
+    found = _listings(ticker, listed)
+    return found[0] if found else None
 
 
 def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
@@ -89,6 +100,19 @@ def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
                         f"this venue right now, so there is nothing to price.")
         return out
     out["symbol"] = symbol
+    # SPCX trades as both RSPCXUSDT and PRESPCXUSDT, and they are different
+    # instruments at different costs. Picking one silently would be exactly the
+    # unstated choice the rest of this project refuses to make.
+    others = [s for s in _listings(spec["ticker"],
+                                   symbols if symbols is not None
+                                   else listed_symbols())
+              if s != symbol]
+    if others:
+        out["also_listed"] = others
+        out["note"] = (f"{spec['ticker']} has more than one live listing on this "
+                       f"venue ({', '.join([symbol, *others])}). This answer "
+                       f"prices {symbol}; the others are separate books and "
+                       f"will not cost the same.")
 
     notional = spec["notional_usdt"]
     # ONE fetch for the whole answer. The quote, the plan and the max-exit

@@ -347,3 +347,44 @@ class TheAdvice(unittest.TestCase):
     def test_an_unquotable_plan_is_ignored(self):
         out = {"plan": [{"slices": 4, "quotable": False}]}
         self.assertEqual(desk._advice(out, {}), "")
+
+
+class PreIpoListings(unittest.TestCase):
+    """Bitget lists tokenized exposure to companies with no US listing.
+
+    Those carry no `r` prefix: OpenAI exists only as PREOPAIUSDT, so resolving
+    on R*/bare alone told a holder of a live instrument it was not listed. SPCX
+    carries BOTH lines at once, and they are different books at different costs.
+    """
+
+    LISTED: ClassVar[dict] = {
+        "RTSLAUSDT": {"type": "stock", "status": "online"},
+        "RSPCXUSDT": {"type": "stock", "status": "online"},
+        "PRESPCXUSDT": {"type": "stock", "status": "online"},
+        "PREOPAIUSDT": {"type": "stock", "status": "online"},
+        "RGONEUSDT": {"type": "stock", "status": "offline"},
+        "SUIUSDT": {"type": "crypto", "status": "online"},
+    }
+
+    def test_a_pre_ipo_only_name_resolves(self):
+        self.assertEqual(desk.resolve("OPAI", self.LISTED), "PREOPAIUSDT")
+
+    def test_the_rtoken_line_wins_when_a_name_has_both(self):
+        self.assertEqual(desk.resolve("SPCX", self.LISTED), "RSPCXUSDT")
+
+    def test_both_lines_are_reported_so_the_choice_is_not_silent(self):
+        self.assertEqual(desk._listings("SPCX", self.LISTED),
+                         ["RSPCXUSDT", "PRESPCXUSDT"])
+
+    def test_a_single_line_name_has_no_alternatives(self):
+        self.assertEqual(desk._listings("TSLA", self.LISTED), ["RTSLAUSDT"])
+
+    def test_an_offline_listing_is_not_resolved(self):
+        self.assertIsNone(desk.resolve("GONE", self.LISTED))
+
+    def test_a_crypto_symbol_is_still_refused(self):
+        """The desk prices tokenized stocks; the prefix search must not widen that."""
+        self.assertIsNone(desk.resolve("SUI", self.LISTED))
+
+    def test_an_unlisted_ticker_stays_unlisted(self):
+        self.assertIsNone(desk.resolve("ZZQQ", self.LISTED))
