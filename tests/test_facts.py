@@ -189,3 +189,87 @@ FACTS_MIN = {
     "latest": {}, "phases": [], "snapshots": [], "notional_usdt": 25_000.0,
     "examples": [], "validation": {},
 }
+
+
+class CohortByListingAge(unittest.TestCase):
+    """The split that stopped a listing wave from moving the headline.
+
+    Bitget listed 480 tokenized stocks in one wave and the cross-sectional
+    overnight median went from 165 bp to 260 bp with nothing happening in the
+    market. The published ratio had already drifted 19x -> 21x -> 24x on
+    composition alone. These pin the fix: cohort comes from the venue's own
+    launchTime, per snapshot, and crypto is never split.
+    """
+
+    DAY = 86_400_000
+
+    def test_a_name_listed_long_ago_is_established(self):
+        snap = 100 * self.DAY
+        self.assertEqual(
+            facts.cohort("stock", snap, snap - 40 * self.DAY),
+            "stock_established")
+
+    def test_a_name_listed_days_ago_is_not(self):
+        snap = 100 * self.DAY
+        self.assertEqual(
+            facts.cohort("stock", snap, snap - 3 * self.DAY), "stock_recent")
+
+    def test_the_boundary_is_the_named_constant(self):
+        snap = 100 * self.DAY
+        cut = facts.ESTABLISHED_DAYS * self.DAY
+        self.assertEqual(facts.cohort("stock", snap, snap - cut),
+                         "stock_established")
+        self.assertEqual(facts.cohort("stock", snap, snap - cut + 1),
+                         "stock_recent")
+
+    def test_a_name_crosses_over_on_its_own_thirtieth_day(self):
+        """Nothing is re-dated by hand: the same symbol changes cohort with time."""
+        launch = 10 * self.DAY
+        early = launch + 5 * self.DAY
+        later = launch + (facts.ESTABLISHED_DAYS + 1) * self.DAY
+        self.assertEqual(facts.cohort("stock", early, launch), "stock_recent")
+        self.assertEqual(facts.cohort("stock", later, launch),
+                         "stock_established")
+
+    def test_an_unknown_listing_date_is_never_counted_as_established(self):
+        """Absent evidence of age is not evidence of age."""
+        self.assertEqual(facts.cohort("stock", 100 * self.DAY, None),
+                         "stock_recent")
+
+    def test_crypto_is_never_split(self):
+        """The control has to be the same population in every row."""
+        for launch in (None, 0, 99 * self.DAY):
+            self.assertEqual(facts.cohort("crypto", 100 * self.DAY, launch),
+                             "crypto")
+
+    def test_the_cohorts_partition_the_stock_population(self):
+        grouped = {1_000 * self.DAY: [
+            {"symbol": "ROLDUSDT", "bid": "99", "ask": "101",
+             "bid_size": "1", "ask_size": "1"},
+            {"symbol": "RNEWUSDT", "bid": "50", "ask": "150",
+             "bid_size": "1", "ask_size": "1"},
+            {"symbol": "BTCUSDT", "bid": "100", "ask": "100.1",
+             "bid_size": "1", "ask_size": "1"},
+        ]}
+        kinds = {"ROLDUSDT": "stock", "RNEWUSDT": "stock", "BTCUSDT": "crypto"}
+        launches = {"ROLDUSDT": 900 * self.DAY, "RNEWUSDT": 999 * self.DAY}
+        (row,) = facts._summarise(grouped, kinds, launches)
+        self.assertEqual(row["stock"]["quoted"], 2)
+        self.assertEqual(row["stock_established"]["quoted"], 1)
+        self.assertEqual(row["stock_recent"]["quoted"], 1)
+        self.assertEqual(row["crypto"]["quoted"], 1)
+        # the wide new name must not be able to drag the established median
+        self.assertLess(row["stock_established"]["median_spread_bp"],
+                        row["stock_recent"]["median_spread_bp"])
+
+    def test_the_headline_ratio_uses_the_established_cohort(self):
+        rows = facts.phase_table([
+            {"phase": "overnight", "snap_ts": 0,
+             "stock": {"median_spread_bp": 200.0},
+             "stock_established": {"median_spread_bp": 60.0},
+             "stock_recent": {"median_spread_bp": 600.0},
+             "crypto": {"median_spread_bp": 12.0}},
+        ])
+        (row,) = rows
+        self.assertEqual(row["ratio"], 5.0)        # 60 / 12, the established one
+        self.assertEqual(row["ratio_all"], 16.7)   # 200 / 12, kept but not led with

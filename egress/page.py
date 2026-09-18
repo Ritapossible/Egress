@@ -544,11 +544,41 @@ def _phase_rows(phases: list[dict]) -> str:
         ratio = f"{row['ratio']:.1f}x" if row.get("ratio") else "-"
         out.append(
             f"<tr><td class='sym'>{html.escape(row['phase'])}</td>"
-            f"<td class='n'>{_bp(row['stock'])}</td>"
+            f"<td class='n'>{_bp(row.get('stock_established'))}</td>"
+            f"<td class='n'>{_bp(row.get('stock_recent'))}</td>"
             f"<td class='n'>{_bp(row['crypto'])}</td>"
             f"<td class='n'>{ratio}</td>"
             f"<td class='n'>{row['snapshots']}</td></tr>")
     return "\n".join(out)
+
+
+def _composition_note(phases: list[dict]) -> str:
+    """Why the table is split, said with the record own numbers.
+
+    This is the finding the split produced, so it belongs on the page rather
+    than in a commit message: how long a name has been listed predicts its
+    overnight spread better than anything else measured here.
+    """
+    closed = next((r for r in phases
+                   if r["phase"] in ("overnight", "weekend")), None)
+    if not closed or not (closed.get("stock_established")
+                          and closed.get("stock_recent")):
+        return ""
+    est, rec = closed["stock_established"], closed["stock_recent"]
+    allc = closed.get("stock")
+    times = rec / est if est else 0
+    blended = (f" A median over every listed name blends the two into "
+               f"{allc:,.0f} bp, which is why it moves when Bitget lists in "
+               f"bulk rather than when liquidity changes." if allc else "")
+    return f"""
+    <h3 class="sub">Why the split, and what it found</h3>
+    <p class="say">Splitting by how long a name has been listed was not
+    cosmetic. Overnight, names listed thirty days or more sit at
+    <b>{est:,.0f} bp</b>; names listed more recently sit at
+    <b>{rec:,.0f} bp</b> - <b>{times:,.0f}x wider</b>.{blended} Listing age
+    predicts overnight spread better than anything else measured here, and a
+    new listing is exactly the position a holder is least likely to know is
+    expensive to leave.</p>"""
 
 
 def _example_rows(examples: list[dict]) -> str:
@@ -768,7 +798,14 @@ def _finding(f: dict) -> str:
     if not (closed.get("stock") and openp.get("stock")):
         return ""
 
-    ratio = closed["stock"] / openp["stock"]
+    # The established cohort, not every listed name. A cross-sectional median
+    # over the whole listing tracks Bitget's listing calendar: 480 names arrived
+    # in one wave and moved this figure from 165 bp to 260 bp with nothing at
+    # all happening in the market. See facts.ESTABLISHED_DAYS.
+    key = "stock_established" if closed.get("stock_established") else "stock"
+    if not (closed.get(key) and openp.get(key)):
+        return ""
+    ratio = closed[key] / openp[key]
     panels = []
     for row, label, note in (
             (closed, closed["phase"], "US market shut"),
@@ -778,7 +815,7 @@ def _finding(f: dict) -> str:
         panels.append(
             f"""      <div class="cmp">
         <p class="cmp-when">{html.escape(label)} <span>{note}</span></p>
-        <b>{row['stock']:,.0f}<i>bp</i></b>
+        <b>{row[key]:,.0f}<i>bp</i></b>
         <p class="cmp-ctrl">{ctrl}</p>
       </div>""")
 
@@ -786,9 +823,9 @@ def _finding(f: dict) -> str:
 <div class="wrap">
   <section>
     <p class="kicker">The finding</p>
-    <h2>The same token costs {ratio:,.0f}x more to leave at night</h2>
-    <p class="say">Median spread across every quoted tokenized stock, by market
-    phase. The crypto pairs beside each figure trade on the same venue, through
+    <h2>The same token quotes {ratio:,.0f}x wider once New York shuts</h2>
+    <p class="say">Median spread across tokenized stocks listed thirty days or
+    more, by market phase. The crypto pairs beside each figure trade on the same venue, through
     the same matching engine, under the same fee schedule - and they do not
     move.</p>
 
@@ -868,8 +905,9 @@ def evidence_body(f: dict) -> str:
 
     <div class="scroll">
     <table class="tbl">
-      <thead><tr><th>Market phase</th><th>Tokenized stock</th>
-      <th>Crypto control</th><th>Ratio</th><th>Snapshots</th></tr></thead>
+      <thead><tr><th>Market phase</th><th>Listed 30d+</th>
+      <th>Listed under 30d</th><th>Crypto control</th><th>Ratio</th>
+      <th>Snapshots</th></tr></thead>
       <tbody>{_phase_rows(f['phases'])}</tbody>
     </table>
     </div>
@@ -879,6 +917,8 @@ def evidence_body(f: dict) -> str:
     schedule. Their liquidity has no reason to care whether the NYSE is open. If
     both columns moved together the effect would be venue-wide and this whole
     site would be wrong.</p>
+
+{_composition_note(f['phases'])}
 
     <div class="caveat">This is a record in progress, not a finished study. The
     snapshot count behind each row is printed above so you can see how thin it

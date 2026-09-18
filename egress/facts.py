@@ -53,7 +53,10 @@ def by_snapshot(day: dt.date | None = None, root: Path | None = None) -> list[di
     # until the first snapshot of the new day landed, while the footer went on
     # reporting the full snapshot count from the manifest. See MEMORY.md.
     wanted = [day] if day else store.days(root)
-    kinds = {s: r["type"] for s, r in universe.load(root).items()}
+    listed = universe.load(root)
+    kinds = {s: r["type"] for s, r in listed.items()}
+    launches = {s: int(r["launch_ms"]) for s, r in listed.items()
+                if str(r.get("launch_ms") or "").isdigit()}
 
     # ONE DAY AT A TIME. Materialising the whole record at once cost 311 MB at
     # two days and was heading for a gigabyte by the end of the week; only the
@@ -64,21 +67,66 @@ def by_snapshot(day: dt.date | None = None, root: Path | None = None) -> list[di
         grouped: dict[int, list[dict]] = {}
         for row in store.read_day(one, root):
             grouped.setdefault(int(row["snap_ts"]), []).append(row)
-        out.extend(_summarise(grouped, kinds))
+        out.extend(_summarise(grouped, kinds, launches))
     return sorted(out, key=lambda r: r["snap_ts"])
 
 
-def _summarise(grouped: dict[int, list[dict]], kinds: dict[str, str]) -> list[dict]:
+# How long a name must have been listed before its spread is allowed into the
+# headline medians.
+#
+# Measured 2026-09-18, and the reason this constant exists: Bitget listed 480
+# tokenized stocks in one wave, and the cross-sectional overnight median jumped
+# from 165 bp to 260 bp overnight. Nothing about the market changed. The new
+# names alone sit at 636 bp overnight against 63 bp for names listed a month or
+# more, so a median taken over "whatever is listed today" tracks the venue's
+# listing calendar rather than its liquidity, and the published ratio moved
+# 19x -> 21x -> 24x on that alone.
+#
+# Thirty days is a month of overnight windows: long enough that a name has been
+# through the thing being measured. The cohort is decided per snapshot from the
+# venue's own launchTime, so a name crosses into the headline on its own
+# thirtieth day and nothing has to be re-dated by hand.
+ESTABLISHED_DAYS = 30
+_ESTABLISHED_MS = ESTABLISHED_DAYS * 86_400_000
+
+
+def cohort(kind: str, snap_ts: int, launch_ms: int | None) -> str:
+    """Which series a symbol's spread belongs to in one snapshot.
+
+    Crypto is never split: the control has to stay the same population in every
+    row or it stops being a control.
+    """
+    if kind != "stock":
+        return kind
+    if launch_ms is None:
+        return "stock_recent"
+    return ("stock_established" if snap_ts - launch_ms >= _ESTABLISHED_MS
+            else "stock_recent")
+
+
+SERIES = ("stock", "stock_established", "stock_recent", "crypto")
+
+
+def _summarise(grouped: dict[int, list[dict]], kinds: dict[str, str],
+               launches: dict[str, int] | None = None) -> list[dict]:
     """One summary per snapshot in a single day's rows."""
     out = []
     for snap_ts, batch in sorted(grouped.items()):
         at = dt.datetime.fromtimestamp(snap_ts / 1000, UTC)
         entry: dict = {"snap_ts": snap_ts, "at": at.isoformat(),
                        "phase": sessions.phase(at)}
-        for kind in ("stock", "crypto"):
-            spreads = [s for r in batch if kinds.get(r["symbol"]) == kind
+        launch = launches or {}
+        # "stock" stays the whole listed population so the split can be checked
+        # against it; the two cohorts partition it.
+        member = {
+            s: ({"stock", cohort("stock", snap_ts, launch.get(s))}
+                if k == "stock" else {k})
+            for s, k in kinds.items()
+        }
+        for kind in SERIES:
+            spreads = [s for r in batch if kind in member.get(r["symbol"], ())
                        if (s := spread_bp(r)) is not None]
-            touches = [t for r in batch if kinds.get(r["symbol"]) == kind
+            touches = [t for r in batch if kind in member.get(r["symbol"], ())
                        if (t := touch_usdt(r)) is not None]
             entry[kind] = {
                 "quoted": len(spreads),
@@ -102,12 +150,17 @@ def phase_table(snapshots: list[dict]) -> list[dict]:
     rows = []
     for phase, group in buckets.items():
         row: dict = {"phase": phase, "snapshots": len(group)}
-        for kind in ("stock", "crypto"):
+        for kind in SERIES:
             medians = [g[kind]["median_spread_bp"] for g in group
-                       if g[kind]["median_spread_bp"] is not None]
+                       if g.get(kind, {}).get("median_spread_bp") is not None]
             row[kind] = round(st.median(medians), 1) if medians else None
+        # The headline ratio is the established cohort against the control. The
+        # all-names ratio is kept beside it so the composition effect is visible
+        # rather than quietly corrected away.
+        if row.get("stock_established") and row["crypto"]:
+            row["ratio"] = round(row["stock_established"] / row["crypto"], 1)
         if row["stock"] and row["crypto"]:
-            row["ratio"] = round(row["stock"] / row["crypto"], 1)
+            row["ratio_all"] = round(row["stock"] / row["crypto"], 1)
         rows.append(row)
     return sorted(rows, key=lambda r: r["phase"])
 

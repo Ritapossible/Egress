@@ -63,7 +63,7 @@ show up as gaps rather than as quiet, plausible data.
 
 ### 3. Every instrument is stored, not only the subject
 
-The universe is 1,175 tokenized stocks, 584 crypto pairs and 2 metals. All of it
+The universe moves: 1,175 tokenized stocks on 14 Sep 2026, 1,655 four days later after Bitget listed 480 in one wave, alongside ~585 crypto pairs and 2 metals. All of it
 is recorded.
 
 The crypto pairs are the **control group**: same venue, same matching engine,
@@ -82,6 +82,23 @@ it swallows 26 crypto pairs (`RLCUSDT` is iExec, `RENDERUSDT`, `RONINUSDT`...)
 and misses 2 pre-listing stocks that carry no prefix. The venue declares
 `symbolType: stock | crypto | metal`; that is what is used, and a test asserts
 the heuristic would have been wrong so nobody reintroduces it as a shortcut.
+
+### 4b. Cohort by listing age, not by whatever is listed today
+
+The headline medians cover names listed thirty days or more (`facts.ESTABLISHED_DAYS`),
+with recent listings reported beside them rather than mixed in.
+
+This is not tidiness. A median taken across every quoted name is a median over
+Bitget's listing calendar as much as over its liquidity: the 480-name wave on
+17 Sep moved the overnight figure from 165 bp to 260 bp with nothing happening
+in the market, and the published ratio had already drifted 19x to 24x on
+composition alone.
+
+Split, the record says something sharper. Overnight, names listed thirty days or
+more sit near 66 bp; names listed more recently sit near 589 bp. Listing age
+predicts overnight spread better than anything else measured here. The cohort is
+decided per snapshot from the venue's own `launchTime`, so a name joins the
+headline on its own thirtieth day and nothing is re-dated by hand.
 
 ### 5. Zero runtime dependencies
 

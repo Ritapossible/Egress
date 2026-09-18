@@ -23,9 +23,10 @@ FACTS = {
     "coverage": {"snapshots": 12, "rows": 21132, "gaps": []},
     "latest": {},
     "phases": [
-        {"phase": "open", "snapshots": 5, "stock": 18.8, "crypto": 11.3,
-         "ratio": 1.7},
-        {"phase": "overnight", "snapshots": 7, "stock": 158.0, "crypto": 10.3,
+        {"phase": "open", "snapshots": 5, "stock": 18.8, "stock_established": 18.8,
+         "stock_recent": 44.0, "crypto": 11.3, "ratio": 1.7},
+        {"phase": "overnight", "snapshots": 7, "stock": 158.0,
+         "stock_established": 158.0, "stock_recent": 620.0, "crypto": 10.3,
          "ratio": 15.3},
     ],
     "snapshots": [],
@@ -123,7 +124,8 @@ class RendersFromTheRecord(unittest.TestCase):
 
     def test_perturbing_the_facts_moves_the_evidence_page_too(self):
         other = {**FACTS, "phases": [
-            {"phase": "open", "snapshots": 2, "stock": 4.4, "crypto": 9.1,
+            {"phase": "open", "snapshots": 2, "stock": 4.4, "stock_established": 4.4,
+             "stock_recent": 9.9, "crypto": 9.1,
              "ratio": 0.5}]}
         moved = render("evidence.html", other)
         self.assertIn("4.4 bp", moved)
@@ -305,30 +307,33 @@ class TheFinding(unittest.TestCase):
 
     def test_the_headline_ratio_is_computed_not_typed(self):
         """158.0 / 18.8 is 8.4x, so the headline must say 8."""
-        self.assertIn("8x more to leave at night", render())
+        self.assertIn("quotes 8x wider", render())
 
     def test_perturbing_a_phase_moves_the_headline(self):
         other = {**FACTS, "phases": [
-            {"phase": "open", "snapshots": 5, "stock": 10.0, "crypto": 11.3},
+            {"phase": "open", "snapshots": 5, "stock": 10.0,
+             "stock_established": 10.0, "crypto": 11.3},
             {"phase": "overnight", "snapshots": 7, "stock": 300.0,
-             "crypto": 10.3}]}
+             "stock_established": 300.0, "crypto": 10.3}]}
         moved = render(facts=other)
-        self.assertIn("30x more to leave at night", moved)
-        self.assertNotIn("8x more to leave at night", moved)
+        self.assertIn("quotes 30x wider", moved)
+        self.assertNotIn("quotes 8x wider", moved)
 
     def test_a_record_with_only_one_phase_omits_the_panel_entirely(self):
         """Half a comparison is worse than none."""
         one = {**FACTS, "phases": [
-            {"phase": "open", "snapshots": 5, "stock": 18.8, "crypto": 11.3}]}
+            {"phase": "open", "snapshots": 5, "stock": 18.8,
+             "stock_established": 18.8, "crypto": 11.3}]}
         html = render(facts=one)
         self.assertNotIn('class="compare"', html)
-        self.assertNotIn("more to leave at night", html)
+        self.assertNotIn("wider once New York shuts", html)
 
     def test_a_weekend_record_stands_in_for_an_overnight_one(self):
         wk = {**FACTS, "phases": [
-            {"phase": "open", "snapshots": 5, "stock": 18.8, "crypto": 11.3},
+            {"phase": "open", "snapshots": 5, "stock": 18.8,
+             "stock_established": 18.8, "crypto": 11.3},
             {"phase": "weekend", "snapshots": 9, "stock": 200.0,
-             "crypto": 10.1}]}
+             "stock_established": 200.0, "crypto": 10.1}]}
         html = render(facts=wk)
         self.assertIn('class="compare"', html)
         self.assertIn("weekend", html)
