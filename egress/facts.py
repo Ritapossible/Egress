@@ -238,10 +238,15 @@ def build(symbols: list[str] | None = None) -> dict:
     """The whole fact set the page renders from."""
     snapshots = by_snapshot()
     counts = universe.counts(universe.load())
+    # The listing is re-read on the crawler's own clock, not at page build, so
+    # the page has to be able to say how old this count is rather than imply it
+    # is as fresh as everything beside it.
+    listed_at = universe.captured()
     latest = snapshots[-1] if snapshots else {}
     return {
         "generated": dt.datetime.now(UTC).isoformat(timespec="seconds"),
         "universe": counts,
+        "listed_at": listed_at,
         "listed_total": sum(counts.values()),
         "coverage": store.coverage(),
         "latest": latest,

@@ -63,6 +63,15 @@ def load(root: Path | None = None) -> dict[str, dict]:
     return json.loads(path.read_text()).get("symbols", {})
 
 
+def captured(root: Path | None = None) -> str:
+    """When the stored listing was read from the venue, or "" if never."""
+    path = (root or config.STATE) / "universe.json"
+    try:
+        return str(json.loads(path.read_text()).get("captured", ""))
+    except (OSError, json.JSONDecodeError):
+        return ""
+
+
 def counts(symbols: dict[str, dict]) -> dict[str, int]:
     out: dict[str, int] = {}
     for row in symbols.values():

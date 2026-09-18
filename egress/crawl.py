@@ -61,16 +61,53 @@ def snapshot(root=None, verbose: bool = True) -> dict:
             "seconds": round(took, 2)}
 
 
+# How often the listed universe is re-read inside a shift.
+#
+# It used to be read once, at the top of a 5.5-hour run. The quotes and the
+# pages were 20 minutes old and the listing count could be six hours old, so
+# when Bitget listed 480 tokenized stocks in one wave the site kept saying 1,175
+# for most of a day - a number nobody had typed and nobody could see was stale.
+# An hour is far inside how fast listings actually move, and costs one extra
+# request an hour against a crawler already making one every five minutes.
+UNIVERSE_REFRESH_S = 3600
+
+
+def _refresh_universe(root, verbose: bool) -> bool:
+    """Re-read the listing. A venue blip here must never cost the shift.
+
+    The previous universe is still on disk and the quotes are the half that
+    cannot be caught up later, so this reports and carries on.
+    """
+    try:
+        counts = universe.snapshot(root)["counts"]
+    except (market.MarketUnavailable, OSError) as exc:
+        if verbose:
+            print(f"[{dt.datetime.now(UTC):%H:%M:%S}] universe refresh failed "
+                  f"({exc}); carrying the stored one", flush=True)
+        return False
+    if verbose:
+        print(f"[{dt.datetime.now(UTC):%H:%M:%S}] universe: "
+              f"{', '.join(f'{v:,} {k}' for k, v in sorted(counts.items()))}",
+              flush=True)
+    return True
+
+
 def loop(hours: float, interval_s: int = config.DEFAULT_INTERVAL_S,
-         root=None, verbose: bool = True) -> dict:
+         root=None, verbose: bool = True,
+         universe_s: int = UNIVERSE_REFRESH_S) -> dict:
     """Snapshot on a fixed grid until the budget runs out."""
     deadline = time.time() + hours * 3600
     taken = failed = 0
+    listings = 0
+    next_universe = time.time()
     if verbose:
         print(f"crawling every {interval_s}s for {hours}h "
               f"(until {dt.datetime.now(UTC) + dt.timedelta(hours=hours):%H:%M}Z)",
               flush=True)
     while time.time() < deadline:
+        if time.time() >= next_universe:
+            listings += _refresh_universe(root, verbose)
+            next_universe = time.time() + universe_s
         result = snapshot(root, verbose)
         taken += bool(result["ok"])
         failed += not result["ok"]
@@ -80,7 +117,7 @@ def loop(hours: float, interval_s: int = config.DEFAULT_INTERVAL_S,
         if nap <= 0:
             break
         time.sleep(nap)
-    return {"taken": taken, "failed": failed}
+    return {"taken": taken, "failed": failed, "universe_refreshes": listings}
 
 
 def main(argv: list[str] | None = None) -> int:
@@ -104,15 +141,8 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(universe.snapshot()["counts"], indent=1))
         return 0
     if args.loop:
-        # Refreshed at the top of every run: listings come and go, and knowing
-        # when a symbol appeared is part of the record (git keeps the versions).
-        # A venue blip here must NOT cost the shift - the previous universe is
-        # still on disk and the quotes are the part that cannot be caught up.
-        try:
-            universe.snapshot()
-        except market.MarketUnavailable as exc:
-            print(f"universe refresh failed ({exc.reason}); "
-                  f"crawling on with the stored one", flush=True)
+        # The loop refreshes the listing itself, on its own clock, starting
+        # with the first pass - see UNIVERSE_REFRESH_S.
         result = loop(args.hours, args.interval)
         print(json.dumps(result))
         return 0 if result["taken"] else 1

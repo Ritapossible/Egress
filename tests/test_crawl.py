@@ -166,3 +166,52 @@ class CollectionIsSeparateFromInterpretation(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class ListingRefresh(unittest.TestCase):
+    """The listed universe is re-read on the crawler's own clock.
+
+    It used to be read once per 5.5-hour shift while the pages rebuilt every
+    twenty minutes, so the listing count was the one figure on the site that
+    could be six hours old. When Bitget listed 480 tokenized stocks in a single
+    wave the site kept saying 1,175 for most of a day.
+    """
+
+    def test_the_interval_is_named_and_well_inside_how_fast_listings_move(self):
+        self.assertEqual(crawl.UNIVERSE_REFRESH_S, 3600)
+
+    def test_a_venue_blip_costs_the_listing_not_the_shift(self):
+        """The quotes are the half that cannot be caught up later."""
+        with mock.patch.object(crawl.universe, "snapshot",
+                               side_effect=crawl.market.MarketUnavailable("down")):
+            self.assertIs(crawl._refresh_universe(None, verbose=False), False)
+
+    def test_a_write_failure_is_also_survived(self):
+        with mock.patch.object(crawl.universe, "snapshot",
+                               side_effect=OSError("read-only")):
+            self.assertIs(crawl._refresh_universe(None, verbose=False), False)
+
+    def test_a_good_refresh_reports_success(self):
+        with mock.patch.object(crawl.universe, "snapshot",
+                               return_value={"counts": {"stock": 1655}}):
+            self.assertIs(crawl._refresh_universe(None, verbose=False), True)
+
+    def test_the_loop_refreshes_on_its_first_pass(self):
+        """Not only when a shift starts - that was the whole defect."""
+        with mock.patch.object(crawl, "_refresh_universe",
+                               return_value=True) as refresh, \
+             mock.patch.object(crawl, "snapshot",
+                               return_value={"ok": True}) as snap:
+            out = crawl.loop(hours=0.0003, interval_s=3600, verbose=False)
+        self.assertGreaterEqual(refresh.call_count, 1)
+        self.assertGreaterEqual(snap.call_count, 1)
+        self.assertGreaterEqual(out["universe_refreshes"], 1)
+
+    def test_a_failed_refresh_does_not_cost_a_snapshot(self):
+        with mock.patch.object(crawl, "_refresh_universe",
+                               return_value=False), \
+             mock.patch.object(crawl, "snapshot",
+                               return_value={"ok": True}):
+            out = crawl.loop(hours=0.0003, interval_s=3600, verbose=False)
+        self.assertGreaterEqual(out["taken"], 1)
+        self.assertEqual(out["universe_refreshes"], 0)

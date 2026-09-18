@@ -581,6 +581,27 @@ def _composition_note(phases: list[dict]) -> str:
     expensive to leave.</p>"""
 
 
+def _listed_age(f: dict) -> str:
+    """How long ago the listing count was read, when that is worth saying.
+
+    The crawler re-reads the listing hourly while the pages rebuild every
+    twenty minutes, so this figure is the one thing on the page that can be
+    meaningfully older than the rest. Silence would read as "as fresh as
+    everything else", which is the failure this exists to prevent.
+    """
+    stamp = f.get("listed_at") or ""
+    if not stamp:
+        return ""
+    try:
+        read = dt.datetime.fromisoformat(stamp)
+    except ValueError:
+        return ""
+    hours = (dt.datetime.now(dt.timezone.utc) - read).total_seconds() / 3600
+    if hours < 1.5:
+        return ""
+    return f", counted {round(hours):,}h ago"
+
+
 def _example_rows(examples: list[dict]) -> str:
     out = []
     for row in examples:
@@ -861,7 +882,7 @@ def index_body(f: dict) -> str:
 <div class="grid-panel">
   <div class="wrap">
     <div class="stats">
-      <div class="stat"><b>{stocks:,}</b><span>Tokenized stocks listed</span></div>
+      <div class="stat"><b>{stocks:,}</b><span>Tokenized stocks listed{_listed_age(f)}</span></div>
       <div class="stat"><b>{counts.get('crypto', 0):,}</b>
         <span>Crypto pairs as control</span></div>
       <div class="stat"><b>{cover['snapshots']:,}</b>
