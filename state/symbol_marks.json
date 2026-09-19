@@ -9,8 +9,8 @@
    "reason": "candle volume is 8878566.0x the ticker's 24h turnover"
   },
   "RNVDAUSDT": {
-   "ratio": 5409.325,
-   "reason": "candle volume is 5409.3x the ticker's 24h turnover"
+   "ratio": 5377.555,
+   "reason": "candle volume is 5377.6x the ticker's 24h turnover"
   },
   "RPBRUSDT": {
    "ratio": 1.438,
@@ -25,7 +25,7 @@
    "reason": "candle volume is 1180301.3x the ticker's 24h turnover"
   }
  },
- "generated": "2026-09-19T21:56:37+00:00",
+ "generated": "2026-09-19T21:57:48+00:00",
  "keep": {
   "minimum": 12,
   "observations": 96
