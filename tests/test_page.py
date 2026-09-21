@@ -404,19 +404,39 @@ class TheInstrumentBreakdownAddsUp(unittest.TestCase):
         from egress.page import _breakdown
         self.assertIn("3 widgets", _breakdown({"stock": 10, "widget": 3}))
 
-    def test_the_parts_sum_to_the_total_the_page_prints(self):
-        import json
-        from pathlib import Path
+    def test_the_parts_sum_to_the_total_on_the_rendered_page(self):
+        """Read off the built HTML, not off the helper.
 
-        from egress.page import _breakdown
+        The first version of this test called `_breakdown` directly with counts
+        from universe.json. It passed the moment the helper was written - while
+        the published page still carried the old two-category line, because the
+        page had not been regenerated yet. A test of a renderer that never
+        renders proves the renderer compiles, nothing more.
 
-        path = Path(__file__).resolve().parent.parent / "state" / "universe.json"
-        counts = json.loads(path.read_text())["counts"]
-        line = _breakdown(counts)
-        printed = sum(int(part.split()[0].replace(",", ""))
-                      for part in line.split(", "))
-        self.assertEqual(printed, sum(counts.values()),
-                         f"the breakdown {line!r} does not sum to the total")
+        FACTS carries three categories summing to listed_total, so the old
+        two-category line fails this by exactly the 2 it used to drop.
+        """
+        import html
+        import re
+        import tempfile
+        from unittest import mock
+
+        with tempfile.TemporaryDirectory() as out, \
+                mock.patch.object(page.facts, "build", return_value=FACTS):
+            page.write(Path(out))
+            built = (Path(out) / "docs.html").read_text()
+
+        text = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", built)))
+        line = re.search(r"([\d,]+) listed instruments \(([^)]*)\)", text)
+        self.assertIsNotNone(line, "the instrument sentence is not on the page")
+        total = int(line.group(1).replace(",", ""))
+        # ", " and not ",": the counts are thousands-separated, so splitting on
+        # the comma alone turns "2,127 tokenized stocks" into 2 and 127.
+        parts = [int(part.split()[0].replace(",", ""))
+                 for part in line.group(2).split(", ")]
+        self.assertEqual(sum(parts), total,
+                         f"the page prints {total:,} but its parts sum to "
+                         f"{sum(parts):,}: {line.group(2)!r}")
 
     def test_one_of_a_kind_is_singular(self):
         from egress.page import _breakdown
