@@ -486,13 +486,21 @@ python -m egress.page</code></pre>
 <tr><td class='sym'>venue_ts</td><td class='dim'>The venue's own timestamp for the quote, which is what phase is decided from.</td></tr></tbody>
     </table>
     </div>
-    <p class="say">Current record: 1,709 snapshots,
-    3,767,288 rows, 30
+    <p class="say">Current record: 1,714 snapshots,
+    3,780,838 rows, 31
     gaps in coverage, across
     2,710 listed instruments (2,127 tokenized stocks, 581 crypto pairs, 2 metals).</p>
     <p class="note"><b>Silence is not zero.</b> A symbol missing from a snapshot
     means the venue did not report it, not that its spread was nothing. Missing
     rows are absent from every median rather than counted as a value.</p>
+
+    <h2 id="skills">Bitget Skills</h2>
+    <p class="say">Two are wired. <b>bitget-mcp-server</b> answers
+    <code>equity_price_quote</code> behind every desk answer &mdash; it is
+    where the basis against the listed share comes from, and without it this
+    site could price an exit but not say what the position was worth. The
+    other is below.</p>
+    <p class="say"><b>bitget-signal</b>, probed 2026-09-21T09:56:59+00:00. 3 of its catalog calls answer; 0 of its live-data calls return anything. The aggregator lists <b>44 feeds</b> and reports zero articles from all of them, and <code>crypto_price</code> fails with the service&rsquo;s own <code>ConnectTimeout</code> &mdash; so the Skill is running and its outbound fetches are not.</p><p class="say">It would not help here even if it worked. Of those 44 feeds, the ones that could carry a US stock story at all are: <code>cnbc</code>. The rest are crypto, tech and general news. This cannot explain why a tokenized stock is wide; it is a control, not an explanation, and it is on this page as a measured result rather than a logo.</p><div class="scroll"><table class="tbl"><thead><tr><th>Call</th><th>Kind</th><th>Result</th></tr></thead><tbody><tr><td><code>news_feed</code> / <code>sources</code></td><td>catalog</td><td>answered &mdash; 44 feeds</td></tr><tr><td><code>news_feed</code> / <code>latest</code></td><td>live</td><td>answered &mdash; 0 articles across 44 feeds</td></tr><tr><td><code>macro_indicators</code> / <code>series_list</code></td><td>catalog</td><td>answered &mdash; 18 entries</td></tr><tr><td><code>cross_asset</code> / <code>assets_list</code></td><td>catalog</td><td>answered &mdash; 15 entries</td></tr><tr><td><code>crypto_price</code> / <code>price</code></td><td>live</td><td>no answer<br><span class="note">Error executing tool crypto_price: ConnectTimeout('')</span></td></tr></tbody></table></div>
 
     <h2 id="api">HTTP API</h2>
     <p class="say">One endpoint, used by the desk on the front page. It exists
@@ -624,8 +632,8 @@ Content-Type: application/json
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-09-21 09:52 UTC from
-      1,709 recorded snapshots. Every figure on this site is read
+      <p class="prov"><i></i>Generated 2026-09-21 12:49 UTC from
+      1,714 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
       <div class="foot-legal">
