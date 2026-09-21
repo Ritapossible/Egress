@@ -16,7 +16,7 @@ import datetime as dt
 import json
 import time
 
-from . import config, exitcost, llm, market, sessions, universe
+from . import config, exitcost, llm, market, mcp, sessions, universe
 
 UTC = dt.timezone.utc
 SLICE_CHOICES = (1, 4, 12)
@@ -133,8 +133,14 @@ def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
         out["plan"] = [exitcost.sliced(symbol, notional, n, bids, asks)
                        for n in SLICE_CHOICES]
 
+    out["reference"] = _reference(spec["ticker"], quote, now)
+
     out["unverified"] = list(quote.unverified)
     record = out["quote"]
+    if out["reference"].get("available"):
+        out["unverified"].append(
+            "the basis against the listed share treats 1 USDT as 1 USD, which "
+            "is an assumption rather than a measurement")
     out["reading"] = _reading(out)
     if record.get("quotable"):
         verdict = _verdict(quote_spread_bp(bids, asks), out["phase"],
@@ -353,3 +359,34 @@ def _reading(out: dict) -> str:
             f"with the {out['phase']} book as it stands.")
     note = _depth_note(quote)
     return f"{line} {note}".strip()
+
+
+# The reference market, via Bitget's own `equity_price_quote` Skill.
+#
+# The order book says what leaving costs here. It cannot say what the position
+# is worth, because the market that prices it is shut for most of the week -
+# which is the entire premise of this project. Asking the Skill where the share
+# last printed turns "exiting costs 14 bp" into "exiting costs 14 bp on a
+# position marked 146 bp from the last print, 57 hours ago".
+#
+# It is additive and never load-bearing. If the Skill is down the answer is the
+# same answer it was before, with a stated reason where the reference would be.
+def _reference(ticker: str, quote, now: dt.datetime) -> dict:
+    out = mcp.underlying(ticker)
+    token = getattr(quote, "reference", None)
+    if not out.get("available") or not token or token <= 0:
+        return out
+
+    share = out["last_price"]
+    out["token_price"] = token
+    out["basis_bp"] = round(mcp.basis_bp(token, share), 1)
+    printed = out.get("printed_at")
+    if isinstance(printed, str):
+        try:
+            when = dt.datetime.fromisoformat(printed.replace("Z", "+00:00"))
+        except ValueError:
+            return out
+        if when.tzinfo is None:
+            when = when.replace(tzinfo=UTC)
+        out["hours_since_print"] = round((now - when).total_seconds() / 3600.0, 1)
+    return out

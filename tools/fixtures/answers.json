@@ -1,9 +1,9 @@
 {
  "error": {
-  "at": "2026-09-15T10:56:41+00:00",
+  "at": "2026-09-21T09:07:13+00:00",
   "basis": "estimated",
   "error": "the venue would not return a book for RTSLAUSDT: http 503",
-  "phase": "post",
+  "phase": "pre",
   "question": "cost to exit 40000 USDT of TSLA",
   "spec": {
    "confident": true,
@@ -15,14 +15,14 @@
  },
  "floor": {
   "advice": "Splitting the order into smaller ones does not help against this book.",
-  "at": "2026-09-15T10:56:41+00:00",
+  "at": "2026-09-21T09:07:13+00:00",
   "basis": "estimated",
-  "context": "The quote itself is 13.96 bp right now. This name's own post median is 2.46 bp across 96 readings, so the spread is far wider than usual for RTSLAUSDT. That is wider than nine in ten of the recent readings for this name in this phase.",
+  "context": "The quote itself is 13.96 bp right now. This name's own pre median is 4.61 bp across 96 readings, so the spread is wider than usual for RTSLAUSDT. That is wider than nine in ten of the recent readings for this name in this phase.",
   "depth_note": "The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
-  "feed_note": "Note: RTSLAUSDT is one of the symbols this site excludes from its own validation, because the venue's two volume feeds disagree about it by a factor of 2.0. The cost above is walked from the order book and is unaffected, but do not treat this name's reported turnover as reliable.",
+  "feed_note": "Note: RTSLAUSDT is one of the symbols this site excludes from its own validation, because the venue's two volume feeds disagree about it by a factor of 1.8. The cost above is walked from the order book and is unaffected, but do not treat this name's reported turnover as reliable.",
   "headline": ">17 bp to leave 40,000 USDT - about >68 USDT. 7.0 bp of that is the book, 10 bp the assumed taker fee.",
   "max_exit_200bp": 358.0,
-  "phase": "post",
+  "phase": "pre",
   "plan": [
    {
     "assumption_best": "the book fully refills between clips",
@@ -69,7 +69,7 @@
   ],
   "question": "cost to exit 40000 USDT of TSLA",
   "quote": {
-   "at": "2026-09-18T22:08:11.390086+00:00",
+   "at": "2026-09-21T09:07:13.417059+00:00",
    "basis": "estimated",
    "book_usdt": 358.0,
    "exhausted": true,
@@ -106,7 +106,14 @@
    ],
    "vwap": 358.0
   },
-  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about >17 bp (>68 USDT) in one clip, with the post book as it stands. The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
+  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about >17 bp (>68 USDT) in one clip, with the pre book as it stands. The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
+  "reference": {
+   "available": false,
+   "entry": "equity_price_quote",
+   "reason": "the Skill answered with no rows for this ticker",
+   "source": "bitget-mcp-server",
+   "ticker": "TSLA"
+  },
   "spec": {
    "confident": true,
    "model": "stub",
@@ -124,25 +131,25 @@
   ],
   "verdict": {
    "basis": "this symbol's own recent spread, same phase",
-   "label": "far wider than usual",
-   "p50_bp": 2.46,
-   "p90_bp": 5.02,
-   "phase": "post",
+   "label": "wider than usual",
+   "p50_bp": 4.61,
+   "p90_bp": 7.05,
+   "phase": "pre",
    "quote_spread_bp": 13.96,
-   "ratio": 5.67,
+   "ratio": 3.03,
    "snapshots": 96
   }
  },
  "priced": {
   "advice": "Splitting the order into smaller ones does not help against this book.",
-  "at": "2026-09-15T10:56:41+00:00",
+  "at": "2026-09-21T09:07:13+00:00",
   "basis": "estimated",
-  "context": "The quote itself is 99.50 bp right now. This name's own post median is 2.46 bp across 96 readings, so the spread is far wider than usual for RTSLAUSDT. That is wider than nine in ten of the recent readings for this name in this phase.",
+  "context": "The quote itself is 99.50 bp right now. This name's own pre median is 4.61 bp across 96 readings, so the spread is far wider than usual for RTSLAUSDT. That is wider than nine in ten of the recent readings for this name in this phase.",
   "depth_note": "",
-  "feed_note": "Note: RTSLAUSDT is one of the symbols this site excludes from its own validation, because the venue's two volume feeds disagree about it by a factor of 2.0. The cost above is walked from the order book and is unaffected, but do not treat this name's reported turnover as reliable.",
+  "feed_note": "Note: RTSLAUSDT is one of the symbols this site excludes from its own validation, because the venue's two volume feeds disagree about it by a factor of 1.8. The cost above is walked from the order book and is unaffected, but do not treat this name's reported turnover as reliable.",
   "headline": "60 bp to leave 40,000 USDT - about 239 USDT. 49.8 bp of that is the book, 10 bp the assumed taker fee.",
   "max_exit_200bp": 99500.0,
-  "phase": "post",
+  "phase": "pre",
   "plan": [
    {
     "assumption_best": "the book fully refills between clips",
@@ -189,7 +196,7 @@
   ],
   "question": "cost to exit 40000 USDT of TSLA",
   "quote": {
-   "at": "2026-09-18T22:08:11.376334+00:00",
+   "at": "2026-09-21T09:07:13.401103+00:00",
    "basis": "estimated",
    "book_usdt": 99500.0,
    "exhausted": false,
@@ -222,7 +229,20 @@
    ],
    "vwap": 100.0
   },
-  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about 60 bp (239 USDT) in one clip, with the post book as it stands.",
+  "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about 60 bp (239 USDT) in one clip, with the pre book as it stands.",
+  "reference": {
+   "ask": 364.19,
+   "available": true,
+   "basis_bp": -7240.4,
+   "bid": 364.18,
+   "entry": "equity_price_quote",
+   "hours_since_print": 57.1,
+   "last_price": 364.18,
+   "printed_at": "2026-09-18T23:59:58.183801Z",
+   "source": "bitget-mcp-server",
+   "ticker": "TSLA",
+   "token_price": 100.5
+  },
   "spec": {
    "confident": true,
    "model": "stub",
@@ -234,28 +254,29 @@
    "displayed size is not guaranteed - quotes can be withdrawn before a fill",
    "a real order moves the book this is measured against",
    "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs",
+   "the basis against the listed share treats 1 USDT as 1 USD, which is an assumption rather than a measurement",
    "RTSLAUSDT: the venue's own volume feeds disagree about this symbol, so its reported turnover is not trustworthy"
   ],
   "verdict": {
    "basis": "this symbol's own recent spread, same phase",
    "label": "far wider than usual",
-   "p50_bp": 2.46,
-   "p90_bp": 5.02,
-   "phase": "post",
+   "p50_bp": 4.61,
+   "p90_bp": 7.05,
+   "phase": "pre",
    "quote_spread_bp": 99.5,
-   "ratio": 40.45,
+   "ratio": 21.58,
    "snapshots": 96
   }
  },
  "unquotable": {
-  "at": "2026-09-15T10:56:41+00:00",
+  "at": "2026-09-21T09:07:13+00:00",
   "basis": "estimated",
   "context": "The venue is not showing both a bid and an ask for this symbol right now, so there is no mid to measure an exit against.",
   "headline": "No two-sided market - this cannot be priced.",
-  "phase": "post",
+  "phase": "pre",
   "question": "cost to exit 40000 USDT of TSLA",
   "quote": {
-   "at": "2026-09-18T22:08:11.402954+00:00",
+   "at": "2026-09-21T09:07:13.434945+00:00",
    "basis": "estimated",
    "book_usdt": 0.0,
    "exhausted": true,
@@ -293,6 +314,13 @@
    "vwap": 0.0
   },
   "reading": "There is no two-sided market here, so no exit can be priced.",
+  "reference": {
+   "available": false,
+   "entry": "equity_price_quote",
+   "reason": "the Skill answered with no rows for this ticker",
+   "source": "bitget-mcp-server",
+   "ticker": "TSLA"
+  },
   "spec": {
    "confident": true,
    "model": "stub",

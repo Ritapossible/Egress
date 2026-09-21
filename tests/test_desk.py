@@ -22,7 +22,29 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from egress import desk, exitcost, llm, market, universe
+from egress import desk, exitcost, llm, market, mcp, universe
+
+# The reference lookup talks to Bitget's MCP Skill. Every desk test would
+# otherwise make a real call - the suite went from 0.67s to 56s when this was
+# first wired in, and a test that reaches the network is not a test. Patched
+# for the module; the lookup has its own tests below with responses supplied.
+_MCP_PATCH = None
+
+
+def setUpModule() -> None:
+    global _MCP_PATCH
+    _MCP_PATCH = mock.patch.object(
+        mcp, "underlying",
+        return_value={"available": False, "source": "bitget-mcp-server",
+                      "entry": "equity_price_quote",
+                      "reason": "not called in tests"})
+    _MCP_PATCH.start()
+
+
+def tearDownModule() -> None:
+    if _MCP_PATCH is not None:
+        _MCP_PATCH.stop()
+
 
 SPEC = {"ticker": "TSLA", "notional_usdt": 40_000.0, "confident": True,
         "model": "stub"}
@@ -83,6 +105,15 @@ class Resolution(unittest.TestCase):
 
 class EveryFailureIsStated(unittest.TestCase):
     """The docstring's promise, enforced. Each case must also be valid JSON."""
+
+    def setUp(self):
+        # The universe is cached in a module global. Any earlier test that
+        # resolved a symbol leaves it warm, and then the case below - which
+        # exists to prove an unreadable universe is *stated* - never reaches
+        # the loader it patched, resolves from the cache and returns a priced
+        # answer instead. It passed alone and failed in the file, which is the
+        # shape of a test that protects nothing in CI.
+        desk._UNIVERSE_CACHE[0] = None
 
     def answer(self, spec=SPEC, book=(*BOOK, "orderbook")):
         with mock.patch.object(llm, "compile_question", return_value=spec), \
