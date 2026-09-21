@@ -544,6 +544,28 @@ MARK = ('<svg width="26" height="26" viewBox="0 0 26 26" fill="none" '
 
 # ---------------------------------------------------------------- formatting
 
+
+# Every category, not the two somebody remembered.
+#
+# The line read "2,710 listed instruments (2,127 tokenized stocks, 581 crypto
+# pairs)" while universe.json held stock 2,127, crypto 581 and metal 2. The
+# total was right and the parenthetical was two short, so a reader who added it
+# up found the page disagreeing with itself. Naming the categories by hand is
+# what made that possible; this names whatever is there.
+LABELS = {"stock": ("tokenized stock", "tokenized stocks"),
+          "crypto": ("crypto pair", "crypto pairs"),
+          "metal": ("metal", "metals")}
+
+
+def _breakdown(counts: dict) -> str:
+    parts = []
+    for kind, n in sorted(counts.items(), key=lambda kv: -kv[1]):
+        if not n:
+            continue
+        one, many = LABELS.get(kind, (kind, f"{kind}s"))
+        parts.append(f"{n:,} {one if n == 1 else many}")
+    return ", ".join(parts) if parts else "nothing listed"
+
 def _bp(value) -> str:
     return "-" if value is None else f"{value:,.1f} bp"
 
@@ -1265,8 +1287,7 @@ python -m egress.page</code></pre>
     <p class="say">Current record: {cover['snapshots']:,} snapshots,
     {cover['rows']:,} rows, {len(cover['gaps'])}
     {'gap' if len(cover['gaps']) == 1 else 'gaps'} in coverage, across
-    {listed:,} listed instruments ({counts.get('stock', 0):,} tokenized stocks,
-    {counts.get('crypto', 0):,} crypto pairs).</p>
+    {listed:,} listed instruments ({_breakdown(counts)}).</p>
     <p class="note"><b>Silence is not zero.</b> A symbol missing from a snapshot
     means the venue did not report it, not that its spread was nothing. Missing
     rows are absent from every median rather than counted as a value.</p>

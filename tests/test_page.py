@@ -382,3 +382,46 @@ class Chrome(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+class TheInstrumentBreakdownAddsUp(unittest.TestCase):
+    """The docs line read "2,710 listed instruments (2,127 tokenized stocks,
+    581 crypto pairs)" while universe.json held stock 2,127, crypto 581 and
+    metal 2. The total was right; the parenthetical was two short, because it
+    named two categories by hand and the third had been added since.
+
+    A reader who adds the numbers up finds the page disagreeing with itself,
+    on a site whose entire argument is that its figures are checkable.
+    """
+
+    def test_every_category_is_named(self):
+        from egress.page import _breakdown
+        out = _breakdown({"stock": 2127, "crypto": 581, "metal": 2})
+        for token in ("2,127", "581", "2 metals"):
+            self.assertIn(token, out)
+
+    def test_a_category_nobody_anticipated_still_appears(self):
+        from egress.page import _breakdown
+        self.assertIn("3 widgets", _breakdown({"stock": 10, "widget": 3}))
+
+    def test_the_parts_sum_to_the_total_the_page_prints(self):
+        import json
+        from pathlib import Path
+
+        from egress.page import _breakdown
+
+        path = Path(__file__).resolve().parent.parent / "state" / "universe.json"
+        counts = json.loads(path.read_text())["counts"]
+        line = _breakdown(counts)
+        printed = sum(int(part.split()[0].replace(",", ""))
+                      for part in line.split(", "))
+        self.assertEqual(printed, sum(counts.values()),
+                         f"the breakdown {line!r} does not sum to the total")
+
+    def test_one_of_a_kind_is_singular(self):
+        from egress.page import _breakdown
+        self.assertIn("1 metal,", _breakdown({"metal": 1, "stock": 5}) + ",")
+
+    def test_an_empty_universe_says_so_rather_than_printing_nothing(self):
+        from egress.page import _breakdown
+        self.assertEqual(_breakdown({}), "nothing listed")
