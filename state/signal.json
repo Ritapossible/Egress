@@ -1,0 +1,94 @@
+{
+ "catalogs_answering": 3,
+ "checked_at": "2026-09-21T09:56:59+00:00",
+ "endpoint": "https://datahub.noxiaohao.com/mcp",
+ "equity_capable": [
+  "cnbc"
+ ],
+ "feed_count": 44,
+ "feeds": [
+  "cointelegraph",
+  "decrypt",
+  "bitcoinist",
+  "blockworks",
+  "the_defiant",
+  "watcherguru",
+  "coindesk",
+  "cryptonews_com",
+  "u_today",
+  "cryptobriefing",
+  "cryptonews",
+  "bitcoin_com",
+  "newsbtc",
+  "ambcrypto",
+  "protos",
+  "zycrypto",
+  "coinjournal",
+  "cnbc",
+  "fed",
+  "coincenter",
+  "rekt",
+  "hayes",
+  "vitalik",
+  "cobie",
+  "messari",
+  "hackernews",
+  "techcrunch",
+  "theverge",
+  "wired",
+  "arstechnica",
+  "bbc_world",
+  "npr",
+  "guardian",
+  "aljazeera",
+  "nhk",
+  "nature",
+  "producthunt",
+  "reddit_tech",
+  "reddit_worldnews",
+  "reddit_science",
+  "reddit_economics",
+  "reddit_ml",
+  "blockbeats",
+  "coinpost"
+ ],
+ "live_answering": 0,
+ "results": [
+  {
+   "action": "sources",
+   "answered": true,
+   "feeds": 44,
+   "kind": "catalog",
+   "tool": "news_feed"
+  },
+  {
+   "action": "latest",
+   "answered": true,
+   "articles": 0,
+   "feeds_reporting": 44,
+   "kind": "live",
+   "tool": "news_feed"
+  },
+  {
+   "action": "series_list",
+   "answered": true,
+   "entries": 18,
+   "kind": "catalog",
+   "tool": "macro_indicators"
+  },
+  {
+   "action": "assets_list",
+   "answered": true,
+   "entries": 15,
+   "kind": "catalog",
+   "tool": "cross_asset"
+  },
+  {
+   "action": "price",
+   "answered": false,
+   "kind": "live",
+   "reason": "Error executing tool crypto_price: ConnectTimeout('')",
+   "tool": "crypto_price"
+  }
+ ]
+}

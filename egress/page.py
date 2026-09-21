@@ -15,7 +15,7 @@ import datetime as dt
 import html
 from pathlib import Path
 
-from . import config, exitcost, facts, validate
+from . import config, exitcost, facts, signal, validate
 
 OUT = config.ROOT / "docs"
 REPO = "https://github.com/Ritapossible/Egress"
@@ -556,6 +556,61 @@ LABELS = {"stock": ("tokenized stock", "tokenized stocks"),
           "crypto": ("crypto pair", "crypto pairs"),
           "metal": ("metal", "metals")}
 
+
+
+# What the Bitget Skills returned, stated rather than implied.
+#
+# Two are wired. bitget-mcp-server prices the listed share behind every desk
+# answer. bitget-signal is the handbook's perception layer and has almost
+# nothing to give a desk that prices US stocks - so the call and its result go
+# on the page, rather than the integration being claimed and left unshown.
+def _skills(record: dict | None) -> str:
+    if not record:
+        return ('<p class="note">The bitget-signal probe has not run yet, so '
+                'there is nothing to report about it.</p>')
+
+    cats = record.get("catalogs_answering", 0)
+    live = record.get("live_answering", 0)
+    feeds = record.get("feed_count", 0)
+    equity = record.get("equity_capable") or []
+    named = ", ".join(f"<code>{f}</code>" for f in equity) or "none"
+
+    rows = []
+    for r in record.get("results", []):
+        detail = "answered" if r.get("answered") else "no answer"
+        if r.get("articles") is not None:
+            detail += (f" &mdash; {r['articles']} articles across "
+                       f"{r['feeds_reporting']} feeds")
+        if r.get("entries"):
+            detail += f" &mdash; {r['entries']} entries"
+        if r.get("feeds"):
+            detail += f" &mdash; {r['feeds']} feeds"
+        if not r.get("answered"):
+            detail += f'<br><span class="note">{r.get("reason", "")}</span>'
+        rows.append(f"<tr><td><code>{r['tool']}</code> / "
+                    f"<code>{r.get('action', '')}</code></td>"
+                    f"<td>{r.get('kind', '')}</td><td>{detail}</td></tr>")
+
+    return (
+        f'<p class="say"><b>bitget-signal</b>, probed '
+        f'{record.get("checked_at", "")}. {cats} of its catalog calls answer; '
+        f'{live} of its live-data calls return anything. The aggregator lists '
+        f'<b>{feeds} feeds</b> and reports zero articles from all of them, and '
+        f'<code>crypto_price</code> fails with the service&rsquo;s own '
+        f'<code>ConnectTimeout</code> &mdash; so the Skill is running and its '
+        f'outbound fetches are not.</p>'
+        f'<p class="say">It would not help here even if it worked. Of those '
+        f'{feeds} feeds, the ones that could carry a US stock story at all '
+        f'are: {named}. The rest are crypto, tech and general news. This '
+        f'cannot explain why a tokenized stock is wide; it is a control, not '
+        f'an explanation, and it is on this page as a measured result rather '
+        f'than a logo.</p>'
+        # Wrapped, like every other wide table here: unwrapped, the Result
+        # column crushes to one word per line on a phone. An existing test
+        # counts the wrappers against the tables and caught this.
+        f'<div class="scroll"><table class="tbl"><thead><tr><th>Call</th>'
+        f'<th>Kind</th><th>Result</th></tr></thead>'
+        f'<tbody>{"".join(rows)}</tbody></table></div>')
 
 def _breakdown(counts: dict) -> str:
     parts = []
@@ -1291,6 +1346,14 @@ python -m egress.page</code></pre>
     <p class="note"><b>Silence is not zero.</b> A symbol missing from a snapshot
     means the venue did not report it, not that its spread was nothing. Missing
     rows are absent from every median rather than counted as a value.</p>
+
+    <h2 id="skills">Bitget Skills</h2>
+    <p class="say">Two are wired. <b>bitget-mcp-server</b> answers
+    <code>equity_price_quote</code> behind every desk answer &mdash; it is
+    where the basis against the listed share comes from, and without it this
+    site could price an exit but not say what the position was worth. The
+    other is below.</p>
+    {_skills(signal.load())}
 
     <h2 id="api">HTTP API</h2>
     <p class="say">One endpoint, used by the desk on the front page. It exists

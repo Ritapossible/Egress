@@ -61,14 +61,14 @@ class McpUnavailable(RuntimeError):
 
 
 def _post(payload: dict, session: str | None = None,
-          endpoint: str | None = None) -> tuple[dict, str]:
+          endpoint: str | None = None, timeout: int | None = None) -> tuple[dict, str]:
     headers = {"Content-Type": "application/json", "User-Agent": _UA,
                "Accept": "application/json, text/event-stream"}
     if session:
         headers["mcp-session-id"] = session
     req = urllib.request.Request(endpoint or ENDPOINT,
                                  data=json.dumps(payload).encode(), headers=headers)
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as resp:
+    with urllib.request.urlopen(req, timeout=timeout or TIMEOUT) as resp:
         return dict(resp.headers), resp.read().decode()
 
 
@@ -88,16 +88,16 @@ def _unframe(text: str) -> dict:
 
 
 def call(tool: str, arguments: dict | None = None, retries: int = RETRIES,
-         endpoint: str | None = None) -> object:
-    """A tool may answer with an object or a list - `news_feed` returns one
-    envelope per source - so the return type is deliberately not `dict`. Claiming
-    dict here is how `isinstance(payload, list)` became unreachable code that the
-    live service exercises on every call."""
-    """One tool call, with its own session. Raises McpUnavailable, never guesses."""
+         endpoint: str | None = None, timeout: int | None = None) -> object:
+    """One tool call, with its own session. Raises McpUnavailable, never guesses.
+
+    A tool may answer with an object or a list - `news_feed` returns one
+    envelope per source - so the return type is deliberately not `dict`.
+    """
     last = "not attempted"
     for attempt in range(retries):
         try:
-            return _once(tool, arguments, endpoint)
+            return _once(tool, arguments, endpoint, timeout)
         except McpUnavailable as exc:
             last = exc.reason
             if attempt < retries - 1:
@@ -106,21 +106,22 @@ def call(tool: str, arguments: dict | None = None, retries: int = RETRIES,
 
 
 def _once(tool: str, arguments: dict | None,
-          endpoint: str | None = None) -> object:
+          endpoint: str | None = None, timeout: int | None = None) -> object:
     try:
         headers, _ = _post({"jsonrpc": "2.0", "id": 1, "method": "initialize",
                             "params": {"protocolVersion": PROTOCOL, "capabilities": {},
                                        "clientInfo": {"name": "ballast",
                                                       "version": "1"}}},
-                           endpoint=endpoint)
+                           endpoint=endpoint, timeout=timeout)
         session = headers.get("mcp-session-id") or headers.get("Mcp-Session-Id")
         if not session:
             raise McpUnavailable("initialize returned no session id")
         _post({"jsonrpc": "2.0", "method": "notifications/initialized"}, session,
-              endpoint)
+              endpoint, timeout)
         _, body = _post({"jsonrpc": "2.0", "id": 2, "method": "tools/call",
                          "params": {"name": tool,
-                                    "arguments": arguments or {}}}, session, endpoint)
+                                    "arguments": arguments or {}}}, session, endpoint,
+                        timeout)
     except urllib.error.HTTPError as exc:
         raise McpUnavailable(f"HTTP {exc.code} from {endpoint or ENDPOINT}") from exc
     except (urllib.error.URLError, TimeoutError, OSError) as exc:

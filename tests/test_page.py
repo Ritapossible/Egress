@@ -11,6 +11,7 @@ import re
 import sys
 import unittest
 from pathlib import Path
+from typing import ClassVar
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
@@ -445,3 +446,85 @@ class TheInstrumentBreakdownAddsUp(unittest.TestCase):
     def test_an_empty_universe_says_so_rather_than_printing_nothing(self):
         from egress.page import _breakdown
         self.assertEqual(_breakdown({}), "nothing listed")
+
+
+class TheSkillsSectionMatchesTheProbe(unittest.TestCase):
+    """The page must not claim more about a Skill than its record supports.
+
+    The easy failure here is the one every hackathon page makes: naming an
+    integration and leaving the result unshown, so a reader assumes it works.
+    The numbers on the page come from state/signal.json or they are not on it.
+    """
+
+    RECORD: ClassVar[dict] = {
+        "checked_at": "2026-09-21T09:56:59+00:00",
+        "feed_count": 44, "equity_capable": ["cnbc"],
+        "catalogs_answering": 3, "live_answering": 0,
+        "results": [
+            {"tool": "news_feed", "action": "sources", "kind": "catalog",
+             "answered": True, "feeds": 44},
+            {"tool": "news_feed", "action": "latest", "kind": "live",
+             "answered": True, "articles": 0, "feeds_reporting": 44},
+            {"tool": "crypto_price", "action": "price", "kind": "live",
+             "answered": False, "reason": "ConnectTimeout"},
+        ],
+    }
+
+    def rendered(self, record):
+        import html as _h
+        import re as _re
+
+        from egress.page import _skills
+        return _re.sub(r"\s+", " ", _h.unescape(_re.sub(r"<[^>]+>", " ",
+                                                        _skills(record))))
+
+    def test_the_counts_come_from_the_record(self):
+        out = self.rendered(self.RECORD)
+        self.assertIn("3 of its catalog calls answer", out)
+        self.assertIn("0 of its live-data calls", out)
+        self.assertIn("44 feeds", out)
+
+    def test_the_equity_capable_feeds_are_named_not_counted(self):
+        """"one feed could cover a stock" is a claim; naming it is checkable."""
+        self.assertIn("cnbc", self.rendered(self.RECORD))
+
+    def test_a_failed_call_shows_its_reason(self):
+        """Asserted with a reason that appears nowhere else.
+
+        The first version looked for "ConnectTimeout", which the prose above
+        the table also names - so it passed with the row's reason removed
+        entirely. A substring that the page hardcodes proves nothing about
+        what the record rendered.
+        """
+        record = dict(self.RECORD)
+        record["results"] = [dict(r) for r in self.RECORD["results"]]
+        record["results"][-1]["reason"] = "upstream refused: EGRESS-PROBE-XYZ"
+        self.assertIn("EGRESS-PROBE-XYZ", self.rendered(record))
+
+    def test_every_probed_call_is_listed(self):
+        out = self.rendered(self.RECORD)
+        for row in self.RECORD["results"]:
+            with self.subTest(tool=row["tool"], action=row["action"]):
+                self.assertIn(row["action"], out)
+
+    def test_no_record_means_no_claim(self):
+        out = self.rendered(None)
+        self.assertIn("has not run yet", out)
+        for forbidden in ("44", "answer", "feeds reporting"):
+            self.assertNotIn(f"{forbidden} feeds", out)
+
+    def test_the_section_reaches_the_built_page(self):
+        import html as _h
+        import re as _re
+        import tempfile
+        from unittest import mock
+
+        with tempfile.TemporaryDirectory() as out, \
+                mock.patch.object(page.facts, "build", return_value=FACTS), \
+                mock.patch.object(page.signal, "load", return_value=self.RECORD):
+            page.write(Path(out))
+            built = (Path(out) / "docs.html").read_text()
+        text = _re.sub(r"\s+", " ", _h.unescape(_re.sub(r"<[^>]+>", " ", built)))
+        self.assertIn("Bitget Skills", text)
+        self.assertIn("equity_price_quote", text)
+        self.assertIn("3 of its catalog calls answer", text)

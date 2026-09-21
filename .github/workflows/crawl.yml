@@ -53,6 +53,13 @@ jobs:
           done
           wait $CRAWL || true
 
+      # Once per session. The Skill's state is not a per-snapshot quantity,
+      # and a service that is already timing out does not need hammering.
+      # `|| true`: a third party being down must never fail the crawl.
+      - name: Probe bitget-signal
+        if: always()
+        run: python -m egress.crawl --signal || echo "::warning::signal probe failed"
+
       - name: Commit the tail
         if: always()
         run: |

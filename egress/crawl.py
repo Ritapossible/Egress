@@ -27,7 +27,7 @@ import json
 import sys
 import time
 
-from . import config, market, store, universe
+from . import config, market, signal, store, universe
 
 UTC = dt.timezone.utc
 
@@ -132,10 +132,19 @@ def main(argv: list[str] | None = None) -> int:
                     help="refresh the instrument classification and exit")
     ap.add_argument("--coverage", action="store_true",
                     help="report what the record holds, then exit")
+    ap.add_argument("--signal", action="store_true",
+                    help="probe bitget-signal and record what it returned")
     args = ap.parse_args(argv)
 
     if args.coverage:
         print(json.dumps(store.coverage(), indent=1))
+        return 0
+    if args.signal:
+        # Once per crawl session, not once per snapshot. The record is about
+        # the Skill's state, which does not change every twenty minutes, and
+        # hammering a service that is already timing out is not a probe.
+        record = signal.write()
+        print(json.dumps(json.loads(record.read_text()), indent=1))
         return 0
     if args.universe:
         print(json.dumps(universe.snapshot()["counts"], indent=1))
