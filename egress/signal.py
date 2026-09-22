@@ -195,8 +195,31 @@ def for_ticker(ticker: str, timeout: int = DESK_TIMEOUT) -> dict:
         payload = mcp.call("news_feed", {"action": "latest", "limit": 5},
                            endpoint=ENDPOINT, timeout=timeout)
     except Exception as exc:                      # never reaches the caller
+        # The service answers, but from Vercel's region it rarely answers
+        # inside six seconds. Blocking a user on a block that cannot change
+        # their number would be the wrong trade, and "timed out" on every
+        # request says less than the truth: the scheduled probe waits the full
+        # twenty-five and reliably gets back 44 feeds and no articles.
+        #
+        # So the live attempt stays short, and what the user sees when it
+        # expires is the last completed measurement - labelled as a past
+        # reading, with its timestamp, never as a live one.
         out.update(answered=False, articles=0, matched=[],
+                   live_error=f"{type(exc).__name__}: {exc}"[:120],
                    detail=f"{type(exc).__name__}: {exc}"[:120])
+        cached = load() or {}
+        latest = next((r for r in cached.get("results") or []
+                       if r.get("tool") == "news_feed"
+                       and r.get("action") == "latest"), None)
+        if latest is not None:
+            out["fell_back_to_probe"] = True
+            out["probed_at"] = cached.get("checked_at")
+            out["articles"] = latest.get("articles", 0)
+            out["detail"] = (
+                f"no reply inside {timeout}s; the scheduled probe last got "
+                f"{latest.get('feeds_reporting', cached.get('feed_count', 0))} "
+                f"feeds and {latest.get('articles', 0)} articles at "
+                f"{cached.get('checked_at', 'an unrecorded time')}")
         return out
 
     feeds = len(payload) if isinstance(payload, list) else 0

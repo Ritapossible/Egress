@@ -642,13 +642,43 @@ class SignalReportsEmptinessRatherThanFillingIt(unittest.TestCase):
 
     def test_a_timeout_is_not_reported_as_an_empty_service(self):
         """"It had nothing" and "we gave up waiting" are different facts. The
-        first is about the service; the second is about our own fuse."""
+        first is about the service; the second is about our own fuse.
+
+        `answered` stays false and the exception is kept verbatim, whether or
+        not the cached probe supplies something to show instead.
+        """
         with mock.patch.object(signal.mcp, "call",
                                side_effect=TimeoutError("read timed out")):
             out = REAL_FOR_TICKER("TSLA")
         self.assertFalse(out["answered"])
-        self.assertIn("TimeoutError", out["detail"])
+        self.assertIn("TimeoutError", out["live_error"])
         self.assertNotIn("carrying nothing", out["detail"])
+
+    def test_a_timed_out_call_falls_back_to_the_last_real_measurement(self):
+        """From Vercel's region the service rarely replies inside six seconds,
+        and "timed out" on every request says less than the truth. The
+        scheduled probe waits the full twenty-five and gets 44 feeds with no
+        articles, so that is shown instead - as a past reading, with its
+        timestamp, never as a live one."""
+        probe = {"checked_at": "2026-09-22T10:03:23+00:00", "feed_count": 44,
+                 "results": [{"tool": "news_feed", "action": "latest",
+                              "articles": 0, "feeds_reporting": 44}]}
+        with mock.patch.object(signal.mcp, "call", side_effect=TimeoutError("t")), \
+             mock.patch.object(signal, "load", return_value=probe):
+            out = REAL_FOR_TICKER("TSLA")
+        self.assertFalse(out["answered"], "a fallback is not an answer")
+        self.assertTrue(out["fell_back_to_probe"])
+        self.assertEqual(out["probed_at"], "2026-09-22T10:03:23+00:00")
+        self.assertIn("44 feeds and 0 articles", out["detail"])
+        self.assertIn("2026-09-22T10:03:23", out["detail"],
+                      "a past reading must carry the time it was taken")
+
+    def test_no_cached_probe_means_no_invented_fallback(self):
+        with mock.patch.object(signal.mcp, "call", side_effect=TimeoutError("t")), \
+             mock.patch.object(signal, "load", return_value=None):
+            out = REAL_FOR_TICKER("TSLA")
+        self.assertNotIn("fell_back_to_probe", out)
+        self.assertIn("TimeoutError", out["detail"])
 
     def test_for_ticker_never_raises(self):
         for boom in (RuntimeError("x"), ValueError("y"), TimeoutError("z")):
