@@ -19,7 +19,62 @@ Current values to verify against <https://egress-v1.vercel.app/evidence>:
 
 ---
 
-## Option C — shortest, leads with the question (258 chars) ← recommended
+## Option D — long form: problem, solution, design (~1,080 chars) ← recommended
+
+Bitget's requirement is that the post *introduces the product*, so this one is
+built to do that rather than to fit 280 characters. Problem first, because the
+question is the hook; then what it is; then the one design decision worth
+defending.
+
+```
+Bitget lists 2,127 tokenized US stocks. You can buy one in a single click.
+
+Nothing tells you what it costs to LEAVE.
+
+So I measured it. 1,967 snapshots, 4.4M rows, the whole listed universe every 5 minutes:
+
+▸ Established names: 6.1 bp spread while New York is open → 54.5 bp overnight. 8.9x.
+▸ Listed under 30 days: 644 bp overnight.
+▸ Crypto on the same venue: 12.0 → 11.8. It doesn't move.
+
+That control is the whole finding. Same exchange, same matching engine, same fees — so the widening isn't the venue. It's the closed market underneath.
+
+Egress is a desk that answers this in English.
+
+"what does leaving 40k of TSLA cost?" → it walks the real order book, level by level, and tells you.
+
+The design choice I'd defend hardest:
+
+The LLM only reads the question. Qwen turns that sentence into {TSLA, 40000} and stops. It has no field for a price, a cost or a recommendation. Every number comes from the book.
+
+Models are great at language and bad at arithmetic over an order book. A plausible-looking wrong number costs someone real money.
+
+When the book can't fill your size, it says so and quotes a floor — instead of inventing a price.
+
+egress-v1.vercel.app
+
+#BitgetHackathon @Bitget_AI
+```
+
+### Optional reply, for the engineering depth
+
+```
+Three Bitget Skills, and one of them is wired to argue with me:
+
+▸ bitget-mcp-server → the listed share price behind the token
+▸ bitget-signal → news, on a 6s fuse, and it CANNOT move the number. A test asserts the answer is byte-identical whether it replies, returns nothing, or dies.
+▸ Agent Hub CLI → prices the same exit through a different SDK
+
+That last one caught something. 6 of 7 symbols agree to the basis point. But two names return no two-sided book from the Hub at all — the same two my own validation had to exclude. Second client, same thinness, found independently.
+
+It does NOT prove my numbers are right. Both clients read the same exchange and would inherit the same error. It rules out my own HTTP layer, which was previously unchecked.
+
+Also published: the 6 symbols I can't validate, and why.
+```
+
+---
+
+## Option C — shortest, leads with the question (258 chars)
 
 ```
 What does it cost to LEAVE a tokenized stock at 3am?
