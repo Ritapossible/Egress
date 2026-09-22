@@ -1,25 +1,25 @@
 {
- "frozen_at": "2026-09-22T16:24:11+00:00",
+ "frozen_at": "2026-09-22T16:48:17+00:00",
  "note": "A recording of one moment, not a live figure. The book it was priced against has moved since.",
  "source": "https://egress-v1.vercel.app/api/ask",
  "tasks": [
   {
    "answer": {
-    "advice": "Split into 12 orders and you might save up to 3 bp - but only if the book refills in between, which a snapshot cannot promise.",
-    "at": "2026-09-22T16:24:00+00:00",
+    "advice": "Splitting it up saves under 2 bp even if the book fully refills, so it is not worth the effort here.",
+    "at": "2026-09-22T16:47:52+00:00",
     "basis": "estimated",
     "context": "The quote itself is 0.27 bp right now. This name's own open median is 2.13 bp across 96 readings, so the spread is tighter than usual for RTSLAUSDT.",
     "depth_note": "",
-    "feed_note": "Note: RTSLAUSDT is one of the symbols this site excludes from its own validation, because the venue's two volume feeds disagree about it by a factor of 32.0. The cost above is walked from the order book and is unaffected, but do not treat this name's reported turnover as reliable.",
-    "headline": "22 bp to leave 40,000 USDT - about 90 USDT. 12.4 bp of that is the book, 10 bp the assumed taker fee.",
-    "max_exit_200bp": 625719.61,
+    "feed_note": "Note: RTSLAUSDT is one of the symbols this site excludes from its own validation, because the venue's two volume feeds disagree about it by a factor of 14.2. The cost above is walked from the order book and is unaffected, but do not treat this name's reported turnover as reliable.",
+    "headline": "11 bp to leave 40,000 USDT - about 43 USDT. 0.8 bp of that is the book, 10 bp the assumed taker fee.",
+    "max_exit_200bp": 515385.15,
     "phase": "open",
     "plan": [
      {
       "assumption_best": "the book fully refills between clips",
       "assumption_worst": "the book never refills (identical to one clip)",
       "basis": "estimated",
-      "best_case_bp": 22.38,
+      "best_case_bp": 10.76,
       "notional_usdt": 40000.0,
       "quotable": true,
       "slices": 1,
@@ -27,13 +27,13 @@
       "unverified": [
        "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
       ],
-      "worst_case_bp": 22.38
+      "worst_case_bp": 10.76
      },
      {
       "assumption_best": "the book fully refills between clips",
       "assumption_worst": "the book never refills (identical to one clip)",
       "basis": "estimated",
-      "best_case_bp": 20.01,
+      "best_case_bp": 10.13,
       "notional_usdt": 40000.0,
       "quotable": true,
       "slices": 4,
@@ -41,13 +41,13 @@
       "unverified": [
        "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
       ],
-      "worst_case_bp": 22.38
+      "worst_case_bp": 10.76
      },
      {
       "assumption_best": "the book fully refills between clips",
       "assumption_worst": "the book never refills (identical to one clip)",
       "basis": "estimated",
-      "best_case_bp": 19.05,
+      "best_case_bp": 10.13,
       "notional_usdt": 40000.0,
       "quotable": true,
       "slices": 12,
@@ -55,18 +55,18 @@
       "unverified": [
        "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
       ],
-      "worst_case_bp": 22.38
+      "worst_case_bp": 10.76
      }
     ],
     "question": "what does leaving 40k of TSLA cost?",
     "quote": {
-     "at": "2026-09-22T16:24:03.836254+00:00",
+     "at": "2026-09-22T16:47:56.580936+00:00",
      "basis": "estimated",
-     "book_usdt": 625719.61,
+     "book_usdt": 515385.15,
      "exhausted": false,
      "fee_bp": 10.0,
-     "filled_usdt": 39950.49,
-     "levels_used": 6,
+     "filled_usdt": 39996.98,
+     "levels_used": 2,
      "limits": {
       "can_correct": [
        "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs"
@@ -76,36 +76,53 @@
        "a real order moves the book this is measured against"
       ]
      },
-     "quantity": 106.18952175,
+     "quantity": 106.17542835,
      "quotable": true,
-     "reference": 376.685,
+     "reference": 376.735,
      "requested_usdt": 40000.0,
      "side": "sell",
-     "slippage_bp": 12.38,
+     "slippage_bp": 0.76,
      "source": "orderbook",
      "symbol": "RTSLAUSDT",
-     "total_bp": 22.38,
-     "total_usdt": 89.52,
+     "total_bp": 10.76,
+     "total_usdt": 43.04,
      "unverified": [
       "displayed size is not guaranteed - quotes can be withdrawn before a fill",
       "a real order moves the book this is measured against",
       "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs"
      ],
-     "vwap": 376.21873327
+     "vwap": 376.7065462
     },
-    "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about 22 bp (90 USDT) in one clip, with the open book as it stands.",
+    "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about 11 bp (43 USDT) in one clip, with the open book as it stands.",
     "reference": {
-     "ask": 377.48,
+     "ask": 377.98,
      "available": true,
-     "basis_bp": -12.9,
-     "bid": 377.01,
+     "basis_bp": -9.8,
+     "bid": 376.86,
      "entry": "equity_price_quote",
-     "hours_since_print": 0.2,
-     "last_price": 377.17,
-     "printed_at": "2026-09-22T16:09:02.510902Z",
+     "hours_since_print": 0.3,
+     "last_price": 377.105,
+     "printed_at": "2026-09-22T16:32:50.332188Z",
      "source": "bitget-mcp-server",
      "ticker": "TSLA",
-     "token_price": 376.685
+     "token_price": 376.735
+    },
+    "signal": {
+     "action": "latest",
+     "answered": false,
+     "articles": 0,
+     "asked": true,
+     "detail": "no reply inside 6s; the scheduled probe last got 44 feeds and 0 articles at 2026-09-22T10:03:23+00:00",
+     "endpoint": "https://datahub.noxiaohao.com/mcp",
+     "equity_capable": [
+      "cnbc"
+     ],
+     "fell_back_to_probe": true,
+     "live_error": "McpUnavailable: TimeoutError: The read operation timed out",
+     "load_bearing": false,
+     "matched": [],
+     "probed_at": "2026-09-22T10:03:23+00:00",
+     "tool": "news_feed"
     },
     "spec": {
      "confident": true,
@@ -138,12 +155,12 @@
   {
    "answer": {
     "advice": "Splitting the order into smaller ones does not help against this book.",
-    "at": "2026-09-22T16:24:05+00:00",
+    "at": "2026-09-22T16:48:05+00:00",
     "basis": "estimated",
-    "context": "The quote itself is 4.04 bp right now. This name's own open median is 4.08 bp across 96 readings, so the spread is about usual for RRIOTUSDT.",
+    "context": "The quote itself is 4.05 bp right now. This name's own open median is 4.08 bp across 96 readings, so the spread is about usual for RRIOTUSDT.",
     "depth_note": "The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
     "headline": ">12 bp to leave 5,000 USDT - about >6 USDT. 2.0 bp of that is the book, 10 bp the assumed taker fee.",
-    "max_exit_200bp": 11890.32,
+    "max_exit_200bp": 2965.2,
     "phase": "open",
     "plan": [
      {
@@ -191,12 +208,12 @@
     ],
     "question": "what does leaving 5k of RIOT cost?",
     "quote": {
-     "at": "2026-09-22T16:24:10.568947+00:00",
+     "at": "2026-09-22T16:48:09.837757+00:00",
      "basis": "estimated",
-     "book_usdt": 11890.32,
-     "exhausted": false,
+     "book_usdt": 2965.2,
+     "exhausted": true,
      "fee_bp": 10.0,
-     "filled_usdt": 4998.99,
+     "filled_usdt": 2965.2,
      "levels_used": 1,
      "limits": {
       "can_correct": [
@@ -205,12 +222,13 @@
       "cannot_see": [
        "displayed size is not guaranteed - quotes can be withdrawn before a fill",
        "a real order moves the book this is measured against",
+       "the displayed book absorbed only 59.3% of this position; the rest has no quoted price",
        "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it"
       ]
      },
-     "quantity": 202.22446916,
+     "quantity": 120.0,
      "quotable": true,
-     "reference": 24.725,
+     "reference": 24.715,
      "requested_usdt": 5000.0,
      "side": "sell",
      "slippage_bp": 2.02,
@@ -222,23 +240,41 @@
       "displayed size is not guaranteed - quotes can be withdrawn before a fill",
       "a real order moves the book this is measured against",
       "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs",
+      "the displayed book absorbed only 59.3% of this position; the rest has no quoted price",
       "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it"
      ],
-     "vwap": 24.72
+     "vwap": 24.71
     },
     "reading": "Leaving 5,000 USDT of RRIOTUSDT costs about >12 bp (>6 USDT) in one clip, with the open book as it stands. The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
     "reference": {
-     "ask": 24.71,
+     "ask": 24.6,
      "available": true,
-     "basis_bp": -2.0,
-     "bid": 24.7,
+     "basis_bp": 54.9,
+     "bid": 24.59,
      "entry": "equity_price_quote",
-     "hours_since_print": 0.3,
-     "last_price": 24.73,
-     "printed_at": "2026-09-22T16:09:05.054727Z",
+     "hours_since_print": 0.2,
+     "last_price": 24.58,
+     "printed_at": "2026-09-22T16:33:09.198148Z",
      "source": "bitget-mcp-server",
      "ticker": "RIOT",
-     "token_price": 24.725
+     "token_price": 24.715
+    },
+    "signal": {
+     "action": "latest",
+     "answered": false,
+     "articles": 0,
+     "asked": true,
+     "detail": "no reply inside 6s; the scheduled probe last got 44 feeds and 0 articles at 2026-09-22T10:03:23+00:00",
+     "endpoint": "https://datahub.noxiaohao.com/mcp",
+     "equity_capable": [
+      "cnbc"
+     ],
+     "fell_back_to_probe": true,
+     "live_error": "McpUnavailable: TimeoutError: The read operation timed out",
+     "load_bearing": false,
+     "matched": [],
+     "probed_at": "2026-09-22T10:03:23+00:00",
+     "tool": "news_feed"
     },
     "spec": {
      "confident": true,
@@ -251,6 +287,7 @@
      "displayed size is not guaranteed - quotes can be withdrawn before a fill",
      "a real order moves the book this is measured against",
      "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs",
+     "the displayed book absorbed only 59.3% of this position; the rest has no quoted price",
      "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it",
      "the basis against the listed share treats 1 USDT as 1 USD, which is an assumption rather than a measurement"
     ],
@@ -260,7 +297,7 @@
      "p50_bp": 4.08,
      "p90_bp": 8.1,
      "phase": "open",
-     "quote_spread_bp": 4.04,
+     "quote_spread_bp": 4.05,
      "ratio": 0.99,
      "snapshots": 96
     }
