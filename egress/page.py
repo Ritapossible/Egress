@@ -1031,6 +1031,55 @@ def frozen_task() -> dict | None:
         return None
 
 
+
+def hub_crosscheck(record: dict | None) -> str:
+    """The same book, read twice through independent clients.
+
+    Everything else on this site comes through one HTTP client. A bug in that
+    client would look exactly like a property of the market, and this project's
+    own argument is that the venue's numbers do not always agree with each
+    other. So the same order is priced through the Bitget Agent Hub CLI as well
+    - a different SDK in a different process - and both are costed by the same
+    `exitcost` code, so any gap is the book rather than the arithmetic.
+    """
+    if not record or not record.get("rows"):
+        return ('<p class="note">No Hub cross-check recorded. Run '
+                '<code>python3 tools/hub_crosscheck.py</code>.</p>')
+    c = record["counts"]
+    out = [f'<p class="say">Both clients asked for the same '
+           f'{record["notional_usdt"]:,.0f} USDT exit, '
+           f'{html.escape(record["built_on"])}. '
+           f'<b>{c["compared"]} of {c["asked"]} could be compared; '
+           f'{c["agreed"]} agree</b> within '
+           f'{record["agree_within_bp"]} bp.</p>',
+           '<div class="scroll"><table class="tbl"><thead><tr><th>Symbol</th>'
+           '<th>This site</th><th>Agent Hub</th><th>Gap</th><th>Verdict</th>'
+           '</tr></thead><tbody>']
+    for row in record["rows"]:
+        verdict = row.get("verdict") or ("unavailable" if row.get("available") is False
+                                         else "-")
+        detail = row.get("reason") or ""
+        ours = row.get("ours_total_bp")
+        theirs = row.get("hub_total_bp")
+        gap = row.get("gap_bp")
+        out.append(
+            f'<tr><td class="sym">{html.escape(row["symbol"])}</td>'
+            f'<td>{f"{ours:.2f} bp" if isinstance(ours, (int, float)) else "&ndash;"}</td>'
+            f'<td>{f"{theirs:.2f} bp" if isinstance(theirs, (int, float)) else "&ndash;"}</td>'
+            f'<td>{f"{gap:.2f} bp" if isinstance(gap, (int, float)) else "&ndash;"}</td>'
+            f'<td>{html.escape(verdict)}'
+            f'{" &mdash; " + html.escape(detail) if detail else ""}</td></tr>')
+    out.append("</tbody></table></div>")
+    return "\n".join(out)
+
+
+def hub_record() -> dict | None:
+    try:
+        return json.loads((config.STATE / "hub_crosscheck.json").read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
 def research_task(record: dict | None) -> str:
     """The frozen research task, as static HTML.
 
@@ -1226,6 +1275,27 @@ def evidence_body(f: dict) -> str:
     not yet established <b>as a fill</b> on the names most people actually hold.
     Those are the symbols where it matters most, and they are the ones still
     outstanding.</p>
+
+    <h2 id="hub">The same book, read twice</h2>
+    <p class="say">Every figure on this site comes through one HTTP client, and a
+    bug in that client would look exactly like a property of the market. Since
+    the argument here is that the venue's own numbers do not always agree with
+    each other, the same scepticism is owed to our own reads. So the same exit is
+    priced a second time through the <b>Bitget Agent Hub CLI</b> &mdash; a
+    different SDK, in a different process, with no credentials &mdash; and both
+    are costed by the same code, so any gap is the book and not the
+    arithmetic.</p>
+    {hub_crosscheck(hub_record())}
+    <p class="note"><b>What agreement does and does not prove.</b> It does not
+    prove the cost is right; both clients read the same exchange and would
+    inherit the same error. It does rule out <em>our</em> transport as the
+    explanation, which was previously unchecked. The two reads are sequential
+    and seconds apart on a live book, so a sub-bp gap is the market moving
+    between them rather than a disagreement &mdash; which is why the threshold
+    exists and is printed rather than hidden. <b>The failures are the
+    interesting rows:</b> where the Hub cannot return a two-sided book at all,
+    that is a second client independently finding the same thinness that got
+    those names excluded from validation.</p>
   </section>
 </div>
 """

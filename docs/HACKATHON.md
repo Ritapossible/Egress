@@ -26,6 +26,7 @@ positions that have no exit at all. It never places an order.
 |---|---|---|
 | `bitget-mcp-server` → `equity_price_quote` | `egress/mcp.py`, called from `desk.answer()` on every request | **Answering.** Supplies the listed share price behind the token, which is where the basis figure comes from. Without it the desk can price an exit but cannot say what the position was worth. |
 | `bitget-signal` → `news_feed/latest` | `egress/signal.py`, called from `desk.answer()` on a 6s fuse | **Reachable, carrying nothing.** 44 feeds, 0 articles. The desk prints that rather than assembling a briefing out of an empty feed. |
+| **Bitget Agent Hub CLI** → `market/orderbook` | `egress/hub.py`, run every crawl by `tools/hub_crosscheck.py` | **Answering, and used as an adversary.** A second independent read of the same book through a different SDK, priced by the same `exitcost` code. Published on `evidence.html#hub`: where the two clients disagree, and where the Hub cannot return a book at all. No credentials — the market domain is `auth: public`. |
 
 **bitget-signal is deliberately non-load-bearing, and that is enforced rather
 than promised.** The exit cost comes from the venue's own book; news cannot move

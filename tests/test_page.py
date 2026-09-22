@@ -718,3 +718,167 @@ class TheSubmissionDescriptionStaysHonest(unittest.TestCase):
         self.assertIn("@Bitget_AI", doc)
         self.assertTrue("⚠️" in doc or "fill in" in doc,
                         "the X post row no longer flags itself as outstanding")
+
+
+class TheHubCrosscheckIsAnAdversaryNotALogo(unittest.TestCase):
+    """The Agent Hub is easy to integrate dishonestly: route an existing REST
+    call through it and claim a third Skill. That adds a logo and no
+    information.
+
+    What earns its place is using it against the existing path - same question,
+    different SDK, same costing code - so the comparison can actually fail. So
+    what is enforced here is that it *can* fail: that disagreement and
+    unavailability are representable, reported, and not quietly folded into
+    agreement.
+    """
+
+    def record(self) -> dict:
+        path = (Path(__file__).resolve().parent.parent
+                / "state" / "hub_crosscheck.json")
+        return json.loads(path.read_text())
+
+    def test_every_row_reaches_the_page(self):
+        record = self.record()
+        out = page.hub_crosscheck(record)
+        self.assertTrue(record["rows"], "nothing was cross-checked")
+        for row in record["rows"]:
+            with self.subTest(symbol=row["symbol"]):
+                self.assertIn(row["symbol"], out)
+
+    def test_the_counts_on_the_page_are_the_counts_in_the_file(self):
+        record = self.record()
+        c = record["counts"]
+        out = page.hub_crosscheck(record)
+        self.assertIn(f'<b>{c["compared"]} of {c["asked"]} could be compared; '
+                      f'{c["agreed"]} agree</b>', out,
+                      "the page does not quote the measured comparison counts")
+
+    def test_a_disagreement_is_shown_as_a_disagreement(self):
+        """The one row that matters. If this ever renders as agreement, the
+        cross-check has become decoration."""
+        record = {"built_on": "2026-09-22T00:00:00+00:00", "notional_usdt": 25000.0,
+                  "agree_within_bp": 0.5,
+                  "counts": {"asked": 1, "compared": 1, "agreed": 0,
+                             "disagreed": 1, "unavailable": 0},
+                  "rows": [{"symbol": "RAAPLUSDT", "verdict": "disagree",
+                            "ours_total_bp": 46.3, "hub_total_bp": 45.09,
+                            "gap_bp": 1.21}]}
+        out = page.hub_crosscheck(record)
+        self.assertIn("disagree", out)
+        self.assertIn("1.21 bp", out)
+        self.assertIn("46.30 bp", out)
+        self.assertIn("45.09 bp", out)
+
+    def test_a_symbol_the_hub_cannot_price_says_why(self):
+        """Two of the excluded names return no two-sided book from the Hub
+        either. That is a second client finding the same thinness, and it is
+        worth more than a blank cell."""
+        record = {"built_on": "2026-09-22T00:00:00+00:00", "notional_usdt": 25000.0,
+                  "agree_within_bp": 0.5,
+                  "counts": {"asked": 1, "compared": 0, "agreed": 0,
+                             "disagreed": 0, "unavailable": 1},
+                  "rows": [{"symbol": "RSYKUSDT", "available": False,
+                            "reason": "the Hub returned no two-sided book"}]}
+        out = page.hub_crosscheck(record)
+        self.assertIn("unavailable", out)
+        self.assertIn("no two-sided book", out)
+
+    def test_nothing_recorded_says_so(self):
+        out = page.hub_crosscheck(None)
+        self.assertIn("hub_crosscheck.py", out)
+        self.assertNotIn("<table", out)
+
+    def test_the_page_states_what_agreement_does_not_prove(self):
+        """Two clients reading the same exchange inherit the same error. A
+        cross-check presented as proof of correctness would be worse than none,
+        because it would launder a shared mistake as confirmation."""
+        built = (Path(__file__).resolve().parent.parent
+                 / "docs" / "evidence.html").read_text()
+        self.assertIn("The same book, read twice", built)
+        self.assertIn("does not", built)
+        self.assertIn("inherit the same error", built)
+        self.assertIn("rule out", built)
+
+
+class TheHubClientRefusesToGuess(unittest.TestCase):
+    """Ballast's first cut at this CLI guessed the invocation and every part of
+    it was wrong. These pin the shape that `bgc discover --tool market`
+    actually returned, so a rewrite that goes back to guessing fails here."""
+
+    def test_the_book_is_read_from_the_wrapped_payload(self):
+        from unittest import mock
+
+        from egress import hub
+        data = {"a": [[378.49, 32.4], [378.59, 27.0]],
+                "b": [[378.26, 38.88], [378.21, 69.48]]}
+        with mock.patch.object(hub, "_run", return_value=data):
+            bids, asks = hub.orderbook("RTSLAUSDT")
+        self.assertEqual(asks[0], [378.49, 32.4])
+        self.assertEqual(bids[0], [378.26, 38.88])
+
+    def test_a_one_sided_book_is_refused_not_half_priced(self):
+        from unittest import mock
+
+        from egress import hub
+        with mock.patch.object(hub, "_run",
+                               return_value={"a": [[1.0, 1.0]], "b": []}), \
+                self.assertRaises(hub.HubUnavailable) as caught:
+            hub.orderbook("RTHINUSDT")
+        self.assertIn("no two-sided book", caught.exception.reason)
+
+    def test_an_unavailable_hub_is_never_recorded_as_agreement(self):
+        """The failure mode that would make this worthless: a Hub that cannot
+        answer being folded into the agreed column."""
+        from unittest import mock
+
+        from egress import hub
+        with mock.patch.object(hub, "orderbook",
+                               side_effect=hub.HubUnavailable("bgc is not on PATH")):
+            out = hub.compare("RTSLAUSDT", 25_000.0, None)
+        self.assertFalse(out["available"])
+        self.assertNotIn("verdict", out)
+        self.assertIn("not on PATH", out["reason"])
+
+    def test_garbage_levels_are_dropped_not_priced(self):
+        from egress import hub
+        rows = [[378.49, 32.4], ["bad", 1], [0, 5], [10, 0], [1.0]]
+        self.assertEqual(hub._levels(rows), [[378.49, 32.4]])
+
+    def _compare(self, hub_bids, hub_asks, our_bids, our_asks, size=25_000.0):
+        from unittest import mock
+
+        from egress import exitcost, hub
+        ours = exitcost.from_book("RTESTUSDT", size, our_bids, our_asks, "orderbook")
+        with mock.patch.object(hub, "orderbook",
+                               return_value=(hub_bids, hub_asks)):
+            return hub.compare("RTESTUSDT", size, ours)
+
+    def test_two_books_that_differ_are_reported_as_a_disagreement(self):
+        """The property the whole cross-check rests on.
+
+        Everything else here tested the renderer against a hand-built record,
+        so relabelling every verdict "agree" inside compare() left the suite
+        green - a cross-check that cannot report a difference is decoration.
+        """
+        thin = ([[100.0, 50.0], [90.0, 5000.0]], [[101.0, 5000.0]])
+        deep = ([[100.0, 5000.0]], [[101.0, 5000.0]])
+        out = self._compare(thin[0], thin[1], deep[0], deep[1])
+        self.assertEqual(out["verdict"], "disagree",
+                         "two materially different books were called agreement")
+        self.assertGreater(out["gap_bp"], out["agree_within_bp"])
+
+    def test_two_books_that_match_are_reported_as_agreement(self):
+        same = ([[100.0, 5000.0]], [[101.0, 5000.0]])
+        out = self._compare(same[0], same[1], same[0], same[1])
+        self.assertEqual(out["verdict"], "agree")
+        self.assertEqual(out["gap_bp"], 0.0)
+
+    def test_the_threshold_is_the_only_thing_separating_the_two(self):
+        """A gap just inside the tolerance is agreement, just outside is not.
+        Pinned so the tolerance cannot be quietly widened until nothing ever
+        disagrees."""
+        from egress import hub
+        self.assertGreater(hub.AGREE_BP, 0,
+                           "a zero tolerance would call live-book drift a finding")
+        self.assertLessEqual(hub.AGREE_BP, 2.0,
+                             "the tolerance is wide enough to hide a real gap")

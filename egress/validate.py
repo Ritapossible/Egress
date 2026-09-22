@@ -41,6 +41,14 @@ BAR_MS = 300_000
 AGREE_LOW, AGREE_HIGH = 0.80, 1.25
 
 
+# The symbols validation runs against: six tokenized stocks and three crypto
+# controls. Named here rather than inline because the Agent Hub cross-check asks
+# about the same ones, and two copies of a list like this drift the first time
+# one of them is edited.
+DEFAULT_SYMBOLS = ("RNVDAUSDT", "RTSLAUSDT", "RAAPLUSDT", "RMSFTUSDT",
+                   "RSYKUSDT", "RPBRUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT")
+
+
 def _bar_of(snap_ts: int) -> int:
     return (snap_ts // BAR_MS) * BAR_MS
 
@@ -158,8 +166,7 @@ def run(symbols: list[str] | None = None,
         day: dt.date | list[dt.date] | None = None,
         root: Path | None = None) -> dict:
     kinds = {s: r["type"] for s, r in universe.load(root).items()}
-    symbols = symbols or ["RNVDAUSDT", "RTSLAUSDT", "RAAPLUSDT", "RMSFTUSDT",
-                          "RSYKUSDT", "RPBRUSDT", "BTCUSDT", "ETHUSDT", "SOLUSDT"]
+    symbols = symbols or list(DEFAULT_SYMBOLS)
     # One ticker download for the whole run, not one per symbol.
     try:
         feed = {r["symbol"]: r for r in market.tickers() if r.get("symbol")}

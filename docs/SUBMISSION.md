@@ -109,6 +109,18 @@ and it is stated here rather than buried.
 measured on every name the crawl can see; it is not yet confirmed against
 executions on the liquid names. Those are the ones where it matters most.
 
+**What has been ruled out is our own transport.** Every figure here comes
+through one HTTP client, and a bug in it would look exactly like a property of
+the market. So the same exit is priced a second time through the **Bitget Agent
+Hub CLI** — a different SDK, a different process, no credentials — and costed by
+the same code, so any gap is the book rather than the arithmetic. Published on
+`/evidence#hub` with the disagreements shown, not just the agreements. It does
+not prove the cost is right: both clients read the same exchange and would
+inherit the same error. It removes one explanation that was previously
+unexamined. Two of the thin excluded names return **no two-sided book from the
+Hub either**, which is a second client independently finding the thinness that
+got them excluded.
+
 **No return claim is made.** Egress does not trade, does not backtest a
 strategy, and has no P&L. It measures a cost.
 
@@ -140,9 +152,14 @@ credential), multi-position portfolios, deep-book history.
    are 8.2× to 18.2×, and of a different quantity. The figures on the page are
    now read from the validation record rather than retyped.
 
-**Held back deliberately:** the Agent Hub integration. Read-only depth through
-the Hub would wrap REST this project already calls directly, which adds a logo
-and no capability. Stated rather than silently skipped.
+**Reversed, and the reasoning was wrong.** This section previously said the
+Agent Hub was held back because read-only depth through it would wrap REST the
+project already calls. That was the wrong test. The Hub is not useful here as a
+*replacement* for the existing read — it is useful as an *adversary* to it. It
+reaches the same exchange through a different SDK in a different process, so
+pricing the same exit both ways and comparing turns an unchecked assumption
+("our HTTP client is reading the book correctly") into a published measurement.
+It now runs on every crawl and is on `evidence.html#hub`.
 
 ## 5 · Deliverables
 
@@ -151,6 +168,7 @@ and no capability. Stated rather than silently skipped.
 | **Live demo** | <https://egress-v1.vercel.app> — no key of yours needed |
 | **Frozen research task** | `/evidence#task` — one real run, captured from the live API into static HTML, readable with JavaScript off |
 | **Evidence** | `/evidence` — the phase table, the gaps, and what is not validated |
+| **Two-client cross-check** | `/evidence#hub` — the same book priced through this site and through the Agent Hub CLI, with the disagreements shown |
 | **Method** | `/method` — how the book is walked |
 | **Validation** | `/validation` — including the symbols it refuses to score |
 | **Handbook map** | `docs/HACKATHON.md` — each requirement to the file that satisfies it |

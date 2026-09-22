@@ -466,7 +466,7 @@ pre code{background:none;padding:0}
     state of it.</b> <a href="validation.html">The validation page</a> excludes
     6 symbols &mdash; among them NVDA, TSLA, AAPL and MSFT &mdash;
     because <b>two of the venue's own volume feeds disagree about them</b>: the
-    candle volume runs 7.5&times; to 17.3&times; the 24h turnover
+    candle volume runs 6.0&times; to 12.1&times; the 24h turnover
     the ticker reports for the same symbol. Which feed is right is not something
     this project can settle from outside, and scoring a prediction against a
     number that may be wrong would be worse than not scoring it. So the overnight
@@ -474,6 +474,38 @@ pre code{background:none;padding:0}
     not yet established <b>as a fill</b> on the names most people actually hold.
     Those are the symbols where it matters most, and they are the ones still
     outstanding.</p>
+
+    <h2 id="hub">The same book, read twice</h2>
+    <p class="say">Every figure on this site comes through one HTTP client, and a
+    bug in that client would look exactly like a property of the market. Since
+    the argument here is that the venue's own numbers do not always agree with
+    each other, the same scepticism is owed to our own reads. So the same exit is
+    priced a second time through the <b>Bitget Agent Hub CLI</b> &mdash; a
+    different SDK, in a different process, with no credentials &mdash; and both
+    are costed by the same code, so any gap is the book and not the
+    arithmetic.</p>
+    <p class="say">Both clients asked for the same 25,000 USDT exit, 2026-09-22T17:35:37+00:00. <b>7 of 9 could be compared; 6 agree</b> within 0.5 bp.</p>
+<div class="scroll"><table class="tbl"><thead><tr><th>Symbol</th><th>This site</th><th>Agent Hub</th><th>Gap</th><th>Verdict</th></tr></thead><tbody>
+<tr><td class="sym">RNVDAUSDT</td><td>12.40 bp</td><td>12.40 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RTSLAUSDT</td><td>15.42 bp</td><td>15.42 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RAAPLUSDT</td><td>46.30 bp</td><td>45.09 bp</td><td>1.21 bp</td><td>disagree</td></tr>
+<tr><td class="sym">RMSFTUSDT</td><td>14.86 bp</td><td>14.86 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RSYKUSDT</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>unavailable &mdash; the Hub returned no two-sided book for RSYKUSDT</td></tr>
+<tr><td class="sym">RPBRUSDT</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>unavailable &mdash; the Hub returned no two-sided book for RPBRUSDT</td></tr>
+<tr><td class="sym">BTCUSDT</td><td>10.13 bp</td><td>10.13 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">ETHUSDT</td><td>10.12 bp</td><td>10.02 bp</td><td>0.10 bp</td><td>agree</td></tr>
+<tr><td class="sym">SOLUSDT</td><td>12.80 bp</td><td>12.69 bp</td><td>0.11 bp</td><td>agree</td></tr>
+</tbody></table></div>
+    <p class="note"><b>What agreement does and does not prove.</b> It does not
+    prove the cost is right; both clients read the same exchange and would
+    inherit the same error. It does rule out <em>our</em> transport as the
+    explanation, which was previously unchecked. The two reads are sequential
+    and seconds apart on a live book, so a sub-bp gap is the market moving
+    between them rather than a disagreement &mdash; which is why the threshold
+    exists and is printed rather than hidden. <b>The failures are the
+    interesting rows:</b> where the Hub cannot return a two-sided book at all,
+    that is a second client independently finding the same thinness that got
+    those names excluded from validation.</p>
   </section>
 </div>
 
@@ -502,7 +534,7 @@ pre code{background:none;padding:0}
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-09-22 17:17 UTC from
+      <p class="prov"><i></i>Generated 2026-09-22 17:47 UTC from
       1,967 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>

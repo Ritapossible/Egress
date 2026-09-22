@@ -60,6 +60,23 @@ jobs:
         if: always()
         run: python -m egress.crawl --signal || echo "::warning::signal probe failed"
 
+      # A second, independent read of the same order book, through the Agent
+      # Hub CLI. Not a wrapper around the REST call this crawl already makes -
+      # it is the adversary to it, priced by the same exitcost code so any gap
+      # is the book rather than the arithmetic. The market domain needs no
+      # credentials, so this runs on every crawl without a secret.
+      #
+      # `|| true` for the same reason as the signal probe: the Hub being
+      # unreachable is a recorded fact, never a failed crawl. An unavailable
+      # Hub is written down as unavailable and never as agreement.
+      - name: Install the Bitget Agent Hub CLI
+        if: always()
+        run: npm install -g @bitget-ai/bitget-agent-cli || true
+
+      - name: Cross-check the book through the Agent Hub
+        if: always()
+        run: python tools/hub_crosscheck.py || echo "::warning::hub cross-check failed"
+
       - name: Commit the tail
         if: always()
         run: |
