@@ -71,7 +71,7 @@ one screenshot) · the phase finding if the data is thin · deep-book history.
 | Accessible demo | **live** - <https://egress-v1.vercel.app>, no key needed to read it, desk answers without one of yours |
 | One complete research task, question to actionable insight | **done** - asked live, frozen into `evidence.html#task` as static HTML so it reads with JavaScript off. Captured by `tools/freeze_task.py` |
 | Compliant X post (`#BitgetHackathon`, `@Bitget_AI`) | **not posted - an entry without this is invalid** |
-| Six-part description | **not written** |
+| Six-part description | **written** - `docs/SUBMISSION.md`, all six parts, figures labelled as a 2026-09-22 snapshot with the live site as the authority |
 
 This table was wrong for four days: it said the demo and the research task were
 not started while both were shipped. A plan that under-reports its own project

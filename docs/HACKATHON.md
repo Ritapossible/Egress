@@ -66,11 +66,15 @@ a ticker.
 
 ## Known limits, stated because a judge will find them
 
-- **The liquid names are not validated.** NVDA, TSLA and AAPL are excluded from
-  `validation.html` because printed turnover runs hundreds to thousands of times
-  the visible depth. The overnight widening holds **as a quote** across every
-  name the crawl sees; it is **not** established **as a fill** on the names most
-  people hold. Said on `evidence.html#unvalidated` rather than left to be found.
+- **The liquid names are not validated.** Six symbols — NVDA, TSLA, AAPL, MSFT,
+  SYK, PBR — are excluded from `validation.html` because two of the venue's own
+  volume feeds disagree about them: candle volume runs roughly 9× to 20× the 24h
+  turnover its ticker reports for the same symbol. Which feed is right is not
+  settleable from outside, and scoring against a number that may be wrong is
+  worse than not scoring. The overnight widening holds **as a quote** across
+  every name the crawl sees; it is **not** established **as a fill** on the names
+  most people hold. Said on `evidence.html#unvalidated` rather than left to be
+  found.
 - **bitget-signal has no articles.** Reachable, catalogues answer, live feed
   empty. Shown as empty.
 - **Fills are modelled, not executed.** Egress places no orders and holds no

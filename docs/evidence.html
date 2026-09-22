@@ -464,9 +464,12 @@ pre code{background:none;padding:0}
     <h2 id="unvalidated">What is not validated yet</h2>
     <p class="say"><b>We cannot validate the liquid names, and that is the honest
     state of it.</b> <a href="validation.html">The validation page</a> excludes
-    NVDA, TSLA and AAPL because their printed turnover runs hundreds to thousands
-    of times the depth visible in the book, and a spread measured against a book
-    that shallow does not describe what a real exit would pay. So the overnight
+    6 symbols &mdash; among them NVDA, TSLA, AAPL and MSFT &mdash;
+    because <b>two of the venue's own volume feeds disagree about them</b>: the
+    candle volume runs 7.5&times; to 17.3&times; the 24h turnover
+    the ticker reports for the same symbol. Which feed is right is not something
+    this project can settle from outside, and scoring a prediction against a
+    number that may be wrong would be worse than not scoring it. So the overnight
     widening holds <b>as a quote</b>, across every name the crawl can see. It is
     not yet established <b>as a fill</b> on the names most people actually hold.
     Those are the symbols where it matters most, and they are the ones still
@@ -499,7 +502,7 @@ pre code{background:none;padding:0}
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-09-22 17:07 UTC from
+      <p class="prov"><i></i>Generated 2026-09-22 17:17 UTC from
       1,967 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>

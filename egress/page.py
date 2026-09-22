@@ -1126,6 +1126,19 @@ def universe_definition(counts: dict) -> str:
     returns 2,150. Ours returns {stock:,} because it reads the field.</p>"""
 
 def evidence_body(f: dict) -> str:
+    # The exclusion figures are read from the validation record rather than
+    # typed. An outside reviewer gave these as "646x to 5,902x print/book" and
+    # that was wrong twice over - wrong magnitude, and the wrong comparison.
+    # What the file actually measures is the venue's candle volume against its
+    # own ticker's 24h turnover for the same symbol, and the real spread of
+    # those ratios is an order of magnitude smaller.
+    validation = f.get("validation") or {}
+    ratios = [row["feed_ratio"] for row in validation.get("excluded_detail") or []
+              if isinstance(row.get("feed_ratio"), (int, float))]
+    excluded = validation.get("excluded", 0)
+    ratio_lo = f"{min(ratios):.1f}" if ratios else "?"
+    ratio_hi = f"{max(ratios):.1f}" if ratios else "?"
+
     phases = {row["phase"]: row for row in f["phases"]}
     closed = phases.get("overnight") or phases.get("weekend") or {}
     openp = phases.get("open") or {}
@@ -1203,9 +1216,12 @@ def evidence_body(f: dict) -> str:
     <h2 id="unvalidated">What is not validated yet</h2>
     <p class="say"><b>We cannot validate the liquid names, and that is the honest
     state of it.</b> <a href="validation.html">The validation page</a> excludes
-    NVDA, TSLA and AAPL because their printed turnover runs hundreds to thousands
-    of times the depth visible in the book, and a spread measured against a book
-    that shallow does not describe what a real exit would pay. So the overnight
+    {excluded} symbols &mdash; among them NVDA, TSLA, AAPL and MSFT &mdash;
+    because <b>two of the venue's own volume feeds disagree about them</b>: the
+    candle volume runs {ratio_lo}&times; to {ratio_hi}&times; the 24h turnover
+    the ticker reports for the same symbol. Which feed is right is not something
+    this project can settle from outside, and scoring a prediction against a
+    number that may be wrong would be worse than not scoring it. So the overnight
     widening holds <b>as a quote</b>, across every name the crawl can see. It is
     not yet established <b>as a fill</b> on the names most people actually hold.
     Those are the symbols where it matters most, and they are the ones still

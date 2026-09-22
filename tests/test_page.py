@@ -625,3 +625,96 @@ class TheUniverseCountSaysWhatItCounts(unittest.TestCase):
         self.assertIn("2,150", out)
         self.assertIn("RLCUSDT", out)
         self.assertIn("PRESPCXUSDT", out)
+
+
+class TheSubmissionDescriptionStaysHonest(unittest.TestCase):
+    """PLAN.md spent four days claiming the demo and the research task were not
+    started while both were shipped. This is the document a judge reads end to
+    end, so the same drift here is worse.
+
+    The figures in it are an explicitly timestamped snapshot - the crawl moves
+    them every twenty minutes and pinning them would turn this file red on
+    every commit. What is enforced is the part that is not allowed to drift:
+    all six parts present, the snapshot labelled as one, and no claim that
+    contradicts the measured record.
+    """
+
+    def doc(self) -> str:
+        return (Path(__file__).resolve().parent.parent
+                / "docs" / "SUBMISSION.md").read_text()
+
+    def validation(self) -> dict:
+        """From the rendered page, not from facts.build().
+
+        Building the facts re-runs the crawl and the validation against the
+        live venue - 85 seconds and a network dependency, inside a suite that
+        is supposed to be neither. The built page already carries the numbers
+        and is what a reader actually sees.
+        """
+        text = (Path(__file__).resolve().parent.parent
+                / "docs" / "evidence.html").read_text()
+        found = re.search(r"candle volume runs ([\d.]+)&times; to ([\d.]+)&times;",
+                          text)
+        self.assertIsNotNone(found, "the evidence page no longer states the range")
+        return {"lo": float(found.group(1)), "hi": float(found.group(2))}
+
+    def test_all_six_parts_are_present(self):
+        doc = self.doc()
+        for n, title in ((1, "Thesis"), (2, "Target user and product value"),
+                         (3, "Validation data and key metrics"), (4, "Progress"),
+                         (5, "Deliverables"), (6, "Take on AI trading")):
+            with self.subTest(part=n):
+                self.assertIn(f"## {n} · {title}", doc,
+                              f"part {n} is missing from the description")
+
+    def test_the_figures_are_labelled_as_a_snapshot(self):
+        """Unlabelled numbers in a document nobody regenerates become lies by
+        the second day. This one says so, and says which source wins."""
+        doc = self.doc()
+        self.assertIn("is a snapshot", doc)
+        self.assertIn("the site is right and this file", doc)
+
+    def test_the_limit_on_validation_is_stated_not_buried(self):
+        """Scoring covers the three crypto controls and no tokenized stock. A
+        judge who finds that themselves, after reading a confident thesis, has
+        found something we hid."""
+        doc = self.doc()
+        self.assertIn("no tokenized stock at all", doc)
+        self.assertIn("as a quote, not yet as a fill", doc)
+        self.assertIn("No return claim is made", doc)
+
+    def test_the_exclusion_ratios_match_the_validation_record(self):
+        """These were published once as "646x to 5,902x" on an outside review's
+        say-so. They are an order of magnitude smaller and measure something
+        else. The document has to agree with the file."""
+        measured = self.validation()
+        doc = self.doc()
+
+        # The bad figure is allowed on the page, but only where it is being
+        # retracted. This project records corrections rather than deleting the
+        # sentence that was wrong, so the test has to tell the two apart.
+        for line in doc.splitlines():
+            if "646" in line or "5,902" in line:
+                self.assertIn("outside review gave", line,
+                              "the discredited ratio appears as a live claim")
+
+        # It must be the feed comparison, not a depth comparison.
+        self.assertIn("24h turnover its own ticker reports", doc)
+
+        # And the measured range must still be the order of magnitude the prose
+        # describes. If the venue's feeds ever diverge by hundreds of times,
+        # the wording stops being true and this should say so.
+        self.assertLess(measured["hi"], 100,
+                        "the measured ratios moved into the range the "
+                        "discredited figure claimed; the prose needs re-checking")
+        self.assertGreater(measured["lo"], 1,
+                           "the feeds now agree, so the exclusion reason is stale")
+
+    def test_the_x_post_is_still_flagged_as_outstanding(self):
+        """It is an invalidation criterion. The moment this row quietly reads
+        as done without a link, the submission looks complete and is not."""
+        doc = self.doc()
+        self.assertIn("#BitgetHackathon", doc)
+        self.assertIn("@Bitget_AI", doc)
+        self.assertTrue("⚠️" in doc or "fill in" in doc,
+                        "the X post row no longer flags itself as outstanding")
