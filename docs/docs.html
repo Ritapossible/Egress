@@ -493,13 +493,37 @@ python -m egress.page</code></pre>
     <p class="note"><b>Silence is not zero.</b> A symbol missing from a snapshot
     means the venue did not report it, not that its spread was nothing. Missing
     rows are absent from every median rather than counted as a value.</p>
+    
+    <p class="say"><b>What "2,127 tokenized stocks" counts.</b> Rows with
+    <code>symbolType == "stock"</code> from
+    <code>GET /api/v3/market/instruments?category=SPOT</code> &mdash; the venue's
+    own classification, not ours. All 2,127 are <code>status: online</code>,
+    all are USDT-quoted, and there are 2,127 distinct base coins, so no
+    symbol is counted twice.</p>
+    <p class="note"><b>Why another count will disagree.</b> The v2 endpoint most
+    people reach for, <code>/api/v2/spot/public/symbols</code>, returns the same
+    2,710 rows but carries <b>no <code>symbolType</code> field at all</b>. Without
+    it the only way to split the list is the ticker prefix, and that is wrong in
+    both directions: 25 ordinary crypto pairs start with R
+    (<code>RAYUSDT</code>, <code>ROSEUSDT</code>, <code>RLCUSDT</code> &mdash;
+    iExec, not Royal Caribbean) and two tokenized stocks carry no prefix
+    (<code>PRESPCXUSDT</code>, <code>PREOPAIUSDT</code>). The prefix heuristic
+    returns 2,150. Ours returns 2,127 because it reads the field.</p>
+
 
     <h2 id="skills">Bitget Skills</h2>
-    <p class="say">Two are wired. <b>bitget-mcp-server</b> answers
-    <code>equity_price_quote</code> behind every desk answer &mdash; it is
-    where the basis against the listed share comes from, and without it this
-    site could price an exit but not say what the position was worth. The
-    other is below.</p>
+    <p class="say">Two are wired, and <b>both are on the Ask path</b>.
+    <b>bitget-mcp-server</b> answers <code>equity_price_quote</code> behind every
+    desk answer &mdash; it is where the basis against the listed share comes
+    from, and without it this site could price an exit but not say what the
+    position was worth. <b>bitget-signal</b> is asked
+    <code>news_feed/latest</code> for the name in the question, on a six-second
+    fuse, and every answer carries what it said. <b>It cannot move the
+    number.</b> The cost comes from the venue's own book; the news block is
+    built after that number is already fixed, and a test asserts the whole
+    answer is identical whether the service replies, returns nothing, or dies.
+    Today it returns nothing, and the desk prints that rather than a
+    briefing assembled out of an empty feed.</p>
     <p class="say"><b>bitget-signal</b>, probed 2026-09-22T10:03:23+00:00. 3 of its catalog calls answer; 0 of its live-data calls return anything. The aggregator lists <b>44 feeds</b> and reports zero articles from all of them, and <code>crypto_price</code> fails with the service&rsquo;s own <code>ConnectTimeout</code> &mdash; so the Skill is running and its outbound fetches are not.</p><p class="say">It would not help here even if it worked. Of those 44 feeds, the ones that could carry a US stock story at all are: <code>cnbc</code>. The rest are crypto, tech and general news. This cannot explain why a tokenized stock is wide; it is a control, not an explanation, and it is on this page as a measured result rather than a logo.</p><div class="scroll"><table class="tbl"><thead><tr><th>Call</th><th>Kind</th><th>Result</th></tr></thead><tbody><tr><td><code>news_feed</code> / <code>sources</code></td><td>catalog</td><td>answered &mdash; 44 feeds</td></tr><tr><td><code>news_feed</code> / <code>latest</code></td><td>live</td><td>answered &mdash; 0 articles across 44 feeds</td></tr><tr><td><code>macro_indicators</code> / <code>series_list</code></td><td>catalog</td><td>answered &mdash; 18 entries</td></tr><tr><td><code>cross_asset</code> / <code>assets_list</code></td><td>catalog</td><td>answered &mdash; 15 entries</td></tr><tr><td><code>crypto_price</code> / <code>price</code></td><td>live</td><td>no answer<br><span class="note">Error executing tool crypto_price: ConnectTimeout('')</span></td></tr></tbody></table></div>
 
     <h2 id="api">HTTP API</h2>
@@ -632,7 +656,7 @@ Content-Type: application/json
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-09-22 16:22 UTC from
+      <p class="prov"><i></i>Generated 2026-09-22 16:40 UTC from
       1,967 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>

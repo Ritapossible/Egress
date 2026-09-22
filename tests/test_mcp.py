@@ -20,7 +20,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from test_desk import BOOK, LISTED, SPEC
 
-from egress import desk, llm, market, mcp
+from egress import desk, llm, market, mcp, signal
 
 QUOTE = {"data": {"results": [{
     "symbol": "TSLA", "bid": 364.18, "ask": 364.19, "last_price": 364.18,
@@ -76,8 +76,17 @@ class TheDeskCarriesTheReference(unittest.TestCase):
         desk._UNIVERSE_CACHE[0] = None
 
     def answer(self, reference):
+        # `signal.for_ticker` is stubbed for the same reason `mcp.underlying`
+        # is: left live, each of these five tests spends its six-second fuse on
+        # a real news call nobody here reads. That took this file from under a
+        # second to 37 - the exact regression test_desk.py was written about.
         with mock.patch.object(llm, "compile_question", return_value=SPEC), \
              mock.patch.object(mcp, "underlying", return_value=dict(reference)), \
+             mock.patch.object(signal, "for_ticker",
+                               return_value={"asked": True, "answered": True,
+                                             "articles": 0, "matched": [],
+                                             "load_bearing": False,
+                                             "detail": "not called in tests"}), \
              mock.patch.object(market, "depth_or_touch",
                                return_value=(*BOOK, "orderbook")):
             return desk.answer("cost to leave 40k TSLA", LISTED)

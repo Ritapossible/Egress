@@ -1,0 +1,272 @@
+{
+ "frozen_at": "2026-09-22T16:24:11+00:00",
+ "note": "A recording of one moment, not a live figure. The book it was priced against has moved since.",
+ "source": "https://egress-v1.vercel.app/api/ask",
+ "tasks": [
+  {
+   "answer": {
+    "advice": "Split into 12 orders and you might save up to 3 bp - but only if the book refills in between, which a snapshot cannot promise.",
+    "at": "2026-09-22T16:24:00+00:00",
+    "basis": "estimated",
+    "context": "The quote itself is 0.27 bp right now. This name's own open median is 2.13 bp across 96 readings, so the spread is tighter than usual for RTSLAUSDT.",
+    "depth_note": "",
+    "feed_note": "Note: RTSLAUSDT is one of the symbols this site excludes from its own validation, because the venue's two volume feeds disagree about it by a factor of 32.0. The cost above is walked from the order book and is unaffected, but do not treat this name's reported turnover as reliable.",
+    "headline": "22 bp to leave 40,000 USDT - about 90 USDT. 12.4 bp of that is the book, 10 bp the assumed taker fee.",
+    "max_exit_200bp": 625719.61,
+    "phase": "open",
+    "plan": [
+     {
+      "assumption_best": "the book fully refills between clips",
+      "assumption_worst": "the book never refills (identical to one clip)",
+      "basis": "estimated",
+      "best_case_bp": 22.38,
+      "notional_usdt": 40000.0,
+      "quotable": true,
+      "slices": 1,
+      "symbol": "RTSLAUSDT",
+      "unverified": [
+       "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+      ],
+      "worst_case_bp": 22.38
+     },
+     {
+      "assumption_best": "the book fully refills between clips",
+      "assumption_worst": "the book never refills (identical to one clip)",
+      "basis": "estimated",
+      "best_case_bp": 20.01,
+      "notional_usdt": 40000.0,
+      "quotable": true,
+      "slices": 4,
+      "symbol": "RTSLAUSDT",
+      "unverified": [
+       "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+      ],
+      "worst_case_bp": 22.38
+     },
+     {
+      "assumption_best": "the book fully refills between clips",
+      "assumption_worst": "the book never refills (identical to one clip)",
+      "basis": "estimated",
+      "best_case_bp": 19.05,
+      "notional_usdt": 40000.0,
+      "quotable": true,
+      "slices": 12,
+      "symbol": "RTSLAUSDT",
+      "unverified": [
+       "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+      ],
+      "worst_case_bp": 22.38
+     }
+    ],
+    "question": "what does leaving 40k of TSLA cost?",
+    "quote": {
+     "at": "2026-09-22T16:24:03.836254+00:00",
+     "basis": "estimated",
+     "book_usdt": 625719.61,
+     "exhausted": false,
+     "fee_bp": 10.0,
+     "filled_usdt": 39950.49,
+     "levels_used": 6,
+     "limits": {
+      "can_correct": [
+       "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs"
+      ],
+      "cannot_see": [
+       "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+       "a real order moves the book this is measured against"
+      ]
+     },
+     "quantity": 106.18952175,
+     "quotable": true,
+     "reference": 376.685,
+     "requested_usdt": 40000.0,
+     "side": "sell",
+     "slippage_bp": 12.38,
+     "source": "orderbook",
+     "symbol": "RTSLAUSDT",
+     "total_bp": 22.38,
+     "total_usdt": 89.52,
+     "unverified": [
+      "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+      "a real order moves the book this is measured against",
+      "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs"
+     ],
+     "vwap": 376.21873327
+    },
+    "reading": "Leaving 40,000 USDT of RTSLAUSDT costs about 22 bp (90 USDT) in one clip, with the open book as it stands.",
+    "reference": {
+     "ask": 377.48,
+     "available": true,
+     "basis_bp": -12.9,
+     "bid": 377.01,
+     "entry": "equity_price_quote",
+     "hours_since_print": 0.2,
+     "last_price": 377.17,
+     "printed_at": "2026-09-22T16:09:02.510902Z",
+     "source": "bitget-mcp-server",
+     "ticker": "TSLA",
+     "token_price": 376.685
+    },
+    "spec": {
+     "confident": true,
+     "model": "qwen3.8-max",
+     "notional_usdt": 40000.0,
+     "ticker": "TSLA"
+    },
+    "symbol": "RTSLAUSDT",
+    "unverified": [
+     "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+     "a real order moves the book this is measured against",
+     "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs",
+     "the basis against the listed share treats 1 USDT as 1 USD, which is an assumption rather than a measurement",
+     "RTSLAUSDT: the venue's own volume feeds disagree about this symbol, so its reported turnover is not trustworthy"
+    ],
+    "verdict": {
+     "basis": "this symbol's own recent spread, same phase",
+     "label": "tighter than usual",
+     "p50_bp": 2.13,
+     "p90_bp": 3.46,
+     "phase": "open",
+     "quote_spread_bp": 0.27,
+     "ratio": 0.12,
+     "snapshots": 96
+    }
+   },
+   "kind": "liquid",
+   "question": "what does leaving 40k of TSLA cost?"
+  },
+  {
+   "answer": {
+    "advice": "Splitting the order into smaller ones does not help against this book.",
+    "at": "2026-09-22T16:24:05+00:00",
+    "basis": "estimated",
+    "context": "The quote itself is 4.04 bp right now. This name's own open median is 4.08 bp across 96 readings, so the spread is about usual for RRIOTUSDT.",
+    "depth_note": "The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
+    "headline": ">12 bp to leave 5,000 USDT - about >6 USDT. 2.0 bp of that is the book, 10 bp the assumed taker fee.",
+    "max_exit_200bp": 11890.32,
+    "phase": "open",
+    "plan": [
+     {
+      "assumption_best": "the book fully refills between clips",
+      "assumption_worst": "the book never refills (identical to one clip)",
+      "basis": "estimated",
+      "best_case_bp": 12.02,
+      "notional_usdt": 5000.0,
+      "quotable": true,
+      "slices": 1,
+      "symbol": "RRIOTUSDT",
+      "unverified": [
+       "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+      ],
+      "worst_case_bp": 12.02
+     },
+     {
+      "assumption_best": "the book fully refills between clips",
+      "assumption_worst": "the book never refills (identical to one clip)",
+      "basis": "estimated",
+      "best_case_bp": 12.02,
+      "notional_usdt": 5000.0,
+      "quotable": true,
+      "slices": 4,
+      "symbol": "RRIOTUSDT",
+      "unverified": [
+       "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+      ],
+      "worst_case_bp": 12.02
+     },
+     {
+      "assumption_best": "the book fully refills between clips",
+      "assumption_worst": "the book never refills (identical to one clip)",
+      "basis": "estimated",
+      "best_case_bp": 12.02,
+      "notional_usdt": 5000.0,
+      "quotable": true,
+      "slices": 12,
+      "symbol": "RRIOTUSDT",
+      "unverified": [
+       "replenishment between clips is not observable from a snapshot; the crawl is what will narrow this interval"
+      ],
+      "worst_case_bp": 12.02
+     }
+    ],
+    "question": "what does leaving 5k of RIOT cost?",
+    "quote": {
+     "at": "2026-09-22T16:24:10.568947+00:00",
+     "basis": "estimated",
+     "book_usdt": 11890.32,
+     "exhausted": false,
+     "fee_bp": 10.0,
+     "filled_usdt": 4998.99,
+     "levels_used": 1,
+     "limits": {
+      "can_correct": [
+       "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs"
+      ],
+      "cannot_see": [
+       "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+       "a real order moves the book this is measured against",
+       "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it"
+      ]
+     },
+     "quantity": 202.22446916,
+     "quotable": true,
+     "reference": 24.725,
+     "requested_usdt": 5000.0,
+     "side": "sell",
+     "slippage_bp": 2.02,
+     "source": "touch",
+     "symbol": "RRIOTUSDT",
+     "total_bp": 12.02,
+     "total_usdt": 6.01,
+     "unverified": [
+      "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+      "a real order moves the book this is measured against",
+      "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs",
+      "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it"
+     ],
+     "vwap": 24.72
+    },
+    "reading": "Leaving 5,000 USDT of RRIOTUSDT costs about >12 bp (>6 USDT) in one clip, with the open book as it stands. The venue showed no depth for this symbol, only a top-of-book quote, so this is a floor and the real cost is higher.",
+    "reference": {
+     "ask": 24.71,
+     "available": true,
+     "basis_bp": -2.0,
+     "bid": 24.7,
+     "entry": "equity_price_quote",
+     "hours_since_print": 0.3,
+     "last_price": 24.73,
+     "printed_at": "2026-09-22T16:09:05.054727Z",
+     "source": "bitget-mcp-server",
+     "ticker": "RIOT",
+     "token_price": 24.725
+    },
+    "spec": {
+     "confident": true,
+     "model": "qwen3.8-max",
+     "notional_usdt": 5000.0,
+     "ticker": "RIOT"
+    },
+    "symbol": "RRIOTUSDT",
+    "unverified": [
+     "displayed size is not guaranteed - quotes can be withdrawn before a fill",
+     "a real order moves the book this is measured against",
+     "taker fee assumed at 10.0 bp; the slippage figure is unaffected, so substitute your own tier if it differs",
+     "the venue returned no depth for this symbol, only a top-of-book quote; everything below the touch is UNKNOWN, not absent - this is a floor on the cost, not an estimate of it",
+     "the basis against the listed share treats 1 USDT as 1 USD, which is an assumption rather than a measurement"
+    ],
+    "verdict": {
+     "basis": "this symbol's own recent spread, same phase",
+     "label": "about usual",
+     "p50_bp": 4.08,
+     "p90_bp": 8.1,
+     "phase": "open",
+     "quote_spread_bp": 4.04,
+     "ratio": 0.99,
+     "snapshots": 96
+    }
+   },
+   "kind": "thin",
+   "question": "what does leaving 5k of RIOT cost?"
+  }
+ ]
+}

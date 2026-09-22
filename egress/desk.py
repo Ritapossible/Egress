@@ -16,7 +16,7 @@ import datetime as dt
 import json
 import time
 
-from . import config, exitcost, llm, market, mcp, sessions, universe
+from . import config, exitcost, llm, market, mcp, sessions, signal, universe
 
 UTC = dt.timezone.utc
 SLICE_CHOICES = (1, 4, 12)
@@ -161,6 +161,18 @@ def answer(question: str, symbols: dict[str, dict] | None = None) -> dict:
         out["context"] = ("The venue is not showing both a bid and an ask for "
                           "this symbol right now, so there is no mid to measure "
                           "an exit against.")
+
+    # Last, and deliberately so. Every number above is already fixed by the time
+    # bitget-signal is asked anything, so a news service that is slow, empty or
+    # down cannot change the cost, the verdict or the plan - it can only fail to
+    # add to them. That ordering is the contract, and it is what the
+    # non-load-bearing tests assert.
+    try:
+        out["signal"] = signal.for_ticker(spec["ticker"])
+    except Exception as exc:  # for_ticker promises not to; belt as well as braces
+        out["signal"] = {"asked": True, "answered": False, "articles": 0,
+                         "matched": [], "load_bearing": False,
+                         "detail": f"{type(exc).__name__}: {exc}"[:120]}
     return out
 
 

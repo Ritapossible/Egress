@@ -7,6 +7,8 @@ chrome is identical on all of them.
 """
 from __future__ import annotations
 
+import html
+import json
 import re
 import sys
 import unittest
@@ -528,3 +530,98 @@ class TheSkillsSectionMatchesTheProbe(unittest.TestCase):
         self.assertIn("Bitget Skills", text)
         self.assertIn("equity_price_quote", text)
         self.assertIn("3 of its catalog calls answer", text)
+
+
+class TheFrozenResearchTaskIsReadableWithoutJavaScript(unittest.TestCase):
+    """The desk is the product and it is unreachable with scripts off.
+
+    `/ask` is a 404, the homepage says it needs JavaScript and a configured
+    reader, and the answer arrives from a POST. A judge browsing with scripts
+    disabled never sees the thing being judged do its job. This section is the
+    fix, so it has to actually contain the numbers - rendered from the captured
+    file, never retyped into prose.
+    """
+
+    def frozen(self) -> dict:
+        path = Path(__file__).resolve().parent.parent / "state" / "research_task.json"
+        return json.loads(path.read_text())
+
+    def test_every_captured_task_is_rendered(self):
+        record = self.frozen()
+        out = page.research_task(record)
+        self.assertTrue(record["tasks"], "nothing was captured")
+        for task in record["tasks"]:
+            with self.subTest(task=task["kind"]):
+                self.assertIn(html.escape(task["question"]), out)
+                answer = task["answer"]
+                headline = answer.get("headline") or answer.get("error")
+                self.assertIn(html.escape(headline), out,
+                              "the rendered task does not carry its own answer")
+
+    def test_the_figures_come_from_the_capture_not_from_prose(self):
+        record = self.frozen()
+        out = page.research_task(record)
+        for task in record["tasks"]:
+            quote = (task["answer"].get("quote") or {})
+            if not quote:
+                continue
+            with self.subTest(task=task["kind"]):
+                self.assertIn(f'{quote["book_usdt"]:,.0f} USDT', out,
+                              "the book depth on the page is not the captured one")
+                self.assertIn(f'{quote["slippage_bp"]:,.2f} bp', out,
+                              "the slippage on the page is not the captured one")
+
+    def test_the_pair_covers_a_fill_and_a_failure_to_fill(self):
+        """One worked example proves only the happy path. The thin name is
+        there to show the desk refusing to quote a number it cannot stand
+        behind, and it is the half a judge should be looking for."""
+        kinds = {t["kind"] for t in self.frozen()["tasks"]}
+        self.assertEqual(kinds, {"liquid", "thin"})
+        thin = next(t for t in self.frozen()["tasks"] if t["kind"] == "thin")
+        self.assertIn(">", thin["answer"]["headline"],
+                      "the thin case does not degrade to a marked floor")
+
+    def test_nothing_captured_says_so_rather_than_rendering_nothing(self):
+        out = page.research_task(None)
+        self.assertIn("freeze_task.py", out)
+        self.assertNotIn("<dl>", out)
+
+    def test_the_evidence_page_carries_the_task_and_the_caveat(self):
+        built = (Path(__file__).resolve().parent.parent / "docs" / "evidence.html")
+        text = built.read_text()
+        self.assertIn("One research task, frozen", text)
+        self.assertIn("What is not validated yet", text)
+        self.assertIn("as a quote", text)
+        self.assertIn("as a fill", text)
+
+
+class TheUniverseCountSaysWhatItCounts(unittest.TestCase):
+    """2,127 is the venue's own number, but it is reachable from exactly one
+    endpoint and the obvious one does not carry the field. Anyone reconciling
+    it against another source lands elsewhere and calls the headline inflated,
+    so the query is stated on the page that prints the number."""
+
+    def counts(self) -> dict:
+        path = Path(__file__).resolve().parent.parent / "state" / "universe.json"
+        return json.loads(path.read_text())["counts"]
+
+    def test_the_definition_quotes_the_endpoint_that_carries_the_field(self):
+        out = page.universe_definition(self.counts())
+        self.assertIn("/api/v3/market/instruments", out)
+        self.assertIn('symbolType', out)
+        self.assertIn("/api/v2/spot/public/symbols", out)
+
+    def test_the_stated_count_is_the_measured_count(self):
+        counts = self.counts()
+        out = page.universe_definition(counts)
+        self.assertIn(f'{counts["stock"]:,} tokenized stocks', out,
+                      "the definition does not quote the measured stock count")
+
+    def test_the_heuristic_that_disagrees_is_named_with_its_number(self):
+        """The prefix heuristic is the likely source of any rival count, and it
+        is wrong in both directions. Saying which way, and by how much, is what
+        makes this a reconciliation rather than an assertion."""
+        out = page.universe_definition(self.counts())
+        self.assertIn("2,150", out)
+        self.assertIn("RLCUSDT", out)
+        self.assertIn("PRESPCXUSDT", out)

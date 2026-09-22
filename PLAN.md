@@ -6,7 +6,23 @@ Deadline **2026-09-21 23:59 UTC+8**. Started 2026-09-14.
 
 ## The claim
 
-Bitget lists **1,655 tokenized US stocks** (1,175 when this was written on 14 Sep; the venue listed 480 more in one wave on 17 Sep, which is why nothing on the site types a count). You can enter any of them in one
+Bitget lists **2,127 tokenized US stocks** as of 22 Sep. That figure has moved
+three times while this was being built - 1,175 on 14 Sep, 1,655 after the venue
+listed 480 more in one wave on 17 Sep, 2,127 now - which is why nothing on the
+site types a count and every page reads it from `state/universe.json`.
+
+It is the venue's own classification, not ours: rows with
+`symbolType == "stock"` from `GET /api/v3/market/instruments?category=SPOT`, all
+`status: online`, all USDT-quoted, 2,127 distinct base coins so nothing is
+double-counted. Worth knowing before reconciling it against any other number:
+the v2 endpoint most people reach for, `/api/v2/spot/public/symbols`, returns the
+same 2,710 rows but **carries no `symbolType` field at all**. Split by ticker
+prefix instead and you get 2,150 - it sweeps in 25 crypto pairs that start with R
+(`RAYUSDT`, `ROSEUSDT`, `RLCUSDT`) and misses two stocks that carry no prefix
+(`PRESPCXUSDT`, `PREOPAIUSDT`). `evidence.html` states the same thing beside the
+number.
+
+You can enter any of them in one
 click. Egress measures what it costs to leave - at your size, on your timetable -
 and names the positions that have no exit at all.
 
@@ -38,10 +54,11 @@ and the tail map stand on their own.
 | **Sun 14** | Exit-cost estimator and the public page (Talise structure, Latch palette) | **done** |
 | Mon 15 | Exit-cost estimator: walk the book, slice an order, cost a schedule | **done early** |
 | Tue 16 | Validation: predicted cost vs what actually printed. Publish the error distribution | **done early** - and the honest result is that most of the universe cannot be validated yet |
-| Wed 17 | Phase analysis: open vs overnight vs weekend, stocks vs the crypto control | |
-| Thu 18 | The desk - natural-language question in, liquidation plan out | **built**, needs QWEN_API_KEY on the deployment |
-| Fri 19 | One research task end-to-end, recorded. Page. X post | |
-| Sat 20 | Buffer. Submit | |
+| Wed 17 | Phase analysis: open vs overnight vs weekend, stocks vs the crypto control | **done** - the phase table on `evidence.html`, rebuilt by the crawl |
+| Thu 18 | The desk - natural-language question in, liquidation plan out | **done and live** - `QWEN_API_KEY` is configured; `GET /api/ask` reports `reader_configured: true` |
+| Fri 19 | One research task end-to-end, recorded. Page. X post | **task recorded** on `evidence.html` (frozen, JS-free). **X post still not posted** |
+| Sat 20 | Buffer. Submit | deadline moved to **Sun 27** |
+| Mon 22 | bitget-signal on the Ask path; frozen task; universe reconciliation; this rewrite | **done** |
 
 **Cut list, in order:** multi-position portfolios · the full-universe map (keep
 one screenshot) · the phase finding if the data is thin · deep-book history.
@@ -51,16 +68,21 @@ one screenshot) · the phase finding if the data is thin · deep-book history.
 
 | Requirement | State |
 |---|---|
-| Accessible demo | not started |
-| One complete research task, question to actionable insight | not started |
-| Compliant X post (`#BitgetHackathon`, `@Bitget_AI`) | not posted - **an entry without this is invalid** |
-| Six-part description | not written |
+| Accessible demo | **live** - <https://egress-v1.vercel.app>, no key needed to read it, desk answers without one of yours |
+| One complete research task, question to actionable insight | **done** - asked live, frozen into `evidence.html#task` as static HTML so it reads with JavaScript off. Captured by `tools/freeze_task.py` |
+| Compliant X post (`#BitgetHackathon`, `@Bitget_AI`) | **not posted - an entry without this is invalid** |
+| Six-part description | **not written** |
+
+This table was wrong for four days: it said the demo and the research task were
+not started while both were shipped. A plan that under-reports its own project
+is not a harmless stale file - it is the first thing a judge reads, and it reads
+as an unfinished entry. The two remaining rows are genuinely outstanding.
 
 ## Rules that bind this project
 
 - **Max two themes per team.** Ballast holds one. Egress is the second and last.
 - The two must be **independent projects**. Egress is execution feasibility across
-  1,175 names for a human-led desk; Ballast is price risk on 12 hedgeable names
+  2,127 names for a human-led desk; Ballast is price risk on 12 hedgeable names
   for an autonomous agent. The thesis here leads on the tail, not the clock.
 - Judging is **pure subjective**: feature depth (data sources and skill
   integration count *and effectiveness*), research quality, LUI fluency,

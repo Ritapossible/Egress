@@ -132,3 +132,83 @@ def load() -> dict | None:
         return json.loads(path().read_text())
     except (OSError, ValueError):
         return None
+
+
+# --- the Ask path -----------------------------------------------------------
+#
+# The scheduled probe above answers "is this service alive". This answers a
+# narrower question a user is waiting on: does bitget-signal have anything to
+# say about the name they just asked about.
+#
+# It is deliberately NOT load-bearing. The exit cost is computed from the
+# venue's own order book; news cannot move it, and a news service that is down
+# must not be able to degrade, delay or block a number that does not depend on
+# it. Two things enforce that: the desk's six-second fuse rather than the
+# probe's twenty-five, and a contract that this block is built after the
+# number and never read back into it. There is a test for each.
+#
+# What it must never do is fill the space with something. The service returns
+# 44 feeds and zero articles; the honest rendering of that is "asked, nothing
+# there", not a briefing assembled out of nothing.
+
+DESK_TIMEOUT = 6
+
+
+def _matching(payload: object, ticker: str) -> list[str]:
+    """Headlines that actually name the ticker, not every headline returned.
+
+    A block that printed all 44 feeds' output next to one ticker would be
+    implying a connection the data does not carry.
+    """
+    needle = ticker.upper()
+    found: list[str] = []
+    if not isinstance(payload, list):
+        return found
+    for feed in payload:
+        if not isinstance(feed, dict):
+            continue
+        for item in feed.get("items") or []:
+            if not isinstance(item, dict):
+                continue
+            title = str(item.get("title") or "")
+            if needle and needle in title.upper():
+                found.append(title[:160])
+    return found
+
+
+def for_ticker(ticker: str, timeout: int = DESK_TIMEOUT) -> dict:
+    """What bitget-signal has on one name, right now. Never raises.
+
+    Every outcome is a stated one. "Answered with nothing" and "did not answer
+    in time" are different facts and are reported differently, because the
+    first is a fact about the service and the second is a fact about our fuse.
+    """
+    out: dict = {
+        "asked": True,
+        "endpoint": ENDPOINT,
+        "tool": "news_feed",
+        "action": "latest",
+        "equity_capable": list(EQUITY_CAPABLE),
+        "load_bearing": False,
+    }
+    try:
+        payload = mcp.call("news_feed", {"action": "latest", "limit": 5},
+                           endpoint=ENDPOINT, timeout=timeout)
+    except Exception as exc:                      # never reaches the caller
+        out.update(answered=False, articles=0, matched=[],
+                   detail=f"{type(exc).__name__}: {exc}"[:120])
+        return out
+
+    feeds = len(payload) if isinstance(payload, list) else 0
+    articles = _articles(payload)
+    matched = _matching(payload, ticker)
+    out.update(answered=True, feeds_reporting=feeds, articles=articles,
+               matched=matched)
+    if matched:
+        out["detail"] = f"{len(matched)} of {articles} articles name {ticker}"
+    elif articles:
+        out["detail"] = f"{articles} articles across {feeds} feeds, none naming {ticker}"
+    else:
+        out["detail"] = (f"{feeds} feeds answered, 0 articles - the service is "
+                         f"reachable and carrying nothing")
+    return out

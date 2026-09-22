@@ -13,6 +13,7 @@ from __future__ import annotations
 
 import datetime as dt
 import html
+import json
 from pathlib import Path
 
 from . import config, exitcost, facts, signal, validate
@@ -1020,6 +1021,110 @@ def index_body(f: dict) -> str:
 {_finding(f)}"""
 
 
+
+
+def frozen_task() -> dict | None:
+    """The recorded research task, or None when nothing has been captured."""
+    try:
+        return json.loads((config.STATE / "research_task.json").read_text())
+    except (OSError, json.JSONDecodeError):
+        return None
+
+
+def research_task(record: dict | None) -> str:
+    """The frozen research task, as static HTML.
+
+    The desk needs JavaScript and a POST. This does not, and it is the only
+    place on the site where the product's actual output can be read with
+    scripts disabled. It renders from state/research_task.json rather than from
+    prose, so the numbers cannot drift away from what was actually captured.
+    """
+    if not record or not record.get("tasks"):
+        return ('<p class="note">No frozen task recorded. Run '
+                '<code>python3 tools/freeze_task.py</code>.</p>')
+    # Rendered as a path rather than an absolute URL: it is this site's own
+    # endpoint, and every page here is held to carrying no outbound host but the
+    # source repository. A test enforces that and caught this.
+    source = record["source"]
+    if source.startswith("http"):
+        source = "POST /" + source.split("/", 3)[-1]
+    out = [f'<p class="say">Captured <b>{html.escape(record["frozen_at"])}</b> from '
+           f'<code>{html.escape(source)}</code> on the live site. '
+           f'{html.escape(record["note"])}</p>']
+    for task in record["tasks"]:
+        answer = task.get("answer") or {}
+        out.append('<div class="card">')
+        out.append(f'<p class="sub-head">{html.escape(task["question"])}</p>')
+        if answer.get("error"):
+            out.append(f'<p class="say">{html.escape(answer["error"])}</p></div>')
+            continue
+        quote = answer.get("quote") or {}
+        out.append(f'<p class="verdict">{html.escape(answer.get("headline", ""))}</p>')
+        rows = [
+            ("Symbol", answer.get("symbol")),
+            ("Session", answer.get("phase")),
+            ("Filled", f'{quote.get("filled_usdt", 0):,.0f} of '
+                       f'{quote.get("requested_usdt", 0):,.0f} USDT'),
+            ("Book behind it", f'{quote.get("book_usdt", 0):,.0f} USDT'),
+            ("Book exhausted", "yes" if quote.get("exhausted") else "no"),
+            ("Slippage", f'{quote.get("slippage_bp", 0):,.2f} bp'),
+            ("Assumed taker fee", f'{quote.get("fee_bp", 0):,.0f} bp'),
+        ]
+        reference = answer.get("reference") or {}
+        if reference.get("available"):
+            rows.append(("Listed share (equity_price_quote)",
+                         f'{reference.get("last_price")} · token '
+                         f'{reference.get("token_price")} · basis '
+                         f'{reference.get("basis_bp")} bp'))
+        sig = answer.get("signal") or {}
+        if sig.get("asked"):
+            rows.append(("bitget-signal (context only)",
+                         sig.get("detail", "nothing returned")))
+        out.append("<dl>")
+        for label, value in rows:
+            if value in (None, ""):
+                continue
+            out.append(f'<dt>{html.escape(label)}</dt><dd>{html.escape(str(value))}</dd>')
+        out.append("</dl>")
+        plan = answer.get("plan") or []
+        if len(plan) > 1:
+            best = ", ".join(f'{p["slices"]}&times; {p["best_case_bp"]:.2f}&ndash;'
+                             f'{p["worst_case_bp"]:.2f} bp' for p in plan)
+            out.append(f'<p class="note">Split as bounds: {best}. The best case '
+                       f'assumes the book refills between clips; the worst '
+                       f'assumes it never does.</p>')
+        out.append(f'<p class="note">{html.escape(answer.get("reading", ""))}</p>')
+        out.append("</div>")
+    return "\n".join(out)
+
+
+def universe_definition(counts: dict) -> str:
+    """What the tokenized-stock count actually counts.
+
+    The headline number is the venue's own, but it is reachable from exactly one
+    endpoint, and the obvious place to look does not carry the field at all - so
+    anyone reconciling it against another source lands somewhere else and
+    concludes the headline is inflated. Stating the query is cheaper than
+    arguing about it.
+    """
+    stock = counts.get("stock", 0)
+    return f"""
+    <p class="say"><b>What "{stock:,} tokenized stocks" counts.</b> Rows with
+    <code>symbolType == "stock"</code> from
+    <code>GET /api/v3/market/instruments?category=SPOT</code> &mdash; the venue's
+    own classification, not ours. All {stock:,} are <code>status: online</code>,
+    all are USDT-quoted, and there are {stock:,} distinct base coins, so no
+    symbol is counted twice.</p>
+    <p class="note"><b>Why another count will disagree.</b> The v2 endpoint most
+    people reach for, <code>/api/v2/spot/public/symbols</code>, returns the same
+    2,710 rows but carries <b>no <code>symbolType</code> field at all</b>. Without
+    it the only way to split the list is the ticker prefix, and that is wrong in
+    both directions: 25 ordinary crypto pairs start with R
+    (<code>RAYUSDT</code>, <code>ROSEUSDT</code>, <code>RLCUSDT</code> &mdash;
+    iExec, not Royal Caribbean) and two tokenized stocks carry no prefix
+    (<code>PRESPCXUSDT</code>, <code>PREOPAIUSDT</code>). The prefix heuristic
+    returns 2,150. Ours returns {stock:,} because it reads the field.</p>"""
+
 def evidence_body(f: dict) -> str:
     phases = {row["phase"]: row for row in f["phases"]}
     closed = phases.get("overnight") or phases.get("weekend") or {}
@@ -1077,6 +1182,34 @@ def evidence_body(f: dict) -> str:
     that is <a href="method.html">the method page</a>. Whether the quote behind
     the spread is real at all is <a href="validation.html">the validation
     page</a>.</p>
+  </section>
+</div>
+
+<div class="wrap">
+  <section>
+    <h2 id="task">One research task, frozen</h2>
+    <p class="say">The desk on the front page needs JavaScript and a POST, which
+    makes it unreadable to anyone browsing with scripts off. This is one real run
+    of it, recorded and written into this page as plain HTML &mdash; the same
+    question a holder would ask, and the answer that came back, including the
+    parts that did not work.</p>
+    {research_task(frozen_task())}
+    <p class="note"><b>Why two names.</b> The first fills: the book carries the
+    whole order and the answer is a price. The second does not, and the desk
+    degrades to a floor it marks with <code>&gt;</code> rather than quoting a
+    number it cannot stand behind. A single worked example would only have shown
+    the half that works.</p>
+
+    <h2 id="unvalidated">What is not validated yet</h2>
+    <p class="say"><b>We cannot validate the liquid names, and that is the honest
+    state of it.</b> <a href="validation.html">The validation page</a> excludes
+    NVDA, TSLA and AAPL because their printed turnover runs hundreds to thousands
+    of times the depth visible in the book, and a spread measured against a book
+    that shallow does not describe what a real exit would pay. So the overnight
+    widening holds <b>as a quote</b>, across every name the crawl can see. It is
+    not yet established <b>as a fill</b> on the names most people actually hold.
+    Those are the symbols where it matters most, and they are the ones still
+    outstanding.</p>
   </section>
 </div>
 """
@@ -1346,13 +1479,22 @@ python -m egress.page</code></pre>
     <p class="note"><b>Silence is not zero.</b> A symbol missing from a snapshot
     means the venue did not report it, not that its spread was nothing. Missing
     rows are absent from every median rather than counted as a value.</p>
+    {universe_definition(counts)}
+
 
     <h2 id="skills">Bitget Skills</h2>
-    <p class="say">Two are wired. <b>bitget-mcp-server</b> answers
-    <code>equity_price_quote</code> behind every desk answer &mdash; it is
-    where the basis against the listed share comes from, and without it this
-    site could price an exit but not say what the position was worth. The
-    other is below.</p>
+    <p class="say">Two are wired, and <b>both are on the Ask path</b>.
+    <b>bitget-mcp-server</b> answers <code>equity_price_quote</code> behind every
+    desk answer &mdash; it is where the basis against the listed share comes
+    from, and without it this site could price an exit but not say what the
+    position was worth. <b>bitget-signal</b> is asked
+    <code>news_feed/latest</code> for the name in the question, on a six-second
+    fuse, and every answer carries what it said. <b>It cannot move the
+    number.</b> The cost comes from the venue's own book; the news block is
+    built after that number is already fixed, and a test asserts the whole
+    answer is identical whether the service replies, returns nothing, or dies.
+    Today it returns nothing, and the desk prints that rather than a
+    briefing assembled out of an empty feed.</p>
     {_skills(signal.load())}
 
     <h2 id="api">HTTP API</h2>

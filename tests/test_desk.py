@@ -14,6 +14,7 @@ the suite could not see:
 from __future__ import annotations
 
 import json
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -22,7 +23,7 @@ from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from egress import desk, exitcost, llm, market, mcp, universe
+from egress import desk, exitcost, llm, market, mcp, signal, universe
 
 # The reference lookup talks to Bitget's MCP Skill. Every desk test would
 # otherwise make a real call - the suite went from 0.67s to 56s when this was
@@ -31,19 +32,50 @@ from egress import desk, exitcost, llm, market, mcp, universe
 _MCP_PATCH = None
 
 
+# The same applies to the bitget-signal block the Ask path now carries: left
+# live, every desk test would make a second network call for news nobody in the
+# test is reading. Its own behaviour is tested below with responses supplied.
+_SIGNAL_PATCH = None
+
+# setUpModule stubs `signal.for_ticker` for the whole module, so the tests that
+# exercise the real one have to hold a reference taken before that happens.
+REAL_FOR_TICKER = signal.for_ticker
+
+SIGNAL_EMPTY = {"asked": True, "answered": True, "feeds_reporting": 44,
+                "articles": 0, "matched": [], "load_bearing": False,
+                "detail": "44 feeds answered, 0 articles - not called in tests"}
+
+
 def setUpModule() -> None:
-    global _MCP_PATCH
+    global _MCP_PATCH, _SIGNAL_PATCH
     _MCP_PATCH = mock.patch.object(
         mcp, "underlying",
         return_value={"available": False, "source": "bitget-mcp-server",
                       "entry": "equity_price_quote",
                       "reason": "not called in tests"})
     _MCP_PATCH.start()
+    _SIGNAL_PATCH = mock.patch.object(signal, "for_ticker",
+                                      return_value=dict(SIGNAL_EMPTY))
+    _SIGNAL_PATCH.start()
 
 
 def tearDownModule() -> None:
-    if _MCP_PATCH is not None:
-        _MCP_PATCH.stop()
+    for patch in (_MCP_PATCH, _SIGNAL_PATCH):
+        if patch is not None:
+            patch.stop()
+
+
+def freeze_times(node):
+    """Replace every ISO-8601 looking string with a constant, at any depth."""
+    if isinstance(node, dict):
+        return {k: freeze_times(v) for k, v in node.items()}
+    if isinstance(node, list):
+        return [freeze_times(v) for v in node]
+    if isinstance(node, str) and re.fullmatch(
+            r"\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}(\.\d+)?"
+            r"(Z|[+-]\d{2}:\d{2})?", node):
+        return "<frozen>"
+    return node
 
 
 SPEC = {"ticker": "TSLA", "notional_usdt": 40_000.0, "confident": True,
@@ -529,3 +561,124 @@ class FeedDisagreement(unittest.TestCase):
             with mock.patch.object(desk.config, "STATE", root):
                 flags = desk.feed_flags()
         self.assertIn("9.9", desk._feed_note("RZZZUSDT", flags))
+
+
+class SignalIsContextAndNothingElse(unittest.TestCase):
+    """bitget-signal is on the Ask path, and must stay unable to affect it.
+
+    A news service wired into a pricing answer is a liability the moment it is
+    slow or wrong. The point of putting it there is Skill coverage and honest
+    reporting, not a better number - the number comes from the venue's own
+    book. So the claim "non-load-bearing" is enforced rather than asserted in
+    a comment: the whole answer has to be byte-identical whether the service
+    answers, returns nothing, or dies.
+    """
+
+    def setUp(self):
+        desk._UNIVERSE_CACHE[0] = None
+
+    def answer_with(self, signal_block):
+        desk._UNIVERSE_CACHE[0] = None
+        with mock.patch.object(llm, "compile_question", return_value=SPEC), \
+             mock.patch.object(market, "depth_or_touch",
+                               return_value=(*BOOK, "orderbook")), \
+             mock.patch.object(signal, "for_ticker", **signal_block):
+            return desk.answer("what does leaving 40k of TSLA cost?", LISTED)
+
+    def test_a_dead_signal_service_changes_nothing_but_its_own_block(self):
+        alive = self.answer_with({"return_value": {
+            "asked": True, "answered": True, "articles": 3,
+            "matched": ["TSLA something"], "load_bearing": False}})
+        dead = self.answer_with({"return_value": {
+            "asked": True, "answered": False, "articles": 0, "matched": [],
+            "detail": "TimeoutError: timed out", "load_bearing": False}})
+        for out in (alive, dead):
+            out.pop("signal")
+        # The two answers are taken microseconds apart, so every timestamp in
+        # them differs. Frozen recursively rather than by name: a new timestamp
+        # field should not quietly turn this guard into a clock comparison.
+        self.assertEqual(json.dumps(freeze_times(alive), sort_keys=True),
+                         json.dumps(freeze_times(dead), sort_keys=True),
+                         "the news service moved something it must not touch")
+
+    def test_the_cost_survives_a_signal_call_that_raises(self):
+        """`for_ticker` promises never to raise. If that promise is ever broken,
+        the desk must still hand back the priced answer rather than a 500."""
+        out = self.answer_with({"side_effect": RuntimeError("boom")})
+        self.assertNotIn("error", out)
+        self.assertTrue(out["quote"]["quotable"])
+        self.assertIn("headline", out)
+
+    def test_the_block_declares_itself_non_load_bearing(self):
+        """Asserted against the real function, not the module stub.
+
+        The first version of this checked the stub's own dict, so flipping the
+        flag in signal.py left it green - a guard that only ever tested the
+        fixture it was handed.
+        """
+        feeds = [{"feed": "cnbc", "items": []}]
+        with mock.patch.object(signal.mcp, "call", return_value=feeds):
+            live = REAL_FOR_TICKER("TSLA")
+        self.assertIs(live["load_bearing"], False)
+        with mock.patch.object(signal.mcp, "call", side_effect=TimeoutError("t")):
+            dead = REAL_FOR_TICKER("TSLA")
+        self.assertIs(dead["load_bearing"], False,
+                      "the failure path must declare itself non-load-bearing too")
+
+
+class SignalReportsEmptinessRatherThanFillingIt(unittest.TestCase):
+    """The service answers with 44 feeds and no articles. The only honest
+    rendering of that is to say so."""
+
+    def test_an_empty_service_is_reported_as_empty(self):
+        feeds = [{"feed": "cnbc", "error": "", "items": []} for _ in range(44)]
+        with mock.patch.object(signal.mcp, "call", return_value=feeds):
+            out = REAL_FOR_TICKER("TSLA")
+        self.assertTrue(out["answered"])
+        self.assertEqual(out["articles"], 0)
+        self.assertEqual(out["matched"], [])
+        self.assertIn("0 articles", out["detail"])
+        self.assertIn("carrying nothing", out["detail"])
+
+    def test_a_timeout_is_not_reported_as_an_empty_service(self):
+        """"It had nothing" and "we gave up waiting" are different facts. The
+        first is about the service; the second is about our own fuse."""
+        with mock.patch.object(signal.mcp, "call",
+                               side_effect=TimeoutError("read timed out")):
+            out = REAL_FOR_TICKER("TSLA")
+        self.assertFalse(out["answered"])
+        self.assertIn("TimeoutError", out["detail"])
+        self.assertNotIn("carrying nothing", out["detail"])
+
+    def test_for_ticker_never_raises(self):
+        for boom in (RuntimeError("x"), ValueError("y"), TimeoutError("z")):
+            with self.subTest(boom=type(boom).__name__):
+                with mock.patch.object(signal.mcp, "call", side_effect=boom):
+                    out = REAL_FOR_TICKER("TSLA")
+                self.assertFalse(out["answered"])
+
+    def test_only_headlines_that_name_the_ticker_are_matched(self):
+        """Printing all 44 feeds next to one ticker would imply a connection
+        the data does not carry."""
+        feeds = [{"feed": "cnbc", "items": [
+            {"title": "TSLA slides on delivery miss"},
+            {"title": "Bitcoin rallies past 70k"}]}]
+        with mock.patch.object(signal.mcp, "call", return_value=feeds):
+            out = REAL_FOR_TICKER("TSLA")
+        self.assertEqual(out["matched"], ["TSLA slides on delivery miss"])
+        self.assertEqual(out["articles"], 2)
+        self.assertIn("1 of 2 articles name TSLA", out["detail"])
+
+    def test_articles_that_name_nothing_relevant_say_so(self):
+        feeds = [{"feed": "cnbc", "items": [{"title": "Bitcoin rallies past 70k"}]}]
+        with mock.patch.object(signal.mcp, "call", return_value=feeds):
+            out = REAL_FOR_TICKER("TSLA")
+        self.assertEqual(out["matched"], [])
+        self.assertIn("none naming TSLA", out["detail"])
+
+    def test_the_desk_fuse_is_shorter_than_the_scheduled_probe(self):
+        """Someone is waiting on the Ask path. The 25s the probe spends telling
+        an empty service apart from a slow one is the wrong trade when a user
+        is watching a spinner for a block that cannot change the answer."""
+        self.assertLess(signal.DESK_TIMEOUT, signal.PROBE_TIMEOUT)
+        self.assertLessEqual(signal.DESK_TIMEOUT, 6)
