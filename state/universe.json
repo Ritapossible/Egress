@@ -1,5 +1,5 @@
 {
- "captured": "2026-09-22T03:15:00.434624+00:00",
+ "captured": "2026-09-22T04:16:53.769851+00:00",
  "counts": {
   "crypto": 581,
   "metal": 2,
@@ -6902,9 +6902,9 @@
    "status": "online",
    "type": "stock"
   },
-  "RCSANUSDT": {
+  "RCSANYUSDT": {
    "band": "0.1",
-   "base": "rCSAN",
+   "base": "rCSANY",
    "launch_ms": "1789636426107",
    "min_order_usdt": "20",
    "status": "online",
