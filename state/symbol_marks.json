@@ -21,11 +21,11 @@
    "reason": "candle volume is 2.0x the ticker's 24h turnover"
   },
   "RTSLAUSDT": {
-   "ratio": 2.62,
+   "ratio": 2.619,
    "reason": "candle volume is 2.6x the ticker's 24h turnover"
   }
  },
- "generated": "2026-09-23T22:40:10+00:00",
+ "generated": "2026-09-23T22:42:41+00:00",
  "keep": {
   "minimum": 12,
   "observations": 96
