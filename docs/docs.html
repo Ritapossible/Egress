@@ -486,19 +486,19 @@ python -m egress.page</code></pre>
 <tr><td class='sym'>venue_ts</td><td class='dim'>The venue's own timestamp for the quote, which is what phase is decided from.</td></tr></tbody>
     </table>
     </div>
-    <p class="say">Current record: 2,125 snapshots,
-    4,898,644 rows, 38
+    <p class="say">Current record: 2,130 snapshots,
+    4,914,504 rows, 38
     gaps in coverage, across
-    2,710 listed instruments (2,127 tokenized stocks, 581 crypto pairs, 2 metals).</p>
+    3,172 listed instruments (2,589 tokenized stocks, 581 crypto pairs, 2 metals).</p>
     <p class="note"><b>Silence is not zero.</b> A symbol missing from a snapshot
     means the venue did not report it, not that its spread was nothing. Missing
     rows are absent from every median rather than counted as a value.</p>
     
-    <p class="say"><b>What "2,127 tokenized stocks" counts.</b> Rows with
+    <p class="say"><b>What "2,589 tokenized stocks" counts.</b> Rows with
     <code>symbolType == "stock"</code> from
     <code>GET /api/v3/market/instruments?category=SPOT</code> &mdash; the venue's
-    own classification, not ours. All 2,127 are <code>status: online</code>,
-    all are USDT-quoted, and there are 2,127 distinct base coins, so no
+    own classification, not ours. All 2,589 are <code>status: online</code>,
+    all are USDT-quoted, and there are 2,589 distinct base coins, so no
     symbol is counted twice.</p>
     <p class="note"><b>Why another count will disagree.</b> The v2 endpoint most
     people reach for, <code>/api/v2/spot/public/symbols</code>, returns the same
@@ -508,7 +508,7 @@ python -m egress.page</code></pre>
     (<code>RAYUSDT</code>, <code>ROSEUSDT</code>, <code>RLCUSDT</code> &mdash;
     iExec, not Royal Caribbean) and two tokenized stocks carry no prefix
     (<code>PRESPCXUSDT</code>, <code>PREOPAIUSDT</code>). The prefix heuristic
-    returns 2,150. Ours returns 2,127 because it reads the field.</p>
+    returns 2,150. Ours returns 2,589 because it reads the field.</p>
 
 
     <h2 id="skills">Bitget Skills</h2>
@@ -656,8 +656,8 @@ Content-Type: application/json
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-09-23 08:44 UTC from
-      2,125 recorded snapshots. Every figure on this site is read
+      <p class="prov"><i></i>Generated 2026-09-23 09:06 UTC from
+      2,130 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
       <div class="foot-legal">
