@@ -1,7 +1,7 @@
 {
- "captured": "2026-09-24T09:40:00.388310+00:00",
+ "captured": "2026-09-24T11:28:19.125376+00:00",
  "counts": {
-  "crypto": 581,
+  "crypto": 578,
   "metal": 2,
   "stock": 2589
  },
@@ -1098,14 +1098,6 @@
    "band": "0.02",
    "base": "CORE",
    "launch_ms": "1675857600000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "COTIUSDT": {
-   "band": "0.05",
-   "base": "COTI",
-   "launch_ms": "1639981560000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -22702,14 +22694,6 @@
    "status": "online",
    "type": "stock"
   },
-  "RVNUSDT": {
-   "band": "0.02",
-   "base": "RVN",
-   "launch_ms": "1749204000000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
   "RVODUSDT": {
    "band": "0.1",
    "base": "rVOD",
@@ -24106,14 +24090,6 @@
    "band": "0.02",
    "base": "SAFE",
    "launch_ms": "1713862801000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "SAGAUSDT": {
-   "band": "0.02",
-   "base": "SAGA",
-   "launch_ms": "1712649601000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
