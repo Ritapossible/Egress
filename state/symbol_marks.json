@@ -1,31 +1,31 @@
 {
  "feed_flags": {
   "RAAPLUSDT": {
-   "ratio": 8.368,
-   "reason": "candle volume is 8.4x the ticker's 24h turnover"
+   "ratio": 6.922,
+   "reason": "candle volume is 6.9x the ticker's 24h turnover"
   },
   "RMSFTUSDT": {
-   "ratio": 4.412,
-   "reason": "candle volume is 4.4x the ticker's 24h turnover"
+   "ratio": 4.015,
+   "reason": "candle volume is 4.0x the ticker's 24h turnover"
   },
   "RNVDAUSDT": {
-   "ratio": 7.756,
-   "reason": "candle volume is 7.8x the ticker's 24h turnover"
+   "ratio": 6.603,
+   "reason": "candle volume is 6.6x the ticker's 24h turnover"
   },
   "RPBRUSDT": {
-   "ratio": 9.382,
-   "reason": "candle volume is 9.4x the ticker's 24h turnover"
+   "ratio": 7.934,
+   "reason": "candle volume is 7.9x the ticker's 24h turnover"
   },
   "RSYKUSDT": {
-   "ratio": 11.764,
-   "reason": "candle volume is 11.8x the ticker's 24h turnover"
+   "ratio": 9.214,
+   "reason": "candle volume is 9.2x the ticker's 24h turnover"
   },
   "RTSLAUSDT": {
-   "ratio": 8.857,
-   "reason": "candle volume is 8.9x the ticker's 24h turnover"
+   "ratio": 7.971,
+   "reason": "candle volume is 8.0x the ticker's 24h turnover"
   }
  },
- "generated": "2026-09-25T17:02:47+00:00",
+ "generated": "2026-09-25T17:25:26+00:00",
  "keep": {
   "minimum": 12,
   "observations": 96
