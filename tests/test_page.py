@@ -937,3 +937,42 @@ class TheReadmeClaimsMatchTheCode(unittest.TestCase):
         bad = [n for n in re.findall(r"\b\d+\.\d+\b", skills)]
         self.assertEqual(bad, [],
                          f"a measured figure was typed into the README: {bad}")
+
+
+class ThePrePostCheckerStillParsesThePages(unittest.TestCase):
+    """The checker is only useful if it can still read what it checks.
+
+    Its figures come out of the committed pages by regex, so a layout change
+    turns it into a script that reports success having compared nothing. The
+    values are deliberately NOT pinned here - the crawl moves them every twenty
+    minutes and a suite that goes red on its own schedule gets ignored - but the
+    parsing is, because that is what rots silently.
+    """
+
+    def checker(self):
+        import importlib.util
+        path = Path(__file__).resolve().parent.parent / "tools" / "check_post.py"
+        spec = importlib.util.spec_from_file_location("check_post", path)
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        return module
+
+    def test_every_figure_is_still_found_in_the_draft(self):
+        checker = self.checker()
+        draft = (Path(__file__).resolve().parent.parent
+                 / "docs" / "X_POST.md").read_text()
+        expectations = checker.expectations()
+        self.assertGreaterEqual(len(expectations), 10,
+                                "the checker stopped deriving most of its figures")
+        for what, patterns, _expected in expectations:
+            with self.subTest(figure=what):
+                found = [m for p in patterns for m in re.findall(p, draft)]
+                self.assertTrue(found,
+                                f"no pattern for {what!r} matches the draft any "
+                                f"more, so it is no longer being checked")
+
+    def test_the_phase_table_parser_fails_loudly(self):
+        """A page that no longer carries the table must stop the check, not pass it."""
+        checker = self.checker()
+        with self.assertRaises(SystemExit):
+            checker._phase_rows("a page with no phase table on it")
