@@ -1,5 +1,5 @@
 {
- "captured": "2026-09-25T05:35:00.549746+00:00",
+ "captured": "2026-09-25T06:40:00.457868+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -859,7 +859,7 @@
    "base": "BTC",
    "launch_ms": "1770710471652",
    "min_order_usdt": "1",
-   "status": "online",
+   "status": "limit_open",
    "type": "crypto"
   },
   "BTCU": {
@@ -1459,7 +1459,7 @@
    "base": "ETH",
    "launch_ms": "1770710500545",
    "min_order_usdt": "1",
-   "status": "online",
+   "status": "limit_open",
    "type": "crypto"
   },
   "ETHUSD1": {
@@ -14411,7 +14411,7 @@
    "base": "RLUSD",
    "launch_ms": "1751364000000",
    "min_order_usdt": "1",
-   "status": "online",
+   "status": "limit_open",
    "type": "crypto"
   },
   "RLUSDUSDT": {
@@ -25171,7 +25171,7 @@
    "base": "XRP",
    "launch_ms": "1770710528791",
    "min_order_usdt": "1",
-   "status": "online",
+   "status": "limit_open",
    "type": "crypto"
   },
   "XRPUSD1": {
