@@ -1,8 +1,8 @@
 {
  "feed_flags": {
   "RAAPLUSDT": {
-   "ratio": 4384115.543,
-   "reason": "candle volume is 4384115.5x the ticker's 24h turnover"
+   "ratio": 3881891.167,
+   "reason": "candle volume is 3881891.2x the ticker's 24h turnover"
   },
   "RMSFTUSDT": {
    "ratio": 370589833.357,
@@ -25,7 +25,7 @@
    "reason": "candle volume is 5495430.0x the ticker's 24h turnover"
   }
  },
- "generated": "2026-09-26T22:40:04+00:00",
+ "generated": "2026-09-26T22:43:50+00:00",
  "keep": {
   "minimum": 12,
   "observations": 96
