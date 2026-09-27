@@ -13,7 +13,7 @@ intent.
 
 ## The thesis in four sentences
 
-Bitget lists 2,127 tokenized US stocks you can enter in one click. The market
+Bitget lists 2,589 tokenized US stocks you can enter in one click. The market
 that prices the share underneath them is open 32.5 hours of every 168, and when
 New York is shut a market maker cannot hedge, so the quote widens and the
 holder who needs out pays for it. Egress measures what leaving costs — at your
@@ -94,6 +94,6 @@ curl -s -X POST https://egress-v1.vercel.app/api/ask \
 ```
 
 The universe count on any page is `state/universe.json`, rebuilt by the crawl.
-`2,127` means rows with `symbolType == "stock"` from
+`2,589` means rows with `symbolType == "stock"` from
 `/api/v3/market/instruments?category=SPOT` — the v2 public symbols endpoint
 carries no such field, which is why a count taken there will not match.

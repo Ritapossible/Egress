@@ -32,6 +32,7 @@ from __future__ import annotations
 import html
 import json
 import re
+import statistics
 import sys
 from pathlib import Path
 
@@ -85,7 +86,14 @@ def expectations() -> list[tuple[str, list[str], str]]:
         raise SystemExit("the landing page no longer states the sample size")
 
     excl = re.search(r"excludes (\d+) symbols", evidence)
-    ratio = re.search(r"candle volume runs ([\d.]+)\u00d7 to ([\d.]+)\u00d7", evidence)
+
+    # From the validation table, one row per excluded symbol, not from the
+    # sentence that summarises it - the summary had to change wording when one
+    # symbol came back four orders of magnitude outside the rest, and a checker
+    # tied to a wording stops checking the moment the wording is right.
+    validation = _text("validation.html")
+    rows = re.findall(r"([A-Z0-9]+USDT) ([\d,.]+)x ", validation)
+    feeds = {sym: float(r.replace(",", "")) for sym, r in rows}
 
     out: list[tuple[str, list[str], str]] = [
         ("tokenized US stocks",
@@ -139,13 +147,31 @@ def expectations() -> list[tuple[str, list[str], str]]:
     if excl:
         out.append(("symbols excluded from validation",
                     [r"([\d]+) symbols are excluded"], excl.group(1)))
-    if ratio:
-        out.append(("volume feeds disagree, low",
-                    [r"candle volume runs ([\d.]+)\u00d7"], ratio.group(1)))
-        out.append(("volume feeds disagree, high",
-                    [r"candle volume runs [\d.]+\u00d7\u2013([\d.]+)\u00d7"],
-                    ratio.group(2)))
+    if feeds:
+        values = sorted(feeds.values())
+        worst = max(feeds, key=feeds.get)
+        out.append(("volume feeds, median disagreement",
+                    [r"a median ([\d,.]+)\u00d7 the 24h turnover"],
+                    f"{statistics.median(values):,.1f}"))
+        out.append(("volume feeds, worst symbol",
+                    [r"and ([\d,.]+)\u00d7 on [A-Z0-9]+"], f"{feeds[worst]:,.1f}"))
+        out.append(("volume feeds, which symbol",
+                    [r"and [\d,.]+\u00d7 on ([A-Z0-9]+)"], worst))
     return out
+
+
+def matches(draft: str, patterns: list[str]) -> list[str]:
+    """Every capture of any pattern, over the draft and a flattened copy.
+
+    Markdown wraps prose at the margin, so a sentence the checker matches can be
+    split across two lines and silently stop matching. The flattened copy is the
+    same text a reader sees. Shared with the test that guards this parsing, so
+    the two cannot drift apart.
+    """
+    flat = re.sub(r"\s+", " ", draft)
+    found = [m for p in patterns for m in re.findall(p, draft)]
+    found += [m for p in patterns for m in re.findall(p, flat) if m not in found]
+    return found
 
 
 def main() -> int:
@@ -153,7 +179,7 @@ def main() -> int:
     bad = []
     print("Checking docs/X_POST.md against the committed record\n")
     for what, patterns, expected in expectations():
-        found = [m for p in patterns for m in re.findall(p, draft)]
+        found = matches(draft, patterns)
         if not found:
             bad.append((what, expected, "the draft no longer states it"))
             print(f"  [GONE ] {what}: expected {expected}")

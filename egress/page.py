@@ -14,6 +14,7 @@ from __future__ import annotations
 import datetime as dt
 import html
 import json
+import statistics
 from pathlib import Path
 
 from . import config, exitcost, facts, signal, validate
@@ -1181,12 +1182,32 @@ def evidence_body(f: dict) -> str:
     # What the file actually measures is the venue's candle volume against its
     # own ticker's 24h turnover for the same symbol, and the real spread of
     # those ratios is an order of magnitude smaller.
+    #
+    # Summarising them as min-to-max stopped working the moment one symbol came
+    # back at 97,755x: the page read "1.6x to 97755.2x", which is true, useless,
+    # and looks like a bug in the very sentence this project has already had to
+    # correct once. A four-order-of-magnitude outlier is not a bound, it is a
+    # finding - so the median carries the summary and the worst case is named
+    # with its symbol instead of being averaged or hidden.
     validation = f.get("validation") or {}
-    ratios = [row["feed_ratio"] for row in validation.get("excluded_detail") or []
+    detail = [row for row in validation.get("excluded_detail") or []
               if isinstance(row.get("feed_ratio"), (int, float))]
+    ratios = sorted(row["feed_ratio"] for row in detail)
     excluded = validation.get("excluded", 0)
-    ratio_lo = f"{min(ratios):.1f}" if ratios else "?"
-    ratio_hi = f"{max(ratios):.1f}" if ratios else "?"
+    ratio_lo = f"{min(ratios):,.1f}" if ratios else "?"
+    ratio_hi = f"{max(ratios):,.1f}" if ratios else "?"
+    ratio_med = f"{statistics.median(ratios):,.1f}" if ratios else "?"
+    worst = max(detail, key=lambda r: r["feed_ratio"]) if detail else None
+    feed_sentence = (
+        f"the candle volume runs {ratio_lo}&times; to {ratio_hi}&times; the 24h "
+        f"turnover the ticker reports for the same symbol")
+    if worst and ratios and max(ratios) > 10 * statistics.median(ratios):
+        feed_sentence = (
+            f"the candle volume runs a median {ratio_med}&times; the 24h turnover "
+            f"the ticker reports for the same symbol, and "
+            f"<b>{ratio_hi}&times; on {html.escape(str(worst['symbol']))}</b> "
+            f"&mdash; a reading so far outside the others that it is itself the "
+            f"evidence that one of the two feeds is unusable for that name")
 
     phases = {row["phase"]: row for row in f["phases"]}
     closed = phases.get("overnight") or phases.get("weekend") or {}
@@ -1266,9 +1287,8 @@ def evidence_body(f: dict) -> str:
     <p class="say"><b>We cannot validate the liquid names, and that is the honest
     state of it.</b> <a href="validation.html">The validation page</a> excludes
     {excluded} symbols &mdash; among them NVDA, TSLA, AAPL and MSFT &mdash;
-    because <b>two of the venue's own volume feeds disagree about them</b>: the
-    candle volume runs {ratio_lo}&times; to {ratio_hi}&times; the 24h turnover
-    the ticker reports for the same symbol. Which feed is right is not something
+    because <b>two of the venue's own volume feeds disagree about them</b>:
+    {feed_sentence}. Which feed is right is not something
     this project can settle from outside, and scoring a prediction against a
     number that may be wrong would be worse than not scoring it. So the overnight
     widening holds <b>as a quote</b>, across every name the crawl can see. It is

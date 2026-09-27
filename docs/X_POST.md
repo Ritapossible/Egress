@@ -3,7 +3,7 @@
 Must contain **`#BitgetHackathon`** and **`@Bitget_AI`**. Post from the account
 entering the hackathon, then paste the URL into `docs/SUBMISSION.md`.
 
-Every number below is from `state/` as measured 2026-09-25 and is on the live
+Every number below is from `state/` as measured 2026-09-27 and is on the live
 site. The crawl moves them every twenty minutes, and a post is the one artifact
 that cannot be edited after the fact, so **run the checker immediately before
 posting** and fix anything it names:
@@ -18,8 +18,8 @@ with no network and no rebuild, and exits non-zero if one has drifted.
 | Claim in the drafts | Where it comes from |
 |---|---|
 | 2,589 tokenized US stocks | `state/universe.json`, `symbolType == "stock"` |
-| 2,658 snapshots | `state/manifest.jsonl`, also on the landing page |
-| 6.0 bp open → 55.5 bp overnight (9.2×) | phase table, stocks listed 30d+ |
+| 3,222 snapshots | `state/manifest.jsonl`, also on the landing page |
+| 6.1 bp open → 55.5 bp overnight (9.1×) | phase table, stocks listed 30d+ |
 | 641 bp overnight | phase table, stocks listed <30d |
 | crypto 12.0 → 11.9 (0.99×) | phase table, crypto control |
 | 7 of 9 priced through the Agent Hub | `state/hub_crosscheck.json` |
@@ -38,9 +38,9 @@ Bitget lists 2,589 tokenized US stocks. You can buy one in a single click.
 
 Nothing tells you what it costs to LEAVE.
 
-So I measured it. 2,658 snapshots, 6.6M rows, the whole listed universe every 5 minutes:
+So I measured it. 3,222 snapshots, 8.4M rows, the whole listed universe every 5 minutes:
 
-▸ Established names: 6.0 bp spread while New York is open → 55.5 bp overnight. 9.2x.
+▸ Established names: 6.1 bp spread while New York is open → 55.5 bp overnight. 9.1x.
 ▸ Listed under 30 days: 641 bp overnight.
 ▸ Crypto on the same venue: 12.0 → 11.9. It doesn't move.
 
@@ -86,7 +86,7 @@ Also published: the 6 symbols I can't validate, and why.
 ```
 What does it cost to LEAVE a tokenized stock at 3am?
 
-Measured: 9.2x the daytime spread. Crypto on the same venue doesn't move at all.
+Measured: 9.1x the daytime spread. Crypto on the same venue doesn't move at all.
 
 Egress answers in English, walking the real book. No order ever placed.
 
@@ -104,7 +104,7 @@ a spread observation into a finding.
 ```
 You bought a tokenized stock at 2pm. It's 3am and you want out.
 
-The spread you entered on was 6.0 bp. Right now it's 55.5 bp. If the name listed this month, 641 bp.
+The spread you entered on was 6.1 bp. Right now it's 55.5 bp. If the name listed this month, 641 bp.
 
 Egress walks the real order book and tells you the number before you need it.
 
@@ -120,7 +120,7 @@ Bitget lists 2,589 tokenized US stocks. One click to buy.
 
 Nobody tells you what it costs to leave.
 
-2,658 snapshots: overnight spreads widen 9.2x vs market hours. Crypto, same venue, same engine: 0.99x.
+3,222 snapshots: overnight spreads widen 9.1x vs market hours. Crypto, same venue, same engine: 0.99x.
 
 So it's not the venue. It's the closed market underneath.
 
@@ -149,7 +149,8 @@ Ask in English: egress-v1.vercel.app
 
 - Any return, P&L or profit. Egress measures a cost and does not trade.
 - That the overnight finding is validated **as a fill** — it holds as a quote.
-  5 symbols are excluded — among them NVDA, TSLA, AAPL and MSFT — because two of
-  the venue's own volume feeds disagree about them: candle volume runs 1.4×–1.8×
-  the 24h turnover the ticker reports for the same symbol.
+  6 symbols are excluded — among them NVDA, TSLA, AAPL and MSFT — because two of
+  the venue's own volume feeds disagree about them: candle volume runs a median
+  10.3× the 24h turnover the ticker reports for the same symbol, and 97,755.2× on
+  RMSFTUSDT.
 - A universe count without the definition behind it, if anyone asks.

@@ -11,7 +11,7 @@ Paste each part into the matching form field.
 | **Code** | <https://github.com/Ritapossible/Egress> |
 | **X post** | ⚠️ *fill in — must include `#BitgetHackathon` and `@Bitget_AI`* |
 
-**Every figure below was measured at 2026-09-22 17:09 UTC and is a snapshot.**
+**Every figure below was measured at 2026-09-27 18:23 UTC and is a snapshot.**
 The crawl re-derives all of them roughly every twenty minutes and the live site
 shows the current values; nothing here is typed by hand into prose. Where a
 number here and a number on the site disagree, the site is right and this file
@@ -21,18 +21,18 @@ is stale.
 
 ## 1 · Thesis
 
-**Bitget lists 2,127 tokenized US stocks you can enter in one click. The market
+**Bitget lists 2,589 tokenized US stocks you can enter in one click. The market
 that prices the share underneath them is open 32.5 of every 168 hours. Nobody
 tells you what it costs to leave, and the answer changes by a factor of nine
 depending on what time you ask.**
 
-Measured across 1,967 snapshots and 4,466,468 rows since 2026-09-14:
+Measured across 3,222 snapshots and 8,379,016 rows since 2026-09-14:
 
 | | US market open | Overnight | Multiple |
 |---|---|---|---|
-| Tokenized stocks, listed 30d+ | **6.1 bp** | **54.5 bp** | **8.9×** |
-| Tokenized stocks, listed <30d | 10.2 bp | **644.0 bp** | 63.1× |
-| Crypto (control) | 12.0 bp | 11.8 bp | **0.98×** |
+| Tokenized stocks, listed 30d+ | **6.1 bp** | **55.5 bp** | **9.1×** |
+| Tokenized stocks, listed <30d | 10.9 bp | **640.8 bp** | 58.8× |
+| Crypto (control) | 12.0 bp | 11.9 bp | **0.99×** |
 
 **The control is the finding.** Crypto trades on the same venue, through the
 same matching engine, over the same wire, and does not move at all between
@@ -42,7 +42,7 @@ When New York closes, a market maker cannot hedge the share, and the quote
 widens to carry that risk.
 
 **Newly listed names are a different product.** Under thirty days old, the
-overnight median is 644 bp — 10.2 bp while New York is open. A holder who
+overnight median is 640.8 bp — 10.9 bp while New York is open. A holder who
 bought in the afternoon and needs out at 3am is in a different market from the
 one they entered.
 
@@ -73,9 +73,9 @@ the order, it says so and quotes a floor rather than inventing a price.
 
 ## 3 · Validation data and key metrics
 
-**The record.** 1,967 snapshots, 4,466,468 rows, 195.5 hours of continuous
-observation since 2026-09-14, across 2,710 listed instruments (2,127 tokenized
-stocks, 581 crypto pairs, 2 metals). 35 gaps, each one printed on the evidence
+**The record.** 3,222 snapshots, 8,379,016 rows, 317.6 hours of continuous
+observation since 2026-09-14, across 3,169 listed instruments (2,589 tokenized
+stocks, 578 crypto pairs, 2 metals). 57 gaps, each one printed on the evidence
 page rather than smoothed over.
 
 **Method.** Walk the book from the mid, level by level, until the order is
@@ -85,9 +85,9 @@ does. No midpoint fiction, no assumed refill.
 
 **What the count means.** `symbolType == "stock"` from
 `/api/v3/market/instruments?category=SPOT` — the venue's own classification,
-all online, 2,127 distinct base coins. The v2 public symbols endpoint returns
-the same 2,710 rows and carries no `symbolType` field, which is why a count
-taken there will not match; split by ticker prefix instead and you get 2,150.
+all online, 2,589 distinct base coins. The v2 public symbols endpoint returns
+the same 3,169 rows and carries no `symbolType` field, which is why a count
+taken there will not match; split by ticker prefix instead and you get 2,611.
 
 ### The honest state of validation
 
@@ -97,10 +97,12 @@ and it is stated here rather than buried.
 
 - **6 of 9 symbols are excluded**, including NVDA, TSLA, AAPL and MSFT, because
   **two of the venue's own volume feeds disagree about them**: candle volume
-  runs **8.2× to 18.2×** the 24h turnover its own ticker reports for the same
-  symbol. Which feed is right is not settleable from outside this venue, and
-  scoring a prediction against a number that may be wrong is worse than not
-  scoring it.
+  runs a median **10.4×** the 24h turnover its own ticker reports for the same
+  symbol, and **97,755.2× on RMSFTUSDT** — a reading four orders of magnitude
+  outside the others, and itself the evidence that one of the two feeds is
+  unusable for that name. Which feed is right is not settleable from outside
+  this venue, and scoring a prediction against a number that may be wrong is
+  worse than not scoring it.
 - On the symbols that can be scored, printed volume runs a median **37×** the
   depth visible at the touch, over 219 bars. That ratio is why a spread is not
   a cost and why the desk walks the book instead.
@@ -137,9 +139,10 @@ credential), multi-position portfolios, deep-book history.
 
 **Problems found and published rather than quietly corrected:**
 
-1. **The R-prefix heuristic was wrong 27 ways.** Treating `R*USDT` as a
-   tokenized stock swallows 25 ordinary crypto pairs (`RLCUSDT` is iExec, not
-   Royal Caribbean) and misses two stocks carrying no prefix. A liquidity study
+1. **The R-prefix heuristic was wrong 26 ways.** Treating `R*USDT` as a
+   tokenized stock swallows 24 ordinary crypto pairs (`RAYUSDT` is Raydium, not
+   a listed company) and misses two stocks carrying no prefix — `PREOPAIUSDT`
+   and `PRESPCXUSDT`. A liquidity study
    built on it would have reported crypto liquidity as tokenized-stock
    liquidity. Fixed by reading the venue's own `symbolType`.
 2. **Two of the venue's volume feeds disagree.** Found while validating, not
@@ -149,8 +152,10 @@ credential), multi-position portfolios, deep-book history.
 4. **`NaN` serialised as invalid JSON.** A cost the book could not price broke
    the browser parser instead of showing the honest answer already computed.
 5. **An outside review gave the exclusion ratios as "646× to 5,902×".** They
-   are 8.2× to 18.2×, and of a different quantity. The figures on the page are
-   now read from the validation record rather than retyped.
+   are a median 10.3×, and of a different quantity. The figures on the page are
+   now read from the validation record rather than retyped — which is how the
+   one symbol that does reach five figures, RMSFTUSDT, showed up as a finding
+   rather than as a number somebody had typed.
 
 **Reversed, and the reasoning was wrong.** This section previously said the
 Agent Hub was held back because read-only depth through it would wrap REST the

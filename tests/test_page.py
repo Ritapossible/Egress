@@ -10,6 +10,7 @@ from __future__ import annotations
 import html
 import json
 import re
+import statistics
 import sys
 import unittest
 from pathlib import Path
@@ -644,19 +645,29 @@ class TheSubmissionDescriptionStaysHonest(unittest.TestCase):
                 / "docs" / "SUBMISSION.md").read_text()
 
     def validation(self) -> dict:
-        """From the rendered page, not from facts.build().
+        """The per-symbol record, not the sentence that summarises it.
 
         Building the facts re-runs the crawl and the validation against the
         live venue - 85 seconds and a network dependency, inside a suite that
-        is supposed to be neither. The built page already carries the numbers
-        and is what a reader actually sees.
+        is supposed to be neither. The built pages already carry the numbers.
+
+        This used to parse the summary sentence on the evidence page, which
+        tied the test to one wording of it. The wording had to change when a
+        symbol came back at 97,755x and "lo to hi" stopped being a summary, so
+        the numbers are read from the validation table instead - the place the
+        measurement is actually published, one row per excluded symbol.
         """
         text = (Path(__file__).resolve().parent.parent
-                / "docs" / "evidence.html").read_text()
-        found = re.search(r"candle volume runs ([\d.]+)&times; to ([\d.]+)&times;",
-                          text)
-        self.assertIsNotNone(found, "the evidence page no longer states the range")
-        return {"lo": float(found.group(1)), "hi": float(found.group(2))}
+                / "docs" / "validation.html").read_text()
+        rows = re.findall(r"<td class='sym'>([A-Z0-9]+)</td>"
+                          r"<td class='n'>([\d,.]+)x</td>", text)
+        self.assertTrue(rows, "the validation page no longer lists the "
+                              "excluded symbols and their ratios")
+        by_symbol = {sym: float(r.replace(",", "")) for sym, r in rows}
+        ratios = sorted(by_symbol.values())
+        worst = max(by_symbol, key=by_symbol.get)
+        return {"lo": ratios[0], "hi": ratios[-1], "by_symbol": by_symbol,
+                "median": statistics.median(ratios), "worst": worst}
 
     def test_all_six_parts_are_present(self):
         doc = self.doc()
@@ -701,14 +712,39 @@ class TheSubmissionDescriptionStaysHonest(unittest.TestCase):
         # It must be the feed comparison, not a depth comparison.
         self.assertIn("24h turnover its own ticker reports", doc)
 
-        # And the measured range must still be the order of magnitude the prose
-        # describes. If the venue's feeds ever diverge by hundreds of times,
-        # the wording stops being true and this should say so.
-        self.assertLess(measured["hi"], 100,
-                        "the measured ratios moved into the range the "
-                        "discredited figure claimed; the prose needs re-checking")
         self.assertGreater(measured["lo"], 1,
                            "the feeds now agree, so the exclusion reason is stale")
+
+        # The prose must describe the shape that was measured. A min-to-max
+        # range was fine while the ratios were of one magnitude; RMSFTUSDT came
+        # back at 97,755x, and a document summarising that as "8.2x to 18.2x" -
+        # or even truthfully as "1.6x to 97,755.2x" - tells a judge nothing and
+        # reads like a defect in the one figure this project already retracted
+        # once. When an outlier dominates, it has to be named with its symbol.
+        if measured["hi"] > 10 * measured["median"]:
+            # Numerically, not as a string. The table publishes each ratio
+            # rounded to 1dp and the page computes its median from the full
+            # precision behind them, so the two can differ in the last digit
+            # and a string match would go red on a rounding boundary rather
+            # than on a wrong claim.
+            stated = re.search(r"a median \*\*([\d,.]+)\u00d7\*\*", doc)
+            self.assertIsNotNone(
+                stated, "an outlier dominates the range, so the document must "
+                        "summarise with the median")
+            self.assertAlmostEqual(
+                float(stated.group(1).replace(",", "")), measured["median"],
+                delta=max(0.1, measured["median"] * 0.02),
+                msg=f"the document's median disagrees with the published rows, "
+                    f"which give {measured['median']:,.1f}",
+            )
+            self.assertIn(f"{measured['hi']:,.1f}\u00d7", doc,
+                          "the worst ratio measured is not stated in the document")
+            self.assertIn(measured["worst"], doc,
+                          f"{measured['worst']} carries the worst ratio and the "
+                          f"document does not name it")
+        else:
+            self.assertIn(f"{measured['lo']:,.1f}\u00d7 to {measured['hi']:,.1f}\u00d7",
+                          doc, "the document does not state the measured range")
 
     def test_the_x_post_is_still_flagged_as_outstanding(self):
         """It is an invalidation criterion. The moment this row quietly reads
@@ -966,7 +1002,7 @@ class ThePrePostCheckerStillParsesThePages(unittest.TestCase):
                                 "the checker stopped deriving most of its figures")
         for what, patterns, _expected in expectations:
             with self.subTest(figure=what):
-                found = [m for p in patterns for m in re.findall(p, draft)]
+                found = checker.matches(draft, patterns)
                 self.assertTrue(found,
                                 f"no pattern for {what!r} matches the draft any "
                                 f"more, so it is no longer being checked")
