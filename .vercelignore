@@ -1,0 +1,23 @@
+# What Vercel does NOT need.
+#
+# The deployment serves docs/ as static HTML and runs one Python function,
+# api/ask.py, which reaches egress.desk and egress.llm. Between them those read
+# exactly two files: state/universe.json and state/symbol_marks.json, both
+# already named by `includeFiles` in vercel.json.
+#
+# state/snapshots/ is the raw crawl archive - one gzipped CSV per day, growing
+# by roughly 15 MB a day and never read at request time. It reached 209 MB and
+# took the whole function bundle to 228.11 MB, over Vercel's limit, and every
+# production deployment failed from 2026-09-28 02:47Z with "Total bundle size
+# exceeds the maximum function size". Nothing about the site changed; the
+# archive simply grew past the line.
+#
+# Do not add docs/ here. It is the outputDirectory, and excluding it would
+# serve nothing.
+
+.git
+.github
+tests
+tools
+state/snapshots
+**/__pycache__
