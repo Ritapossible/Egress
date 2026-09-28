@@ -1,5 +1,5 @@
 {
- "captured": "2026-09-28T02:40:00.369140+00:00",
+ "captured": "2026-09-28T03:45:00.256964+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -2191,7 +2191,7 @@
    "type": "crypto"
   },
   "KUBUSDT": {
-   "band": "0.02",
+   "band": "0.1",
    "base": "KUB",
    "launch_ms": "1714129201000",
    "min_order_usdt": "1",
