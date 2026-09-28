@@ -17,7 +17,7 @@ import json
 import statistics
 from pathlib import Path
 
-from . import config, exitcost, facts, signal, store, validate
+from . import config, exitcost, facts, signal, store, universe, validate
 
 OUT = config.ROOT / "docs"
 REPO = "https://github.com/Ritapossible/Egress"
@@ -751,6 +751,70 @@ def _example_rows(examples: list[dict]) -> str:
     return "\n".join(out)
 
 
+def _unvalidated(v: dict, feed_sentence: str) -> str:
+    """What cannot be scored, read from the last run rather than remembered.
+
+    This paragraph named "NVDA, TSLA, AAPL and MSFT" as the excluded symbols, in
+    typed text, beside a computed count. On 2026-09-28 the feed gate let all four
+    through - the excluded set became RSYKUSDT and RPBRUSDT - and the sentence
+    went on naming four symbols that were no longer in it. It was live for hours,
+    on the page whose entire job is to state this project's limits accurately,
+    and it was wrong in the direction that flatters: it claimed a limitation the
+    measurement had stopped supporting.
+
+    The gate is re-measured every build from the last 24 hours and it moves, so
+    there is no settled answer to hard-code. Both shapes render from the record.
+    """
+    excluded_names = [e["symbol"] for e in (v.get("excluded_detail") or [])
+                      if e.get("symbol")]
+    try:
+        kinds = {sym: row.get("type") for sym, row in universe.load().items()}
+    except Exception:  # noqa: BLE001 - the page must still build offline
+        kinds = {}
+    checked = [r.get("symbol") for r in (v.get("per_symbol") or []) if r.get("symbol")]
+    stocks = [s for s in checked if kinds.get(s) == "stock"]
+    scored_stocks = [s for s in stocks if s not in excluded_names]
+    excluded_stocks = [s for s in stocks if s in excluded_names]
+
+    def _names(items):
+        items = [html.escape(i) for i in items]
+        if len(items) <= 1:
+            return items[0] if items else ""
+        return f"{', '.join(items[:-1])} and {items[-1]}"
+
+    moves = """<p class="note"><b>This gate moves.</b> It is re-measured on every
+    build from the last twenty-four hours, and a name that passes it today can
+    fail tomorrow: on 2026-09-28 it excluded six symbols in the morning and two
+    by the afternoon. So this section reports what the last run found rather than
+    a settled state, and the overnight widening is stated <b>as a quote</b>
+    wherever it has not been scored <b>as a fill</b>.</p>"""
+
+    named = f" &mdash; {_names(excluded_names)} &mdash;" if excluded_names else ""
+    if not scored_stocks:
+        return f"""<p class="say"><b>We cannot validate the liquid names, and that
+    is the honest state of it.</b> <a href="validation.html">The validation
+    page</a> excludes {v.get('excluded', 0)} symbols{named}
+    because <b>two of the venue's own volume feeds disagree about them</b>:
+    {feed_sentence}. Which feed is right is not something this project can settle
+    from outside, and scoring a prediction against a number that may be wrong
+    would be worse than not scoring it. So the overnight widening holds <b>as a
+    quote</b>, across every name the crawl can see. It is not yet established
+    <b>as a fill</b> on the names most people actually hold. Those are the
+    symbols where it matters most, and they are the ones still outstanding.</p>
+    {moves}"""
+
+    others = (f"The other {len(excluded_stocks)} &mdash; {_names(excluded_stocks)}"
+              f" &mdash; are" if excluded_stocks else "None are")
+    return f"""<p class="say"><b>{len(scored_stocks)} of the {len(stocks)} tokenized
+    stocks checked are scored against their own prints:</b> {_names(scored_stocks)}.
+    {others} excluded, because <b>two of the venue's own volume feeds disagree
+    about them</b>: {feed_sentence}. Which feed is right is not something this
+    project can settle from outside, and scoring a prediction against a number
+    that may be wrong would be worse than not scoring it.
+    <a href="validation.html">The validation page</a> names every one.</p>
+    {moves}"""
+
+
 def _validation(v: dict) -> tuple[str, str]:
     """(one sentence, the block) - or an honest account of why there is neither."""
     if not v or not v.get("symbols"):
@@ -1193,7 +1257,6 @@ def evidence_body(f: dict) -> str:
     detail = [row for row in validation.get("excluded_detail") or []
               if isinstance(row.get("feed_ratio"), (int, float))]
     ratios = sorted(row["feed_ratio"] for row in detail)
-    excluded = validation.get("excluded", 0)
     ratio_lo = f"{min(ratios):,.1f}" if ratios else "?"
     ratio_hi = f"{max(ratios):,.1f}" if ratios else "?"
     ratio_med = f"{statistics.median(ratios):,.1f}" if ratios else "?"
@@ -1284,17 +1347,7 @@ def evidence_body(f: dict) -> str:
     the half that works.</p>
 
     <h2 id="unvalidated">What is not validated yet</h2>
-    <p class="say"><b>We cannot validate the liquid names, and that is the honest
-    state of it.</b> <a href="validation.html">The validation page</a> excludes
-    {excluded} symbols &mdash; among them NVDA, TSLA, AAPL and MSFT &mdash;
-    because <b>two of the venue's own volume feeds disagree about them</b>:
-    {feed_sentence}. Which feed is right is not something
-    this project can settle from outside, and scoring a prediction against a
-    number that may be wrong would be worse than not scoring it. So the overnight
-    widening holds <b>as a quote</b>, across every name the crawl can see. It is
-    not yet established <b>as a fill</b> on the names most people actually hold.
-    Those are the symbols where it matters most, and they are the ones still
-    outstanding.</p>
+    {_unvalidated(validation, feed_sentence)}
 
     <h2 id="hub">The same book, read twice</h2>
     <p class="say">Every figure on this site comes through one HTTP client, and a

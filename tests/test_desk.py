@@ -261,6 +261,13 @@ if __name__ == "__main__":
     unittest.main()
 
 
+# Keys the desk emits only when the data calls for them. They are not part of
+# the answer's fixed shape, so an exact key-set comparison turns a data swing
+# into a failed build. Each one is checked below for a client that can render
+# without it.
+OPTIONAL = {"feed_note"}
+
+
 class ClientFixturesStayInSync(unittest.TestCase):
     """tools/fixtures/answers.json drives the browser test of desk.js.
 
@@ -294,9 +301,26 @@ class ClientFixturesStayInSync(unittest.TestCase):
                          "a fixture case no longer matches the desk's cases")
         for name, answer in live.items():
             with self.subTest(case=name):
-                self.assertEqual(set(answer), set(self.saved[name]),
+                self.assertEqual(set(answer) - OPTIONAL, set(self.saved[name]) - OPTIONAL,
                                  f"the {name} answer's keys have changed - "
                                  f"regenerate tools/fixtures/answers.json")
+
+    def test_every_optional_key_is_one_the_client_can_do_without(self):
+        """Otherwise OPTIONAL is just a list of things this test stopped checking.
+
+        feed_note is only present when the symbol is feed-flagged, and the flags
+        are re-measured every build: the gate excluded six symbols on the morning
+        of 2026-09-28, two by the afternoon and six again by the evening. Pinning
+        an exact key set made this test fail on the gate's schedule rather than
+        on a real change of shape, twice in one day.
+        """
+        client = (Path(__file__).resolve().parent.parent
+                  / "docs" / "desk.js").read_text()
+        for key in OPTIONAL:
+            with self.subTest(key=key):
+                self.assertIn(f"if (data.{key})", client,
+                              f"{key} is treated as optional here but the panel "
+                              f"reads it unguarded")
 
     def test_a_priced_answer_carries_what_the_panel_renders(self):
         answer = self.produce({"return_value": (*BOOK, "orderbook")})

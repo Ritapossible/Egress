@@ -11,7 +11,7 @@ Paste each part into the matching form field.
 | **Code** | <https://github.com/Ritapossible/Egress> |
 | **X post** | ⚠️ *fill in — must include `#BitgetHackathon` and `@Bitget_AI`* |
 
-**Every figure below was measured at 2026-09-27 18:23 UTC and is a snapshot.**
+**Every figure below was measured at 2026-09-28 09:28 UTC and is a snapshot.**
 The crawl re-derives all of them roughly every twenty minutes and the live site
 shows the current values; nothing here is typed by hand into prose. Where a
 number here and a number on the site disagree, the site is right and this file
@@ -97,12 +97,17 @@ and it is stated here rather than buried.
 
 - **6 of 9 symbols are excluded**, including NVDA, TSLA, AAPL and MSFT, because
   **two of the venue's own volume feeds disagree about them**: candle volume
-  runs a median **10.4×** the 24h turnover its own ticker reports for the same
-  symbol, and **97,755.2× on RMSFTUSDT** — a reading four orders of magnitude
+  runs a median **1.6×** the 24h turnover its own ticker reports for the same
+  symbol, and **20,960.5× on RSYKUSDT** — a reading four orders of magnitude
   outside the others, and itself the evidence that one of the two feeds is
   unusable for that name. Which feed is right is not settleable from outside
   this venue, and scoring a prediction against a number that may be wrong is
   worse than not scoring it.
+- **This gate moves, and the site reports the last run rather than a settled
+  state.** On 2026-09-28 it excluded six symbols in the morning, two by the
+  afternoon and six again by the evening — the liquid names crossing it in both
+  directions within a day. The page names whichever symbols the last run
+  excluded; nothing about that list is typed.
 - On the symbols that can be scored, printed volume runs a median **37×** the
   depth visible at the touch, over 219 bars. That ratio is why a spread is not
   a cost and why the desk walks the book instead.
@@ -152,10 +157,16 @@ credential), multi-position portfolios, deep-book history.
 4. **`NaN` serialised as invalid JSON.** A cost the book could not price broke
    the browser parser instead of showing the honest answer already computed.
 5. **An outside review gave the exclusion ratios as "646× to 5,902×".** They
-   are a median 10.3×, and of a different quantity. The figures on the page are
-   now read from the validation record rather than retyped — which is how the
-   one symbol that does reach five figures, RMSFTUSDT, showed up as a finding
-   rather than as a number somebody had typed.
+   are of a different quantity, and they move: the median across excluded names
+   has been 1.6× and 10.3× on the same day. The figures on the page are read
+   from the validation record rather than retyped, which is how the symbols that
+   reach five figures show up as findings rather than as numbers somebody typed.
+6. **The page named four symbols that were no longer excluded.** "Among them
+   NVDA, TSLA, AAPL and MSFT" was typed beside a computed count. When the feed
+   gate let all four through, the count followed the data and the names did not,
+   and the section whose job is to state this project's limits spent hours
+   claiming a limitation the measurement had stopped supporting. Now rendered
+   from the record, in both directions.
 
 **Reversed, and the reasoning was wrong.** This section previously said the
 Agent Hub was held back because read-only depth through it would wrap REST the

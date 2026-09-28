@@ -1012,3 +1012,78 @@ class ThePrePostCheckerStillParsesThePages(unittest.TestCase):
         checker = self.checker()
         with self.assertRaises(SystemExit):
             checker._phase_rows("a page with no phase table on it")
+
+
+class TheUnvalidatedSectionNamesWhatIsActuallyExcluded(unittest.TestCase):
+    """It named four symbols that were not in the excluded set, live.
+
+    `page.py` carried "among them NVDA, TSLA, AAPL and MSFT" as typed text
+    beside a computed count. On 2026-09-28 the feed gate let all four through -
+    the excluded set became RSYKUSDT and RPBRUSDT - and the count followed the
+    data while the names did not. The page whose job is to state this project's
+    limits accurately spent hours claiming a limitation the measurement had
+    stopped supporting, which is the flattering direction to be wrong in.
+    """
+
+    STOCKS = ("RNVDAUSDT", "RTSLAUSDT", "RAAPLUSDT", "RMSFTUSDT",
+              "RSYKUSDT", "RPBRUSDT")
+
+    def record(self, excluded):
+        return {
+            "excluded": len(excluded),
+            "excluded_detail": [{"symbol": s, "feed_ratio": 9.0} for s in excluded],
+            "per_symbol": [{"symbol": s} for s in
+                           (*self.STOCKS, "BTCUSDT", "ETHUSDT", "SOLUSDT")],
+        }
+
+    def text(self, excluded):
+        import re as _re
+
+        from egress import page
+        raw = page._unvalidated(self.record(excluded), "FEED")
+        return " ".join(_re.sub(r"<[^>]+>", " ", raw).split())
+
+    def test_it_names_exactly_the_excluded_symbols(self):
+        out = self.text(["RSYKUSDT", "RPBRUSDT"])
+        for name in ("RSYKUSDT", "RPBRUSDT"):
+            self.assertIn(name, out, f"{name} is excluded and is not named")
+
+    def test_it_does_not_name_a_symbol_that_is_scored(self):
+        """The exact failure: four names carried over from when they were excluded."""
+        out = self.text(["RSYKUSDT", "RPBRUSDT"])
+        for name in ("RNVDAUSDT", "RTSLAUSDT", "RAAPLUSDT", "RMSFTUSDT"):
+            self.assertNotIn(
+                f"{name} - are excluded", out,
+                f"{name} passed the gate and must not be listed as excluded")
+        self.assertIn("4 of the 6 tokenized stocks checked are scored", out)
+
+    def test_it_still_states_the_limit_when_nothing_is_scored(self):
+        """The claim must survive in the direction that does not flatter."""
+        out = self.text(list(self.STOCKS))
+        self.assertIn("We cannot validate the liquid names", out)
+        for name in self.STOCKS:
+            self.assertIn(name, out)
+
+    def test_it_says_the_gate_moves(self):
+        """Six excluded in the morning, two by the afternoon - on the same day."""
+        for excluded in (["RSYKUSDT", "RPBRUSDT"], list(self.STOCKS)):
+            with self.subTest(excluded=len(excluded)):
+                self.assertIn("This gate moves", self.text(excluded))
+
+    def test_the_section_is_rendered_not_written_into_the_template(self):
+        """The defect was prose in the template. Scoping this to "no ticker
+        anywhere in evidence_body" was too broad - the page legitimately uses
+        RTSLAUSDT in a column example and in a shell snippet. The durable
+        property is that this section carries no prose of its own at all."""
+        from pathlib import Path as P
+        src = (P(__file__).resolve().parent.parent / "egress" / "page.py").read_text()
+        body = src[src.index("def evidence_body"):]
+        marker = '<h2 id="unvalidated">What is not validated yet</h2>'
+        self.assertIn(marker, body, "the section is gone")
+        after = body[body.index(marker) + len(marker):]
+        rendered = after[:after.index("<h2")].strip()
+        self.assertEqual(
+            rendered, "{_unvalidated(validation, feed_sentence)}",
+            "the unvalidated section carries prose in the template again; it "
+            "named four symbols that were no longer excluded that way",
+        )
