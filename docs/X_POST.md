@@ -38,7 +38,7 @@ Bitget lists 2,813 tokenized US stocks. You can buy one in a single click.
 
 Nothing tells you what it costs to LEAVE.
 
-So I measured it. 3,361 snapshots, 8.8M rows, the whole listed universe every 5 minutes:
+So I measured it. 3,361 snapshots, 8.9M rows, the whole listed universe every 5 minutes:
 
 ▸ Established names: 6.1 bp spread while New York is open → 55.5 bp overnight. 9.1x.
 ▸ Listed under 30 days: 641 bp overnight.
