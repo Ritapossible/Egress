@@ -47,6 +47,14 @@ if git diff --cached | grep -qE '^\+(<<<<<<<|>>>>>>>|=======$)'; then
 fi
 
 git commit -m "crawl: $(date -u '+%Y-%m-%d %H:%MZ')" || exit 0
+
+# The raw archive goes to the `data` branch, never to main. Published BEFORE
+# main's push so a runner reclaimed between the two loses the pages, which the
+# next build regenerates, rather than the rows, which nothing can. Each day's
+# file on disk holds that whole day, so a failed publish is carried entirely by
+# the next one and is a warning, not a failed cycle.
+bash .github/archive.sh publish || echo "::warning::archive publish failed"
+
 for i in 1 2 3; do
   git push && exit 0
   sleep $((i * 5))

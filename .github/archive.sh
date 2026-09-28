@@ -1,0 +1,100 @@
+#!/usr/bin/env bash
+# The raw crawl archive, kept in this repository but off the deployed branch.
+#
+# state/snapshots/ is one gzipped CSV per UTC day. It reached 209 MB and took
+# Vercel's function bundle to 228.11 MB, over the limit, and every production
+# deployment failed for six hours on 2026-09-28. .vercelignore stopped it
+# reaching the bundle; this stops it reaching main's tree at all, so the
+# deployment clones ~3 MB instead of ~220 MB and stops growing by 15 MB a day.
+#
+# It goes to an orphan branch in THIS repository rather than to a release
+# asset or an object store, for one reason: the record has to stay clonable.
+# Every figure on the site is derived from these rows, and "git clone, git
+# checkout data, re-run the study" is the claim. A bucket nobody can read
+# without a key would trade a deployment problem for a much worse one. The
+# commits are still GitHub-timestamped, so they are still evidence of when a
+# reading was taken.
+#
+#   archive.sh restore   put the archive into state/snapshots (start of a run)
+#   archive.sh publish   push what is on disk to the data branch
+#
+# Both are safe to retry and safe to fail. gzip members concatenate, so each
+# day's file on disk always holds that whole day: a failed publish costs
+# nothing that the next publish does not carry, and the exposure is the same
+# as it was when these files rode on main.
+set -uo pipefail
+
+BRANCH="${ARCHIVE_BRANCH:-data}"
+DIR="state/snapshots"
+WORKTREE="${RUNNER_TEMP:-/tmp}/egress-archive"
+
+have_remote_branch() {
+  git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1
+}
+
+restore() {
+  mkdir -p "$DIR"
+  if ! have_remote_branch; then
+    echo "archive: no '$BRANCH' branch yet - nothing to restore"
+    return 0
+  fi
+  git fetch --depth=1 origin "$BRANCH" || { echo "::error::archive fetch failed"; return 1; }
+  # --worktree only: never touches main's index, so these files cannot be
+  # staged onto the deployed branch by a later `git add -A state/`.
+  git restore --source=FETCH_HEAD --worktree -- "$DIR" || {
+    echo "::error::archive restore failed"; return 1; }
+  echo "archive: restored $(ls -1 "$DIR" 2>/dev/null | wc -l) day file(s) from '$BRANCH'"
+}
+
+publish() {
+  [ -d "$DIR" ] || { echo "archive: nothing on disk"; return 0; }
+  rm -rf "$WORKTREE"
+  if have_remote_branch; then
+    git fetch --depth=1 origin "$BRANCH" || { echo "::warning::archive fetch failed"; return 1; }
+    git worktree add --detach "$WORKTREE" FETCH_HEAD >/dev/null 2>&1 || {
+      echo "::warning::archive worktree failed"; return 1; }
+  else
+    # First publish: an orphan tree with no history to inherit.
+    git worktree add --detach --no-checkout "$WORKTREE" >/dev/null 2>&1 || {
+      echo "::warning::archive worktree failed"; return 1; }
+    git -C "$WORKTREE" checkout --orphan "$BRANCH" >/dev/null 2>&1 || true
+    git -C "$WORKTREE" reset >/dev/null 2>&1 || true
+  fi
+
+  mkdir -p "$WORKTREE/$DIR"
+  cp -f "$DIR"/*.csv.gz "$WORKTREE/$DIR"/ 2>/dev/null || true
+  # The manifest rides along so the branch is self-describing: a clone of it
+  # alone can say which snapshots these rows are supposed to contain.
+  cp -f state/manifest.jsonl "$WORKTREE/state/" 2>/dev/null || true
+
+  # -f: main's .gitignore now lists state/snapshots, and a stray ignore rule
+  # reaching this worktree would commit an empty archive rather than fail.
+  git -C "$WORKTREE" add -Af "$DIR" state/manifest.jsonl
+  if git -C "$WORKTREE" diff --cached --quiet; then
+    echo "archive: unchanged"
+    git worktree remove --force "$WORKTREE" 2>/dev/null || true
+    return 0
+  fi
+  git -C "$WORKTREE" commit -q -m "archive: $(date -u '+%Y-%m-%d %H:%MZ')" || {
+    echo "::warning::archive commit failed"; return 1; }
+
+  local ok=1
+  for i in 1 2 3; do
+    if git -C "$WORKTREE" push origin "HEAD:$BRANCH"; then ok=0; break; fi
+    sleep $((i * 5))
+    # Someone else moved the branch. It is append-only and this runner is the
+    # only writer, so re-base onto whatever is there and try again.
+    git fetch --depth=1 origin "$BRANCH" 2>/dev/null || true
+    git -C "$WORKTREE" reset --soft FETCH_HEAD 2>/dev/null || true
+    git -C "$WORKTREE" commit -q --amend --no-edit 2>/dev/null || true
+  done
+  git worktree remove --force "$WORKTREE" 2>/dev/null || true
+  [ "$ok" = 0 ] || echo "::warning::archive push failed; the next cycle carries the same days"
+  return "$ok"
+}
+
+case "${1:-}" in
+  restore) restore ;;
+  publish) publish ;;
+  *) echo "usage: archive.sh {restore|publish}" >&2; exit 2 ;;
+esac

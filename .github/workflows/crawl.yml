@@ -36,6 +36,15 @@ jobs:
         with:
           fetch-depth: 0          # `git pull --rebase` needs real history
 
+      # The raw archive lives on the `data` branch, not on main - it reached
+      # 209 MB and broke every Vercel deployment for six hours on 2026-09-28.
+      # The page build reads the whole record, so it has to be here before
+      # anything is rebuilt. If this fails the build refuses to publish rather
+      # than rendering every table from nothing, so a failure here costs a
+      # cycle of freshness and never a wrong site.
+      - name: Restore the crawl archive
+        run: bash .github/archive.sh restore
+
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"

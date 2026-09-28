@@ -138,6 +138,27 @@ def days(root: Path | None = None) -> list[dt.date]:
     return sorted(seen)
 
 
+def missing_archive_days(root: Path | None = None) -> list[dt.date]:
+    """Days the manifest vouches for whose archive file is not on disk.
+
+    `days()` reads the manifest, not the filenames, and `read_day` returns an
+    empty list for a day whose file is absent. Together that means an archive
+    that failed to arrive does not raise - every table on the site simply
+    renders from nothing while the footer goes on quoting the full snapshot
+    count out of the manifest. The site has emptied itself this way once
+    already, for a different reason, and nobody noticed from the outside.
+
+    The manifest stays in the repository and the archive no longer does, so
+    these two can now disagree for an ordinary reason: a restore that did not
+    run. That makes this the check that has to exist before a build is allowed
+    to publish.
+    """
+    root = root or config.STATE
+    return [day for day in days(root)
+            if not _day_path(root, dt.datetime(day.year, day.month, day.day,
+                                               tzinfo=UTC)).exists()]
+
+
 def _lock(fh, exclusive: bool = False) -> None:
     """Advisory lock, where the platform has them. Best effort by design.
 

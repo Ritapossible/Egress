@@ -9,3 +9,7 @@ venv/
 # npm install for the browser gate; never committed
 node_modules/
 package-lock.json
+
+# The raw crawl archive lives on the `data` branch, not here.
+# See .github/archive.sh - it reached 209 MB and broke every deployment.
+state/snapshots/

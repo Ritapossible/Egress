@@ -17,7 +17,7 @@ import json
 import statistics
 from pathlib import Path
 
-from . import config, exitcost, facts, signal, validate
+from . import config, exitcost, facts, signal, store, validate
 
 OUT = config.ROOT / "docs"
 REPO = "https://github.com/Ritapossible/Egress"
@@ -1741,8 +1741,27 @@ def render(name: str = "index.html", f: dict | None = None) -> str:
     raise KeyError(name)
 
 
+class ArchiveIncomplete(RuntimeError):
+    """The manifest vouches for days whose rows are not on disk."""
+
+
 def write(out: Path | None = None) -> Path:
     out = out or OUT
+    # Refuse before rendering anything. The raw archive lives outside this
+    # repository now, restored into state/snapshots at the start of a run, so
+    # "the rows are not here" is a thing that can happen for an ordinary
+    # reason - and it does not raise on its own: read_day returns nothing for a
+    # day whose file is absent, so every table would render empty while the
+    # footer quoted the manifest's full count. An empty site published behind a
+    # fresh-looking commit is worse than a stale one, so this build stops and
+    # the last good pages stay up.
+    absent = store.missing_archive_days()
+    if absent:
+        raise ArchiveIncomplete(
+            f"{len(absent)} day(s) the manifest vouches for are missing from "
+            f"state/snapshots: {absent[0]} to {absent[-1]}. Restore the archive "
+            f"(.github/archive.sh restore) before building; refusing to publish "
+            f"pages that would report a record this checkout cannot see.")
     out.mkdir(parents=True, exist_ok=True)
     f = facts.build()
     # The desk compares one answer against the record; write the comparison out
