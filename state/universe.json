@@ -1,9 +1,9 @@
 {
- "captured": "2026-09-30T06:05:00.354645+00:00",
+ "captured": "2026-09-30T07:10:00.452112+00:00",
  "counts": {
-  "crypto": 578,
+  "crypto": 579,
   "metal": 2,
-  "stock": 2813
+  "stock": 2812
  },
  "symbols": {
   "0GUSDT": {
@@ -1164,6 +1164,14 @@
    "launch_ms": "1663753440000",
    "min_order_usdt": "1",
    "status": "online",
+   "type": "crypto"
+  },
+  "CTUSDT": {
+   "band": "200",
+   "base": "CT",
+   "launch_ms": "1790762400000",
+   "min_order_usdt": "1",
+   "status": "listed",
    "type": "crypto"
   },
   "CUDISUSDT": {
@@ -11252,14 +11260,6 @@
    "launch_ms": "1789636645763",
    "min_order_usdt": "10",
    "status": "online",
-   "type": "stock"
-  },
-  "RGBTGUSDT": {
-   "band": "0.1",
-   "base": "rGBTG",
-   "launch_ms": "1789117342462",
-   "min_order_usdt": "20",
-   "status": "limit_open",
    "type": "stock"
   },
   "RGBXUSDT": {
