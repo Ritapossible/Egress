@@ -769,7 +769,7 @@ def _unvalidated(v: dict, feed_sentence: str) -> str:
                       if e.get("symbol")]
     try:
         kinds = {sym: row.get("type") for sym, row in universe.load().items()}
-    except Exception:  # noqa: BLE001 - the page must still build offline
+    except Exception:  # the page must still build offline
         kinds = {}
     checked = [r.get("symbol") for r in (v.get("per_symbol") or []) if r.get("symbol")]
     stocks = [s for s in checked if kinds.get(s) == "stock"]

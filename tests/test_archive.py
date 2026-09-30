@@ -76,9 +76,9 @@ class TheBuildNoticesAMissingArchive(unittest.TestCase):
 
         from egress import page
         with mock.patch.object(store, "missing_archive_days",
-                               return_value=[dt.date(2026, 9, 14)]):
-            with self.assertRaises(page.ArchiveIncomplete):
-                page.write()
+                               return_value=[dt.date(2026, 9, 14)]), \
+                self.assertRaises(page.ArchiveIncomplete):
+            page.write()
 
 
 class TheArchiveIsWiredUp(unittest.TestCase):

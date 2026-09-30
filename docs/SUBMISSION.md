@@ -91,23 +91,25 @@ taken there will not match; split by ticker prefix instead and you get 2,611.
 
 ### The honest state of validation
 
-**Prediction-vs-print scoring currently covers the three crypto controls and
-no tokenized stock at all.** That is the single biggest limit in this project
-and it is stated here rather than buried.
+**Prediction-vs-print scoring reliably covers the three crypto controls; the
+tokenized stocks pass the gate that admits them only intermittently.** On the
+runs they fail it, no tokenized stock is scored. That is the single biggest limit
+in this project and it is stated here rather than buried.
 
-- **6 of 9 symbols are excluded**, including NVDA, TSLA, AAPL and MSFT, because
-  **two of the venue's own volume feeds disagree about them**: candle volume
-  runs a median **1.6×** the 24h turnover its own ticker reports for the same
-  symbol, and **20,960.5× on RSYKUSDT** — a reading four orders of magnitude
-  outside the others, and itself the evidence that one of the two feeds is
-  unusable for that name. Which feed is right is not settleable from outside
-  this venue, and scoring a prediction against a number that may be wrong is
-  worse than not scoring it.
-- **This gate moves, and the site reports the last run rather than a settled
-  state.** On 2026-09-28 it excluded six symbols in the morning, two by the
-  afternoon and six again by the evening — the liquid names crossing it in both
-  directions within a day. The page names whichever symbols the last run
-  excluded; nothing about that list is typed.
+- **A symbol is scored only while two of the venue's own volume feeds agree
+  about it.** The check holds its candle volume against the
+  24h turnover its own ticker reports; outside a 0.80–1.25 band it is excluded
+  rather than averaged over. On crypto the two land within 2%. On the tokenized stocks they do not,
+  by a factor that differs per symbol — from under 2× to five figures — which is
+  itself evidence that one feed is unusable for those names. Which feed is right
+  is not settleable from outside this venue, and scoring a prediction against a
+  number that may be wrong is worse than not scoring it.
+- **The gate moves, several times a day.** On 2026-09-28 it excluded six of the
+  nine symbols in the morning, two by the afternoon and six again by the
+  evening, NVDA, TSLA, AAPL and MSFT crossing it in both directions. So no ratio
+  is quoted here: any figure would be stale within hours. `/validation` names
+  the current exclusions and their ratios from the last run, and nothing about
+  that list is typed.
 - On the symbols that can be scored, printed volume runs a median **37×** the
   depth visible at the touch, over 219 bars. That ratio is why a spread is not
   a cost and why the desk walks the book instead.
@@ -151,14 +153,15 @@ credential), multi-position portfolios, deep-book history.
    built on it would have reported crypto liquidity as tokenized-stock
    liquidity. Fixed by reading the venue's own `symbolType`.
 2. **Two of the venue's volume feeds disagree.** Found while validating, not
-   assumed. It is the reason six symbols are excluded, and it is on the page.
+   assumed. It is the reason symbols are excluded - between two and six of the
+   nine on any given run - and it is on the page.
 3. **The desk used to raise through the handler.** A 503 became an HTML 500 the
    client could not read an error out of. Now every failure is a stated one.
 4. **`NaN` serialised as invalid JSON.** A cost the book could not price broke
    the browser parser instead of showing the honest answer already computed.
 5. **An outside review gave the exclusion ratios as "646× to 5,902×".** They
-   are of a different quantity, and they move: the median across excluded names
-   has been 1.6× and 10.3× on the same day. The figures on the page are read
+   are of a different quantity, and they move: the excluded names have read
+   1.4×–1.8× and, hours earlier, up to 20,960×. The figures on the page are read
    from the validation record rather than retyped, which is how the symbols that
    reach five figures show up as findings rather than as numbers somebody typed.
 6. **The page named four symbols that were no longer excluded.** "Among them

@@ -46,6 +46,26 @@ restore() {
   echo "archive: restored $(ls -1 "$DIR" 2>/dev/null | wc -l) day file(s) from '$BRANCH'"
 }
 
+# Copy this run's own files into the worktree and stage exactly those, by name.
+# Never `add -A` over the worktree: it also holds whatever the branch tip had,
+# and re-adding a file this run does not hold would write a stale copy over
+# another writer's newer one.
+stage_ours() {
+  local names=() f
+  mkdir -p "$WORKTREE/$DIR"
+  for f in "$DIR"/*.csv.gz; do
+    [ -e "$f" ] || continue
+    cp -f "$f" "$WORKTREE/$DIR/"
+    names+=("$DIR/$(basename "$f")")
+  done
+  if [ -f state/manifest.jsonl ]; then
+    cp -f state/manifest.jsonl "$WORKTREE/state/"
+    names+=(state/manifest.jsonl)
+  fi
+  [ "${#names[@]}" -gt 0 ] || return 0
+  (cd "$WORKTREE" && git add -f -- "${names[@]}")
+}
+
 publish() {
   [ -d "$DIR" ] || { echo "archive: nothing on disk"; return 0; }
   rm -rf "$WORKTREE"
@@ -61,15 +81,10 @@ publish() {
     git -C "$WORKTREE" reset >/dev/null 2>&1 || true
   fi
 
-  mkdir -p "$WORKTREE/$DIR"
-  cp -f "$DIR"/*.csv.gz "$WORKTREE/$DIR"/ 2>/dev/null || true
   # The manifest rides along so the branch is self-describing: a clone of it
-  # alone can say which snapshots these rows are supposed to contain.
-  cp -f state/manifest.jsonl "$WORKTREE/state/" 2>/dev/null || true
-
-  # -f: main's .gitignore now lists state/snapshots, and a stray ignore rule
-  # reaching this worktree would commit an empty archive rather than fail.
-  git -C "$WORKTREE" add -Af "$DIR" state/manifest.jsonl
+  # alone can say which snapshots these rows are supposed to contain. Staged
+  # with -f because main's .gitignore lists state/snapshots.
+  stage_ours || { echo "::warning::archive staging failed"; return 1; }
   if git -C "$WORKTREE" diff --cached --quiet; then
     echo "archive: unchanged"
     git worktree remove --force "$WORKTREE" 2>/dev/null || true
@@ -82,11 +97,23 @@ publish() {
   for i in 1 2 3; do
     if git -C "$WORKTREE" push origin "HEAD:$BRANCH"; then ok=0; break; fi
     sleep $((i * 5))
-    # Someone else moved the branch. It is append-only and this runner is the
-    # only writer, so re-base onto whatever is there and try again.
-    git fetch --depth=1 origin "$BRANCH" 2>/dev/null || true
-    git -C "$WORKTREE" reset --soft FETCH_HEAD 2>/dev/null || true
-    git -C "$WORKTREE" commit -q --amend --no-edit 2>/dev/null || true
+    # Someone else moved the branch. Build on top of what landed rather than
+    # beside it. This used to fetch in the main repo, `reset --soft` in the
+    # worktree - which reads the worktree's own FETCH_HEAD, not the one just
+    # fetched - and then `commit --amend`, which rewrites a commit instead of
+    # adding one. Every retry was therefore non-fast-forward and rejected;
+    # reproduced with a second writer landing first, three rejections in a row
+    # and the new rows never arriving. It never bit because the crawl is the
+    # only writer, but a retry that cannot succeed is not a retry.
+    #
+    # Now: fetch IN the worktree, move it to the new tip, stage only the files
+    # this run holds (stage_ours), and make a new commit on top. A file only the
+    # other writer has keeps their version - not a deletion, not a stale copy.
+    git -C "$WORKTREE" fetch --depth=1 origin "$BRANCH" 2>/dev/null || continue
+    git -C "$WORKTREE" reset -q --hard FETCH_HEAD 2>/dev/null || continue
+    stage_ours || continue
+    git -C "$WORKTREE" diff --cached --quiet && { ok=0; break; }
+    git -C "$WORKTREE" commit -q -m "archive: $(date -u '+%Y-%m-%d %H:%MZ')" || continue
   done
   git worktree remove --force "$WORKTREE" 2>/dev/null || true
   [ "$ok" = 0 ] || echo "::warning::archive push failed; the next cycle carries the same days"

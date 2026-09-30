@@ -22,6 +22,14 @@ jobs:
 
       - run: pip install --quiet ruff==0.15.8 mypy==1.19.1
 
+      # The raw archive lives on the `data` branch, off main, since it broke
+      # every Vercel deployment at 209 MB. Four tests and the build below read
+      # the whole record, and the build refuses to publish from a checkout that
+      # cannot see it - so without this, CI fails on every push for the right
+      # reason. It has to come before the tests, not just before the build.
+      - name: Restore the crawl archive
+        run: bash .github/archive.sh restore
+
       - name: Lint
         run: ruff check .
 
@@ -66,6 +74,9 @@ jobs:
 
       - name: Install a browser to measure in
         run: npm install --no-save playwright@1.56.1 && npx playwright install chromium
+
+      - name: Restore the crawl archive
+        run: bash .github/archive.sh restore
 
       - name: Build the site
         run: python -m egress.page

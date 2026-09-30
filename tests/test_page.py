@@ -690,7 +690,11 @@ class TheSubmissionDescriptionStaysHonest(unittest.TestCase):
         judge who finds that themselves, after reading a confident thesis, has
         found something we hid."""
         doc = self.doc()
-        self.assertIn("no tokenized stock at all", doc)
+        # Was "no tokenized stock at all", which was true only while the gate
+        # excluded every stock; it has let some through and shut them out again
+        # the same day. The claim that must survive is that the limit is named.
+        self.assertIn("no tokenized stock is scored", doc)
+        self.assertIn("single biggest limit", doc)
         self.assertIn("as a quote, not yet as a fill", doc)
         self.assertIn("No return claim is made", doc)
 
@@ -715,36 +719,23 @@ class TheSubmissionDescriptionStaysHonest(unittest.TestCase):
         self.assertGreater(measured["lo"], 1,
                            "the feeds now agree, so the exclusion reason is stale")
 
-        # The prose must describe the shape that was measured. A min-to-max
-        # range was fine while the ratios were of one magnitude; RMSFTUSDT came
-        # back at 97,755x, and a document summarising that as "8.2x to 18.2x" -
-        # or even truthfully as "1.6x to 97,755.2x" - tells a judge nothing and
-        # reads like a defect in the one figure this project already retracted
-        # once. When an outlier dominates, it has to be named with its symbol.
-        if measured["hi"] > 10 * measured["median"]:
-            # Numerically, not as a string. The table publishes each ratio
-            # rounded to 1dp and the page computes its median from the full
-            # precision behind them, so the two can differ in the last digit
-            # and a string match would go red on a rounding boundary rather
-            # than on a wrong claim.
-            stated = re.search(r"a median \*\*([\d,.]+)\u00d7\*\*", doc)
-            self.assertIsNotNone(
-                stated, "an outlier dominates the range, so the document must "
-                        "summarise with the median")
-            self.assertAlmostEqual(
-                float(stated.group(1).replace(",", "")), measured["median"],
-                delta=max(0.1, measured["median"] * 0.02),
-                msg=f"the document's median disagrees with the published rows, "
-                    f"which give {measured['median']:,.1f}",
-            )
-            self.assertIn(f"{measured['hi']:,.1f}\u00d7", doc,
-                          "the worst ratio measured is not stated in the document")
-            self.assertIn(measured["worst"], doc,
-                          f"{measured['worst']} carries the worst ratio and the "
-                          f"document does not name it")
-        else:
-            self.assertIn(f"{measured['lo']:,.1f}\u00d7 to {measured['hi']:,.1f}\u00d7",
-                          doc, "the document does not state the measured range")
+        # No ratio may be quoted as a current figure. This test used to pin the
+        # document's median and worst case to the published rows, and the gate
+        # moved four times in two days - 6, 2, 6 symbols excluded; medians of
+        # 10.3x, 1.6x and 1.6x; a worst case of 97,755x, then 20,960x, then
+        # 1.8x - so every version of the prose was stale within hours and the
+        # test went red on the crawl's schedule. A submission is pasted once. The
+        # durable claim is the mechanism and the fact that it moves; the live
+        # numbers belong to /validation, which renders them from the record.
+        self.assertIn("The gate moves", doc,
+                      "the document must say the exclusion set is not stable")
+        self.assertIn("/validation", doc,
+                      "the document must point at the page that carries the "
+                      "current exclusions")
+        self.assertIsNone(
+            re.search(r"median \*\*[\d,.]+\u00d7\*\*\s+the\s+24h turnover", doc),
+            "a median ratio is quoted as current again; it moves several times "
+            "a day and a pasted submission cannot follow it")
 
     def test_the_x_post_is_still_flagged_as_outstanding(self):
         """It is an invalidation criterion. The moment this row quietly reads
