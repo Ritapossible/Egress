@@ -1,5 +1,5 @@
 {
- "captured": "2026-09-30T10:25:00.248649+00:00",
+ "captured": "2026-09-30T12:16:07.467673+00:00",
  "counts": {
   "crypto": 579,
   "metal": 2,
@@ -1167,7 +1167,7 @@
    "type": "crypto"
   },
   "CTUSDT": {
-   "band": "200",
+   "band": "0.1",
    "base": "CT",
    "launch_ms": "1790762400000",
    "min_order_usdt": "1",
