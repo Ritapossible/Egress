@@ -1,5 +1,5 @@
 {
- "captured": "2026-09-30T05:00:29.598942+00:00",
+ "captured": "2026-09-30T06:05:00.354645+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -11259,7 +11259,7 @@
    "base": "rGBTG",
    "launch_ms": "1789117342462",
    "min_order_usdt": "20",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RGBXUSDT": {
