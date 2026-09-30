@@ -32,7 +32,6 @@ from __future__ import annotations
 import html
 import json
 import re
-import statistics
 import sys
 from pathlib import Path
 
@@ -85,15 +84,6 @@ def expectations() -> list[tuple[str, list[str], str]]:
     if not snaps:
         raise SystemExit("the landing page no longer states the sample size")
 
-    excl = re.search(r"excludes (\d+) symbols", evidence)
-
-    # From the validation table, one row per excluded symbol, not from the
-    # sentence that summarises it - the summary had to change wording when one
-    # symbol came back four orders of magnitude outside the rest, and a checker
-    # tied to a wording stops checking the moment the wording is right.
-    validation = _text("validation.html")
-    rows = re.findall(r"([A-Z0-9]+USDT) ([\d,.]+)x ", validation)
-    feeds = {sym: float(r.replace(",", "")) for sym, r in rows}
 
     out: list[tuple[str, list[str], str]] = [
         ("tokenized US stocks",
@@ -144,19 +134,10 @@ def expectations() -> list[tuple[str, list[str], str]]:
          [r"The other ([\d]+) names return no two-sided book"],
          str(hub["unavailable"])),
     ]
-    if excl:
-        out.append(("symbols excluded from validation",
-                    [r"([\d]+) symbols are excluded"], excl.group(1)))
-    if feeds:
-        values = sorted(feeds.values())
-        worst = max(feeds, key=feeds.get)
-        out.append(("volume feeds, median disagreement",
-                    [r"a median ([\d,.]+)\u00d7 the 24h turnover"],
-                    f"{statistics.median(values):,.1f}"))
-        out.append(("volume feeds, worst symbol",
-                    [r"and ([\d,.]+)\u00d7 on [A-Z0-9]+"], f"{feeds[worst]:,.1f}"))
-        out.append(("volume feeds, which symbol",
-                    [r"and [\d,.]+\u00d7 on ([A-Z0-9]+)"], worst))
+    # The exclusion count and the feed ratios are deliberately NOT quoted in
+    # the draft any more: the gate moved 6 -> 2 -> 6 symbols and a worst ratio
+    # of 97,755x -> 20,960x -> 1.8x inside two days, so any figure pasted into a
+    # post would be wrong within hours. The draft points at /validation instead.
     return out
 
 

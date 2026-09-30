@@ -3,7 +3,7 @@
 Must contain **`#BitgetHackathon`** and **`@Bitget_AI`**. Post from the account
 entering the hackathon, then paste the URL into `docs/SUBMISSION.md`.
 
-Every number below is from `state/` as measured 2026-09-28 and is on the live
+Every number below is from `state/` as measured 2026-09-30 and is on the live
 site. The crawl moves them every twenty minutes, and a post is the one artifact
 that cannot be edited after the fact, so **run the checker immediately before
 posting** and fix anything it names:
@@ -17,11 +17,11 @@ with no network and no rebuild, and exits non-zero if one has drifted.
 
 | Claim in the drafts | Where it comes from |
 |---|---|
-| 2,813 tokenized US stocks | `state/universe.json`, `symbolType == "stock"` |
-| 3,361 snapshots | `state/manifest.jsonl`, also on the landing page |
-| 6.1 bp open → 55.5 bp overnight (9.1×) | phase table, stocks listed 30d+ |
-| 641 bp overnight | phase table, stocks listed <30d |
-| crypto 12.0 → 11.9 (0.99×) | phase table, crypto control |
+| 2,812 tokenized US stocks | `state/universe.json`, `symbolType == "stock"` |
+| 3,788 snapshots | `state/manifest.jsonl`, also on the landing page |
+| 6.1 bp open → 55.7 bp overnight (9.1×) | phase table, stocks listed 30d+ |
+| 651 bp overnight | phase table, stocks listed <30d |
+| crypto 12.2 → 12.0 (0.98×) | phase table, crypto control |
 | 7 of 9 priced through the Agent Hub | `state/hub_crosscheck.json` |
 
 ---
@@ -34,15 +34,15 @@ question is the hook; then what it is; then the one design decision worth
 defending.
 
 ```
-Bitget lists 2,813 tokenized US stocks. You can buy one in a single click.
+Bitget lists 2,812 tokenized US stocks. You can buy one in a single click.
 
 Nothing tells you what it costs to LEAVE.
 
-So I measured it. 3,361 snapshots, 8.9M rows, the whole listed universe every 5 minutes:
+So I measured it. 3,788 snapshots, 10.3M rows, the whole listed universe every 5 minutes:
 
-▸ Established names: 6.1 bp spread while New York is open → 55.5 bp overnight. 9.1x.
-▸ Listed under 30 days: 641 bp overnight.
-▸ Crypto on the same venue: 12.0 → 11.9. It doesn't move.
+▸ Established names: 6.1 bp spread while New York is open → 55.7 bp overnight. 9.1x.
+▸ Listed under 30 days: 651 bp overnight.
+▸ Crypto on the same venue: 12.2 → 12.0. It doesn't move.
 
 That control is the whole finding. Same exchange, same matching engine, same fees — so the widening isn't the venue. It's the closed market underneath.
 
@@ -104,7 +104,7 @@ a spread observation into a finding.
 ```
 You bought a tokenized stock at 2pm. It's 3am and you want out.
 
-The spread you entered on was 6.1 bp. Right now it's 55.5 bp. If the name listed this month, 641 bp.
+The spread you entered on was 6.1 bp. Right now it's 55.7 bp. If the name listed this month, 651 bp.
 
 Egress walks the real order book and tells you the number before you need it.
 
@@ -116,11 +116,11 @@ egress-v1.vercel.app
 ## Option A — leads with the venue (329 chars)
 
 ```
-Bitget lists 2,813 tokenized US stocks. One click to buy.
+Bitget lists 2,812 tokenized US stocks. One click to buy.
 
 Nobody tells you what it costs to leave.
 
-3,361 snapshots: overnight spreads widen 9.1x vs market hours. Crypto, same venue, same engine: 0.99x.
+3,788 snapshots: overnight spreads widen 9.1x vs market hours. Crypto, same venue, same engine: 0.98x.
 
 So it's not the venue. It's the closed market underneath.
 
@@ -136,7 +136,7 @@ Ask in English: egress-v1.vercel.app
 1. Option C as the opener.
 2. *"Why the crypto control matters: same venue, same matching engine, same wire.
    If the widening were our crawler or the clock, crypto would widen too. It
-   doesn't — 12.0 bp open, 11.9 bp overnight. The widening is specific to
+   doesn't — 12.2 bp open, 12.0 bp overnight. The widening is specific to
    instruments whose reference market is shut."*
 3. *"What it won't do: place an order, or pretend. When the book can't fill your
    size it quotes a floor marked `>` instead of a number. Two Bitget Skills are
@@ -149,8 +149,7 @@ Ask in English: egress-v1.vercel.app
 
 - Any return, P&L or profit. Egress measures a cost and does not trade.
 - That the overnight finding is validated **as a fill** — it holds as a quote.
-  6 symbols are excluded — among them NVDA, TSLA, AAPL and MSFT — because two of
-  the venue's own volume feeds disagree about them: candle volume runs a median
-  1.6× the 24h turnover the ticker reports for the same symbol, and 20,960.5× on
-  RSYKUSDT.
+  Liquid names are excluded whenever two of the venue's own volume feeds
+  disagree about them, and that gate moves several times a day — so don't quote
+  a count or a ratio from it; point at /validation, which renders the last run.
 - A universe count without the definition behind it, if anyone asks.
