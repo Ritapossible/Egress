@@ -1,5 +1,5 @@
 {
- "captured": "2026-09-30T09:20:00.430712+00:00",
+ "captured": "2026-09-30T10:25:00.248649+00:00",
  "counts": {
   "crypto": 579,
   "metal": 2,
@@ -1171,7 +1171,7 @@
    "base": "CT",
    "launch_ms": "1790762400000",
    "min_order_usdt": "1",
-   "status": "listed",
+   "status": "online",
    "type": "crypto"
   },
   "CUDISUSDT": {
