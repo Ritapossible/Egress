@@ -1,7 +1,7 @@
 {
  "feed_flags": {
   "BTCUSDT": {
-   "ratio": 0.784,
+   "ratio": 0.786,
    "reason": "candle volume is 0.8x the ticker's 24h turnover"
   },
   "RAAPLUSDT": {
@@ -29,7 +29,7 @@
    "reason": "candle volume is 4056421.8x the ticker's 24h turnover"
   }
  },
- "generated": "2026-10-03T17:11:18+00:00",
+ "generated": "2026-10-03T17:14:54+00:00",
  "keep": {
   "minimum": 12,
   "observations": 96
