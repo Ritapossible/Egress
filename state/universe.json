@@ -1,9 +1,9 @@
 {
- "captured": "2026-10-04T03:20:00.387227+00:00",
+ "captured": "2026-10-04T04:25:00.785191+00:00",
  "counts": {
   "crypto": 579,
   "metal": 2,
-  "stock": 2812
+  "stock": 2811
  },
  "symbols": {
   "0GUSDT": {
@@ -8579,14 +8579,6 @@
    "base": "rDBD",
    "launch_ms": "1789983044626",
    "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RDBRGUSDT": {
-   "band": "0.1",
-   "base": "rDBRG",
-   "launch_ms": "1789636427754",
-   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
