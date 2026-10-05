@@ -356,7 +356,7 @@ pre code{background:none;padding:0}
     <p class="lead">A tokenized stock trades around the clock. The market that
     prices the share underneath it does not. When New York is shut, a market
     maker cannot hedge, so the quote widens - and the holder who needs out pays
-    for it. Median spread across every quoted name: 354 bp while the US market is shut, 10 bp while it is open.</p>
+    for it. Median spread across every quoted name: 353 bp while the US market is shut, 10 bp while it is open.</p>
   </div>
 </div>
 
@@ -375,7 +375,7 @@ pre code{background:none;padding:0}
       <tbody><tr><td class='sym'>open</td><td class='n'>6.3 bp</td><td class='n'>12.1 bp</td><td class='n'>12.6 bp</td><td class='n'>0.5x</td><td class='n'>940</td></tr>
 <tr><td class='sym'>pre</td><td class='n'>97.6 bp</td><td class='n'>888.9 bp</td><td class='n'>12.3 bp</td><td class='n'>7.9x</td><td class='n'>639</td></tr>
 <tr><td class='sym'>post</td><td class='n'>68.1 bp</td><td class='n'>304.3 bp</td><td class='n'>12.4 bp</td><td class='n'>5.5x</td><td class='n'>470</td></tr>
-<tr><td class='sym'>overnight</td><td class='n'>57.1 bp</td><td class='n'>665.8 bp</td><td class='n'>12.2 bp</td><td class='n'>4.7x</td><td class='n'>1144</td></tr>
+<tr><td class='sym'>overnight</td><td class='n'>57.0 bp</td><td class='n'>665.7 bp</td><td class='n'>12.2 bp</td><td class='n'>4.7x</td><td class='n'>1149</td></tr>
 <tr><td class='sym'>weekend</td><td class='n'>125.8 bp</td><td class='n'>456.0 bp</td><td class='n'>12.9 bp</td><td class='n'>9.8x</td><td class='n'>1481</td></tr></tbody>
     </table>
     </div>
@@ -388,13 +388,13 @@ pre code{background:none;padding:0}
 
 
     <h3 class="sub">The worst hour to leave is not the middle of the night</h3>
-    <p class="say">Splitting the closed window into pre-market, after-hours and the genuinely shut hours was expected to flatter the overnight figure: the reference venue quotes in pre and post, thinly, so a maker can still hedge there. It did the opposite. Established names sit at <b>6.3 bp</b> while New York trades, <b>57.1 bp</b> in the shut hours, <b>68.1 bp</b> after the close - and <b>97.6 bp</b> in the pre-market, the widest of the four. The hour before the opening bell is the most expensive time to leave a tokenized stock, and it is the hour a holder reacting to overnight news is most likely to be trying to.</p>
+    <p class="say">Splitting the closed window into pre-market, after-hours and the genuinely shut hours was expected to flatter the overnight figure: the reference venue quotes in pre and post, thinly, so a maker can still hedge there. It did the opposite. Established names sit at <b>6.3 bp</b> while New York trades, <b>57.0 bp</b> in the shut hours, <b>68.1 bp</b> after the close - and <b>97.6 bp</b> in the pre-market, the widest of the four. The hour before the opening bell is the most expensive time to leave a tokenized stock, and it is the hour a holder reacting to overnight news is most likely to be trying to.</p>
 
     <h3 class="sub">Why the split, and what it found</h3>
     <p class="say">Splitting by how long a name has been listed was not
     cosmetic. Overnight, names listed thirty days or more sit at
     <b>57 bp</b>; names listed more recently sit at
-    <b>666 bp</b> - <b>12x wider</b>. A median over every listed name blends the two into 354 bp, which is why it moves when Bitget lists in bulk rather than when liquidity changes. Listing age
+    <b>666 bp</b> - <b>12x wider</b>. A median over every listed name blends the two into 353 bp, which is why it moves when Bitget lists in bulk rather than when liquidity changes. Listing age
     predicts overnight spread better than anything else measured here, and a
     new listing is exactly the position a holder is least likely to know is
     expensive to leave.</p>
@@ -462,10 +462,10 @@ pre code{background:none;padding:0}
     the half that works.</p>
 
     <h2 id="unvalidated">What is not validated yet</h2>
-    <p class="say"><b>2 of the 6 tokenized
-    stocks checked are scored against their own prints:</b> RNVDAUSDT and RTSLAUSDT.
-    The other 4 &mdash; RAAPLUSDT, RMSFTUSDT, RSYKUSDT and RPBRUSDT &mdash; are excluded, because <b>two of the venue's own volume feeds disagree
-    about them</b>: the candle volume runs a median 106.8&times; the 24h turnover the ticker reports for the same symbol, and <b>310,196.9&times; on RSYKUSDT</b> &mdash; a reading so far outside the others that it is itself the evidence that one of the two feeds is unusable for that name. Which feed is right is not something this
+    <p class="say"><b>4 of the 6 tokenized
+    stocks checked are scored against their own prints:</b> RNVDAUSDT, RTSLAUSDT, RAAPLUSDT and RMSFTUSDT.
+    The other 2 &mdash; RSYKUSDT and RPBRUSDT &mdash; are excluded, because <b>two of the venue's own volume feeds disagree
+    about them</b>: the candle volume runs 144.4&times; to 84,004.5&times; the 24h turnover the ticker reports for the same symbol. Which feed is right is not something this
     project can settle from outside, and scoring a prediction against a number
     that may be wrong would be worse than not scoring it.
     <a href="validation.html">The validation page</a> names every one.</p>
@@ -535,8 +535,8 @@ pre code{background:none;padding:0}
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-10-05 02:46 UTC from
-      4,779 recorded snapshots. Every figure on this site is read
+      <p class="prov"><i></i>Generated 2026-10-05 05:23 UTC from
+      4,784 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
       <div class="foot-legal">
