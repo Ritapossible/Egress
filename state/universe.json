@@ -1,9 +1,9 @@
 {
- "captured": "2026-10-06T03:10:00.319347+00:00",
+ "captured": "2026-10-06T04:15:00.276941+00:00",
  "counts": {
   "crypto": 579,
   "metal": 2,
-  "stock": 2811
+  "stock": 2813
  },
  "symbols": {
   "0GUSDT": {
@@ -5046,6 +5046,14 @@
    "status": "online",
    "type": "stock"
   },
+  "RAUREUSDT": {
+   "band": "0.1",
+   "base": "rAURE",
+   "launch_ms": "1791179257685",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
   "RAURUSDT": {
    "band": "0.1",
    "base": "rAUR",
@@ -6835,6 +6843,14 @@
    "base": "rCBRE",
    "launch_ms": "1784014290857",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RCBRGUSDT": {
+   "band": "0.1",
+   "base": "rCBRG",
+   "launch_ms": "1791179250237",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
