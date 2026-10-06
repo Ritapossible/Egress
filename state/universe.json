@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-06T10:10:00.442392+00:00",
+ "captured": "2026-10-06T11:15:00.372365+00:00",
  "counts": {
   "crypto": 579,
   "metal": 2,
@@ -19222,14 +19222,6 @@
    "status": "online",
    "type": "stock"
   },
-  "RPSKYUSDT": {
-   "band": "0.1",
-   "base": "rPSKY",
-   "launch_ms": "1788765672552",
-   "min_order_usdt": "20",
-   "status": "online",
-   "type": "stock"
-  },
   "RPSLVUSDT": {
    "band": "0.1",
    "base": "rPSLV",
@@ -21099,6 +21091,14 @@
    "base": "rSKWD",
    "launch_ms": "1789983124293",
    "min_order_usdt": "10",
+   "status": "online",
+   "type": "stock"
+  },
+  "RSKYDUSDT": {
+   "band": "0.1",
+   "base": "rSKYD",
+   "launch_ms": "1788765672552",
+   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
