@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-06T13:07:28.976140+00:00",
+ "captured": "2026-10-06T14:10:00.355527+00:00",
  "counts": {
   "crypto": 579,
   "metal": 2,
@@ -10017,9 +10017,9 @@
   "RETHAUSDT": {
    "band": "0.1",
    "base": "rETHA",
-   "launch_ms": "1780582238694",
+   "launch_ms": "1791293583348",
    "min_order_usdt": "20",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RETNUSDT": {
