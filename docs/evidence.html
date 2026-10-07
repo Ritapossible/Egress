@@ -466,7 +466,7 @@ pre code{background:none;padding:0}
     is the honest state of it.</b> <a href="validation.html">The validation
     page</a> excludes 6 symbols &mdash; RNVDAUSDT, RTSLAUSDT, RAAPLUSDT, RMSFTUSDT, RSYKUSDT and RPBRUSDT &mdash;
     because <b>two of the venue's own volume feeds disagree about them</b>:
-    the candle volume runs 4.5&times; to 6.1&times; the 24h turnover the ticker reports for the same symbol. Which feed is right is not something this project can settle
+    the candle volume runs 4.3&times; to 5.8&times; the 24h turnover the ticker reports for the same symbol. Which feed is right is not something this project can settle
     from outside, and scoring a prediction against a number that may be wrong
     would be worse than not scoring it. So the overnight widening holds <b>as a
     quote</b>, across every name the crawl can see. It is not yet established
@@ -488,17 +488,17 @@ pre code{background:none;padding:0}
     different SDK, in a different process, with no credentials &mdash; and both
     are costed by the same code, so any gap is the book and not the
     arithmetic.</p>
-    <p class="say">Both clients asked for the same 25,000 USDT exit, 2026-10-07T10:54:39+00:00. <b>7 of 9 could be compared; 6 agree</b> within 0.5 bp.</p>
+    <p class="say">Both clients asked for the same 25,000 USDT exit, 2026-10-07T18:39:55+00:00. <b>7 of 9 could be compared; 7 agree</b> within 0.5 bp.</p>
 <div class="scroll"><table class="tbl"><thead><tr><th>Symbol</th><th>This site</th><th>Agent Hub</th><th>Gap</th><th>Verdict</th></tr></thead><tbody>
-<tr><td class="sym">RNVDAUSDT</td><td>12.25 bp</td><td>12.25 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RTSLAUSDT</td><td>17.25 bp</td><td>17.72 bp</td><td>0.47 bp</td><td>agree</td></tr>
-<tr><td class="sym">RAAPLUSDT</td><td>47.79 bp</td><td>47.79 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RMSFTUSDT</td><td>16.62 bp</td><td>16.62 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RNVDAUSDT</td><td>22.74 bp</td><td>22.74 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RTSLAUSDT</td><td>10.74 bp</td><td>10.74 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RAAPLUSDT</td><td>37.75 bp</td><td>37.75 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RMSFTUSDT</td><td>13.33 bp</td><td>13.33 bp</td><td>0.00 bp</td><td>agree</td></tr>
 <tr><td class="sym">RSYKUSDT</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>unavailable &mdash; the Hub returned no two-sided book for RSYKUSDT</td></tr>
 <tr><td class="sym">RPBRUSDT</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>unavailable &mdash; the Hub returned no two-sided book for RPBRUSDT</td></tr>
-<tr><td class="sym">BTCUSDT</td><td>10.00 bp</td><td>10.00 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">ETHUSDT</td><td>10.02 bp</td><td>10.02 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">SOLUSDT</td><td>11.10 bp</td><td>11.68 bp</td><td>0.58 bp</td><td>disagree</td></tr>
+<tr><td class="sym">BTCUSDT</td><td>10.12 bp</td><td>10.12 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">ETHUSDT</td><td>10.93 bp</td><td>10.93 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">SOLUSDT</td><td>12.24 bp</td><td>11.75 bp</td><td>0.49 bp</td><td>agree</td></tr>
 </tbody></table></div>
     <p class="note"><b>What agreement does and does not prove.</b> It does not
     prove the cost is right; both clients read the same exchange and would
@@ -538,7 +538,7 @@ pre code{background:none;padding:0}
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-10-07 18:35 UTC from
+      <p class="prov"><i></i>Generated 2026-10-07 18:41 UTC from
       5,315 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
