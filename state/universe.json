@@ -1,7 +1,7 @@
 {
- "captured": "2026-10-08T01:05:00.726843+00:00",
+ "captured": "2026-10-08T02:10:00.463809+00:00",
  "counts": {
-  "crypto": 579,
+  "crypto": 578,
   "metal": 2,
   "stock": 2812
  },
@@ -26130,14 +26130,6 @@
    "band": "0.02",
    "base": "STETH",
    "launch_ms": "1681902000000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "STGUSDT": {
-   "band": "0.02",
-   "base": "STG",
-   "launch_ms": "1648537680000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
