@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-08T03:15:00.320643+00:00",
+ "captured": "2026-10-08T04:20:00.330336+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -26243,7 +26243,7 @@
    "base": "SWEAT",
    "launch_ms": "1663055820000",
    "min_order_usdt": "1",
-   "status": "online",
+   "status": "limit_open",
    "type": "crypto"
   },
   "SWELLUSDT": {
