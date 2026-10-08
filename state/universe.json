@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-08T09:50:00.521186+00:00",
+ "captured": "2026-10-08T10:55:00.725935+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -1871,7 +1871,7 @@
    "type": "crypto"
   },
   "HTXUSDT": {
-   "band": "0.02",
+   "band": "0.1",
    "base": "HTX",
    "launch_ms": "1711345929613",
    "min_order_usdt": "1",
