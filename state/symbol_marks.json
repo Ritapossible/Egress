@@ -21,7 +21,7 @@
    "reason": "candle volume is 1.7x the ticker's 24h turnover"
   }
  },
- "generated": "2026-10-09T04:52:45+00:00",
+ "generated": "2026-10-09T05:00:32+00:00",
  "keep": {
   "minimum": 12,
   "observations": 96
