@@ -356,7 +356,7 @@ pre code{background:none;padding:0}
     <p class="lead">A tokenized stock trades around the clock. The market that
     prices the share underneath it does not. When New York is shut, a market
     maker cannot hedge, so the quote widens - and the holder who needs out pays
-    for it. Median spread across every quoted name: 282 bp while the US market is shut, 11 bp while it is open.</p>
+    for it. Median spread across every quoted name: 282 bp while the US market is shut, 10 bp while it is open.</p>
   </div>
 </div>
 
@@ -372,7 +372,7 @@ pre code{background:none;padding:0}
       <thead><tr><th>Market phase</th><th>Listed 30d+</th>
       <th>Listed under 30d</th><th>Crypto control</th><th>Ratio</th>
       <th>Snapshots</th></tr></thead>
-      <tbody><tr><td class='sym'>open</td><td class='n'>6.5 bp</td><td class='n'>13.1 bp</td><td class='n'>12.6 bp</td><td class='n'>0.5x</td><td class='n'>1233</td></tr>
+      <tbody><tr><td class='sym'>open</td><td class='n'>6.5 bp</td><td class='n'>13.1 bp</td><td class='n'>12.6 bp</td><td class='n'>0.5x</td><td class='n'>1238</td></tr>
 <tr><td class='sym'>pre</td><td class='n'>106.4 bp</td><td class='n'>947.5 bp</td><td class='n'>12.4 bp</td><td class='n'>8.6x</td><td class='n'>843</td></tr>
 <tr><td class='sym'>post</td><td class='n'>68.6 bp</td><td class='n'>310.5 bp</td><td class='n'>12.3 bp</td><td class='n'>5.6x</td><td class='n'>513</td></tr>
 <tr><td class='sym'>overnight</td><td class='n'>58.5 bp</td><td class='n'>622.5 bp</td><td class='n'>12.3 bp</td><td class='n'>4.8x</td><td class='n'>1523</td></tr>
@@ -466,7 +466,7 @@ pre code{background:none;padding:0}
     is the honest state of it.</b> <a href="validation.html">The validation
     page</a> excludes 6 symbols &mdash; RNVDAUSDT, RTSLAUSDT, RAAPLUSDT, RMSFTUSDT, RSYKUSDT and RPBRUSDT &mdash;
     because <b>two of the venue's own volume feeds disagree about them</b>:
-    the candle volume runs 14.1&times; to 30.1&times; the 24h turnover the ticker reports for the same symbol. Which feed is right is not something this project can settle
+    the candle volume runs 8.4&times; to 22.3&times; the 24h turnover the ticker reports for the same symbol. Which feed is right is not something this project can settle
     from outside, and scoring a prediction against a number that may be wrong
     would be worse than not scoring it. So the overnight widening holds <b>as a
     quote</b>, across every name the crawl can see. It is not yet established
@@ -538,8 +538,8 @@ pre code{background:none;padding:0}
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-10-09 16:51 UTC from
-      5,698 recorded snapshots. Every figure on this site is read
+      <p class="prov"><i></i>Generated 2026-10-09 17:17 UTC from
+      5,703 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
       <div class="foot-legal">
