@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-14T01:40:00.490748+00:00",
+ "captured": "2026-10-14T02:45:00.453520+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -14881,9 +14881,9 @@
   "RKORUUSDT": {
    "band": "0.1",
    "base": "rKORU",
-   "launch_ms": "1791540324566",
+   "launch_ms": "1791943853693",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RKOSUSDT": {
