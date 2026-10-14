@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-13T23:30:00.471615+00:00",
+ "captured": "2026-10-14T00:35:00.471884+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -6211,7 +6211,7 @@
    "base": "rBLZE",
    "launch_ms": "1791540316299",
    "min_order_usdt": "20",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RBMAUSDT": {
@@ -6803,7 +6803,7 @@
    "base": "rCADL",
    "launch_ms": "1791540316318",
    "min_order_usdt": "20",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RCAEUSDT": {
@@ -12939,7 +12939,7 @@
    "base": "rHSTM",
    "launch_ms": "1791540316238",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RHSTUSDT": {
@@ -14883,7 +14883,7 @@
    "base": "rKORU",
    "launch_ms": "1791540324566",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RKOSUSDT": {
@@ -15995,7 +15995,7 @@
    "base": "rMAKO",
    "launch_ms": "1791540316221",
    "min_order_usdt": "20",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RMANEUSDT": {
@@ -17123,7 +17123,7 @@
    "base": "rMUZ",
    "launch_ms": "1791540324385",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RMVLLUSDT": {
@@ -20563,7 +20563,7 @@
    "base": "rRJET",
    "launch_ms": "1791540316271",
    "min_order_usdt": "20",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RRJFUSDT": {
@@ -22003,7 +22003,7 @@
    "base": "rSNDQ",
    "launch_ms": "1791540324526",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RSNDRUSDT": {
@@ -22019,7 +22019,7 @@
    "base": "rSNDU",
    "launch_ms": "1791540324484",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RSNDXUSDT": {
@@ -22219,7 +22219,7 @@
    "base": "rSPCH",
    "launch_ms": "1791540324443",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RSPCXUSDT": {
