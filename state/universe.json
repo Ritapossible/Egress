@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-15T09:15:00.392156+00:00",
+ "captured": "2026-10-15T10:20:00.290181+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -27451,7 +27451,7 @@
    "base": "USDS",
    "launch_ms": "1737698400000",
    "min_order_usdt": "1",
-   "status": "online",
+   "status": "limit_open",
    "type": "crypto"
   },
   "USDTBRL": {
@@ -27643,7 +27643,7 @@
    "base": "WEETH",
    "launch_ms": "1735542000000",
    "min_order_usdt": "1",
-   "status": "online",
+   "status": "limit_open",
    "type": "crypto"
   },
   "WEMIXUSDT": {
