@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-15T14:25:00.344099+00:00",
+ "captured": "2026-10-15T15:30:00.394405+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -6209,9 +6209,9 @@
   "RBLZEUSDT": {
    "band": "0.1",
    "base": "rBLZE",
-   "launch_ms": "1791540316299",
+   "launch_ms": "1792075040993",
    "min_order_usdt": "20",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RBMAUSDT": {
@@ -6801,9 +6801,9 @@
   "RCADLUSDT": {
    "band": "0.1",
    "base": "rCADL",
-   "launch_ms": "1791540316318",
+   "launch_ms": "1792075035235",
    "min_order_usdt": "20",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RCAEUSDT": {
@@ -12937,9 +12937,9 @@
   "RHSTMUSDT": {
    "band": "0.1",
    "base": "rHSTM",
-   "launch_ms": "1791540316238",
+   "launch_ms": "1792075053069",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RHSTUSDT": {
@@ -17121,9 +17121,9 @@
   "RMUZUSDT": {
    "band": "0.1",
    "base": "rMUZ",
-   "launch_ms": "1791540324385",
+   "launch_ms": "1792075027485",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RMVLLUSDT": {
@@ -20561,9 +20561,9 @@
   "RRJETUSDT": {
    "band": "0.1",
    "base": "rRJET",
-   "launch_ms": "1791540316271",
+   "launch_ms": "1792075047120",
    "min_order_usdt": "20",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RRJFUSDT": {
@@ -22017,9 +22017,9 @@
   "RSNDUUSDT": {
    "band": "0.1",
    "base": "rSNDU",
-   "launch_ms": "1791540324484",
+   "launch_ms": "1792075020001",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RSNDXUSDT": {
@@ -22217,9 +22217,9 @@
   "RSPCHUSDT": {
    "band": "0.1",
    "base": "rSPCH",
-   "launch_ms": "1791540324443",
+   "launch_ms": "1792074991176",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RSPCXUSDT": {
