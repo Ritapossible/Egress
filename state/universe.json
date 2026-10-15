@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-15T13:20:00.363642+00:00",
+ "captured": "2026-10-15T14:25:00.344099+00:00",
  "counts": {
   "crypto": 578,
   "metal": 2,
@@ -15993,9 +15993,9 @@
   "RMAKOUSDT": {
    "band": "0.1",
    "base": "rMAKO",
-   "launch_ms": "1791540316221",
+   "launch_ms": "1792072783862",
    "min_order_usdt": "20",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RMANEUSDT": {
@@ -22001,9 +22001,9 @@
   "RSNDQUSDT": {
    "band": "0.1",
    "base": "rSNDQ",
-   "launch_ms": "1791540324526",
+   "launch_ms": "1792070515899",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RSNDRUSDT": {
