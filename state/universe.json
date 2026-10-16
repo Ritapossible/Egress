@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-16T03:20:00.502841+00:00",
+ "captured": "2026-10-16T04:25:00.554426+00:00",
  "counts": {
   "crypto": 579,
   "metal": 2,
@@ -1951,7 +1951,7 @@
    "type": "crypto"
   },
   "ICXUSDT": {
-   "band": "0.02",
+   "band": "0.1",
    "base": "ICX",
    "launch_ms": "1723546800000",
    "min_order_usdt": "1",
