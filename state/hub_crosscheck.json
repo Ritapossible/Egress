@@ -1,6 +1,6 @@
 {
  "agree_within_bp": 0.5,
- "built_on": "2026-10-17T10:11:56+00:00",
+ "built_on": "2026-10-17T16:01:05+00:00",
  "counts": {
   "agreed": 3,
   "asked": 9,
@@ -9,7 +9,7 @@
   "unavailable": 6
  },
  "hub_installed": true,
- "max_gap_bp": 0.0,
+ "max_gap_bp": 0.45,
  "notional_usdt": 25000.0,
  "rows": [
   {
@@ -70,12 +70,12 @@
    "agree_within_bp": 0.5,
    "available": true,
    "gap_bp": 0.0,
-   "hub_filled_usdt": 24999.262212,
-   "hub_levels": 5,
-   "hub_total_bp": 10.3,
+   "hub_filled_usdt": 24999.998465,
+   "hub_levels": 1,
+   "hub_total_bp": 10.0,
    "notional_usdt": 25000.0,
    "our_source": "orderbook",
-   "ours_total_bp": 10.3,
+   "ours_total_bp": 10.0,
    "source": "bitget-agent-hub",
    "symbol": "BTCUSDT",
    "verdict": "agree"
@@ -83,13 +83,13 @@
   {
    "agree_within_bp": 0.5,
    "available": true,
-   "gap_bp": 0.0,
-   "hub_filled_usdt": 24997.915084,
-   "hub_levels": 8,
-   "hub_total_bp": 10.83,
+   "gap_bp": 0.45,
+   "hub_filled_usdt": 24998.828124,
+   "hub_levels": 3,
+   "hub_total_bp": 10.47,
    "notional_usdt": 25000.0,
    "our_source": "orderbook",
-   "ours_total_bp": 10.83,
+   "ours_total_bp": 10.02,
    "source": "bitget-agent-hub",
    "symbol": "ETHUSDT",
    "verdict": "agree"
@@ -98,12 +98,12 @@
    "agree_within_bp": 0.5,
    "available": true,
    "gap_bp": 0.0,
-   "hub_filled_usdt": 24998.119777,
-   "hub_levels": 2,
-   "hub_total_bp": 10.75,
+   "hub_filled_usdt": 24995.137748,
+   "hub_levels": 3,
+   "hub_total_bp": 11.94,
    "notional_usdt": 25000.0,
    "our_source": "orderbook",
-   "ours_total_bp": 10.75,
+   "ours_total_bp": 11.94,
    "source": "bitget-agent-hub",
    "symbol": "SOLUSDT",
    "verdict": "agree"
