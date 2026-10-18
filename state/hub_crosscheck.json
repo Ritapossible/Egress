@@ -1,15 +1,15 @@
 {
  "agree_within_bp": 0.5,
- "built_on": "2026-10-18T09:42:16+00:00",
+ "built_on": "2026-10-18T16:27:34+00:00",
  "counts": {
-  "agreed": 3,
+  "agreed": 2,
   "asked": 9,
   "compared": 3,
-  "disagreed": 0,
+  "disagreed": 1,
   "unavailable": 6
  },
  "hub_installed": true,
- "max_gap_bp": 0.0,
+ "max_gap_bp": 0.58,
  "notional_usdt": 25000.0,
  "rows": [
   {
@@ -70,7 +70,7 @@
    "agree_within_bp": 0.5,
    "available": true,
    "gap_bp": 0.0,
-   "hub_filled_usdt": 24999.99848,
+   "hub_filled_usdt": 24999.998462,
    "hub_levels": 1,
    "hub_total_bp": 10.0,
    "notional_usdt": 25000.0,
@@ -84,7 +84,7 @@
    "agree_within_bp": 0.5,
    "available": true,
    "gap_bp": 0.0,
-   "hub_filled_usdt": 24999.948512,
+   "hub_filled_usdt": 24999.947257,
    "hub_levels": 1,
    "hub_total_bp": 10.02,
    "notional_usdt": 25000.0,
@@ -97,16 +97,16 @@
   {
    "agree_within_bp": 0.5,
    "available": true,
-   "gap_bp": 0.0,
-   "hub_filled_usdt": 24993.77989,
+   "gap_bp": 0.58,
+   "hub_filled_usdt": 24993.421052,
    "hub_levels": 4,
-   "hub_total_bp": 12.49,
+   "hub_total_bp": 12.63,
    "notional_usdt": 25000.0,
    "our_source": "orderbook",
-   "ours_total_bp": 12.49,
+   "ours_total_bp": 13.21,
    "source": "bitget-agent-hub",
    "symbol": "SOLUSDT",
-   "verdict": "agree"
+   "verdict": "disagree"
   }
  ]
 }
