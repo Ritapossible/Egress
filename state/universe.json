@@ -1,9 +1,9 @@
 {
- "captured": "2026-10-19T02:45:00.254599+00:00",
+ "captured": "2026-10-19T03:50:00.399919+00:00",
  "counts": {
   "crypto": 579,
   "metal": 2,
-  "stock": 2915
+  "stock": 2914
  },
  "symbols": {
   "0GUSDT": {
@@ -3483,7 +3483,7 @@
    "base": "rACVA",
    "launch_ms": "1792136136627",
    "min_order_usdt": "20",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RACWIUSDT": {
@@ -7115,14 +7115,6 @@
    "base": "rCCNE",
    "launch_ms": "1790170553470",
    "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RCCOUSDT": {
-   "band": "0.1",
-   "base": "rCCO",
-   "launch_ms": "1790170554325",
-   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -26163,7 +26155,7 @@
    "base": "rWYFI",
    "launch_ms": "1791540316346",
    "min_order_usdt": "20",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RWYNNUSDT": {
