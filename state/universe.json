@@ -1,9 +1,9 @@
 {
- "captured": "2026-10-20T05:25:00.352636+00:00",
+ "captured": "2026-10-20T06:30:00.371212+00:00",
  "counts": {
   "crypto": 579,
   "metal": 2,
-  "stock": 3020
+  "stock": 3019
  },
  "symbols": {
   "0GUSDT": {
@@ -5074,14 +5074,6 @@
    "band": "0.1",
    "base": "rATI",
    "launch_ms": "1792464944659",
-   "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RATKRUSDT": {
-   "band": "0.1",
-   "base": "rATKR",
-   "launch_ms": "1792383655611",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
