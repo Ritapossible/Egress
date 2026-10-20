@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-20T15:35:00.364109+00:00",
+ "captured": "2026-10-20T16:40:00.302905+00:00",
  "counts": {
   "crypto": 580,
   "metal": 2,
@@ -23859,7 +23859,7 @@
    "base": "rTCEHY",
    "launch_ms": "1792464916664",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RTCOMUSDT": {

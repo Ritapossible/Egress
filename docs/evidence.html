@@ -372,7 +372,7 @@ pre code{background:none;padding:0}
       <thead><tr><th>Market phase</th><th>Listed 30d+</th>
       <th>Listed under 30d</th><th>Crypto control</th><th>Ratio</th>
       <th>Snapshots</th></tr></thead>
-      <tbody><tr><td class='sym'>open</td><td class='n'>6.6 bp</td><td class='n'>12.9 bp</td><td class='n'>12.7 bp</td><td class='n'>0.5x</td><td class='n'>1675</td></tr>
+      <tbody><tr><td class='sym'>open</td><td class='n'>6.6 bp</td><td class='n'>12.9 bp</td><td class='n'>12.7 bp</td><td class='n'>0.5x</td><td class='n'>1678</td></tr>
 <tr><td class='sym'>pre</td><td class='n'>106.7 bp</td><td class='n'>928.7 bp</td><td class='n'>12.4 bp</td><td class='n'>8.6x</td><td class='n'>1125</td></tr>
 <tr><td class='sym'>post</td><td class='n'>72.3 bp</td><td class='n'>329.1 bp</td><td class='n'>12.3 bp</td><td class='n'>5.9x</td><td class='n'>693</td></tr>
 <tr><td class='sym'>overnight</td><td class='n'>60.5 bp</td><td class='n'>514.7 bp</td><td class='n'>12.4 bp</td><td class='n'>4.9x</td><td class='n'>2099</td></tr>
@@ -466,7 +466,7 @@ pre code{background:none;padding:0}
     is the honest state of it.</b> <a href="validation.html">The validation
     page</a> excludes 6 symbols &mdash; RNVDAUSDT, RTSLAUSDT, RAAPLUSDT, RMSFTUSDT, RSYKUSDT and RPBRUSDT &mdash;
     because <b>two of the venue's own volume feeds disagree about them</b>:
-    the candle volume runs 21.5&times; to 34.7&times; the 24h turnover the ticker reports for the same symbol. Which feed is right is not something this project can settle
+    the candle volume runs 9.0&times; to 18.1&times; the 24h turnover the ticker reports for the same symbol. Which feed is right is not something this project can settle
     from outside, and scoring a prediction against a number that may be wrong
     would be worse than not scoring it. So the overnight widening holds <b>as a
     quote</b>, across every name the crawl can see. It is not yet established
@@ -488,17 +488,17 @@ pre code{background:none;padding:0}
     different SDK, in a different process, with no credentials &mdash; and both
     are costed by the same code, so any gap is the book and not the
     arithmetic.</p>
-    <p class="say">Both clients asked for the same 25,000 USDT exit, 2026-10-19T18:24:36+00:00. <b>9 of 9 could be compared; 9 agree</b> within 0.5 bp.</p>
+    <p class="say">Both clients asked for the same 25,000 USDT exit, 2026-10-20T17:06:22+00:00. <b>9 of 9 could be compared; 8 agree</b> within 0.5 bp.</p>
 <div class="scroll"><table class="tbl"><thead><tr><th>Symbol</th><th>This site</th><th>Agent Hub</th><th>Gap</th><th>Verdict</th></tr></thead><tbody>
-<tr><td class="sym">RNVDAUSDT</td><td>10.23 bp</td><td>10.23 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RTSLAUSDT</td><td>10.68 bp</td><td>10.54 bp</td><td>0.14 bp</td><td>agree</td></tr>
-<tr><td class="sym">RAAPLUSDT</td><td>10.58 bp</td><td>10.58 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RMSFTUSDT</td><td>10.47 bp</td><td>10.47 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RSYKUSDT</td><td>13.16 bp</td><td>13.16 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RPBRUSDT</td><td>11.95 bp</td><td>11.95 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">BTCUSDT</td><td>10.49 bp</td><td>10.49 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">ETHUSDT</td><td>13.02 bp</td><td>12.75 bp</td><td>0.27 bp</td><td>agree</td></tr>
-<tr><td class="sym">SOLUSDT</td><td>12.41 bp</td><td>12.41 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RNVDAUSDT</td><td>10.46 bp</td><td>10.46 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RTSLAUSDT</td><td>10.80 bp</td><td>10.80 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RAAPLUSDT</td><td>10.29 bp</td><td>10.29 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RMSFTUSDT</td><td>10.94 bp</td><td>10.94 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RSYKUSDT</td><td>12.47 bp</td><td>12.47 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RPBRUSDT</td><td>11.94 bp</td><td>11.94 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">BTCUSDT</td><td>10.00 bp</td><td>10.00 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">ETHUSDT</td><td>10.86 bp</td><td>10.86 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">SOLUSDT</td><td>13.32 bp</td><td>12.18 bp</td><td>1.14 bp</td><td>disagree</td></tr>
 </tbody></table></div>
     <p class="note"><b>What agreement does and does not prove.</b> It does not
     prove the cost is right; both clients read the same exchange and would
@@ -538,8 +538,8 @@ pre code{background:none;padding:0}
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-10-20 16:30 UTC from
-      8,092 recorded snapshots. Every figure on this site is read
+      <p class="prov"><i></i>Generated 2026-10-20 17:00 UTC from
+      8,095 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
       <div class="foot-legal">
