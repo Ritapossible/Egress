@@ -1,7 +1,7 @@
 {
- "captured": "2026-10-20T08:40:00.220064+00:00",
+ "captured": "2026-10-20T09:45:00.327623+00:00",
  "counts": {
-  "crypto": 579,
+  "crypto": 580,
   "metal": 2,
   "stock": 3019
  },
@@ -476,6 +476,14 @@
    "launch_ms": "1747908000000",
    "min_order_usdt": "1",
    "status": "online",
+   "type": "crypto"
+  },
+  "AXISUSDT": {
+   "band": "200",
+   "base": "AXIS",
+   "launch_ms": "1792587600000",
+   "min_order_usdt": "1",
+   "status": "listed",
    "type": "crypto"
   },
   "AXLUSDT": {
@@ -1691,7 +1699,7 @@
    "base": "GHO",
    "launch_ms": "1786698099773",
    "min_order_usdt": "1",
-   "status": "online",
+   "status": "limit_open",
    "type": "crypto"
   },
   "GLMUSDT": {
