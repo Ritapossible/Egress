@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-21T13:40:00.625521+00:00",
+ "captured": "2026-10-21T14:45:00.616769+00:00",
  "counts": {
   "crypto": 580,
   "metal": 2,
@@ -479,7 +479,7 @@
    "type": "crypto"
   },
   "AXISUSDT": {
-   "band": "200",
+   "band": "0.1",
    "base": "AXIS",
    "launch_ms": "1792587600000",
    "min_order_usdt": "1",
