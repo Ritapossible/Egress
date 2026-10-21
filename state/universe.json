@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-21T12:35:00.600785+00:00",
+ "captured": "2026-10-21T13:40:00.625521+00:00",
  "counts": {
   "crypto": 580,
   "metal": 2,
@@ -483,7 +483,7 @@
    "base": "AXIS",
    "launch_ms": "1792587600000",
    "min_order_usdt": "1",
-   "status": "listed",
+   "status": "online",
    "type": "crypto"
   },
   "AXLUSDT": {
@@ -23857,9 +23857,9 @@
   "RTCEHYUSDT": {
    "band": "0.1",
    "base": "rTCEHY",
-   "launch_ms": "1792464916664",
+   "launch_ms": "1792587527508",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RTCOMUSDT": {
