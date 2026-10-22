@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-22T13:40:00.464222+00:00",
+ "captured": "2026-10-22T14:45:00.529019+00:00",
  "counts": {
   "crypto": 581,
   "metal": 2,
@@ -23751,7 +23751,7 @@
    "type": "stock"
   },
   "RT1USDT": {
-   "band": "200",
+   "band": "0.1",
    "base": "RT1",
    "launch_ms": "1792674600000",
    "min_order_usdt": "1",
