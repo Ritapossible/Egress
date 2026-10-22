@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-22T11:30:54.734578+00:00",
+ "captured": "2026-10-22T12:35:00.425837+00:00",
  "counts": {
   "crypto": 581,
   "metal": 2,
@@ -23755,7 +23755,7 @@
    "base": "RT1",
    "launch_ms": "1792670400000",
    "min_order_usdt": "1",
-   "status": "listed",
+   "status": "online",
    "type": "crypto"
   },
   "RTACUSDT": {
