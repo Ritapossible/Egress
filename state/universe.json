@@ -1,7 +1,7 @@
 {
- "captured": "2026-10-23T09:15:00.501496+00:00",
+ "captured": "2026-10-23T10:20:00.460017+00:00",
  "counts": {
-  "crypto": 581,
+  "crypto": 573,
   "metal": 2,
   "stock": 3019
  },
@@ -1318,14 +1318,6 @@
    "status": "online",
    "type": "crypto"
   },
-  "DOGUSDT": {
-   "band": "0.02",
-   "base": "DOG",
-   "launch_ms": "1716462001000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
   "DOSUSDT": {
    "band": "0.1",
    "base": "DOS",
@@ -1338,14 +1330,6 @@
    "band": "0.02",
    "base": "DOT",
    "launch_ms": "1636429260000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "DRIFTUSDT": {
-   "band": "0.2",
-   "base": "DRIFT",
-   "launch_ms": "1715853600000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -1654,14 +1638,6 @@
    "status": "online",
    "type": "crypto"
   },
-  "GAIBUSDT": {
-   "band": "0.02",
-   "base": "GAIB",
-   "launch_ms": "1763553600000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
   "GALAUSDT": {
    "band": "0.02",
    "base": "GALA",
@@ -1954,14 +1930,6 @@
    "band": "0.02",
    "base": "ICP",
    "launch_ms": "1622862780000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "ICXUSDT": {
-   "band": "0.1",
-   "base": "ICX",
-   "launch_ms": "1723546800000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -3122,14 +3090,6 @@
    "band": "0.1",
    "base": "PUFFER",
    "launch_ms": "1728907200000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "PUMPBTCUSDT": {
-   "band": "0.02",
-   "base": "PUMPBTC",
-   "launch_ms": "1749808800000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -24974,14 +24934,6 @@
    "status": "online",
    "type": "stock"
   },
-  "RTXUSDT": {
-   "band": "0.1",
-   "base": "RTX",
-   "launch_ms": "1766138400000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
   "RTYLUSDT": {
    "band": "0.1",
    "base": "rTYL",
@@ -26261,14 +26213,6 @@
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
-  },
-  "RVVUSDT": {
-   "band": "0.02",
-   "base": "RVV",
-   "launch_ms": "1760796000000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
   },
   "RVVVUSDT": {
    "band": "0.1",
@@ -27916,14 +27860,6 @@
    "launch_ms": "1787216551767",
    "min_order_usdt": "1",
    "status": "online",
-   "type": "crypto"
-  },
-  "SWEATUSDT": {
-   "band": "0.02",
-   "base": "SWEAT",
-   "launch_ms": "1663055820000",
-   "min_order_usdt": "1",
-   "status": "limit_open",
    "type": "crypto"
   },
   "SWELLUSDT": {
