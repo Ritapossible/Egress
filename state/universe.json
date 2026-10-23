@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-22T22:50:00.522683+00:00",
+ "captured": "2026-10-23T00:10:00.407264+00:00",
  "counts": {
   "crypto": 581,
   "metal": 2,
@@ -16251,7 +16251,7 @@
    "base": "rLU",
    "launch_ms": "1790170554598",
    "min_order_usdt": "20",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RLUVUSDT": {
