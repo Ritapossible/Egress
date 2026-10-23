@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-23T07:05:00.403856+00:00",
+ "captured": "2026-10-23T08:10:00.422241+00:00",
  "counts": {
   "crypto": 581,
   "metal": 2,
@@ -16233,9 +16233,9 @@
   "RLUSDUSDC": {
    "band": "0.02",
    "base": "RLUSD",
-   "launch_ms": "1751364000000",
+   "launch_ms": "1792741073140",
    "min_order_usdt": "1",
-   "status": "limit_open",
+   "status": "online",
    "type": "crypto"
   },
   "RLUSDUSDT": {
