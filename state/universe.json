@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-25T23:55:00.395295+00:00",
+ "captured": "2026-10-26T01:00:00.502476+00:00",
  "counts": {
   "crypto": 573,
   "metal": 2,
@@ -6691,7 +6691,7 @@
    "base": "rBUUU",
    "launch_ms": "1791540315243",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RBVNUSDT": {
