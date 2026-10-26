@@ -1,19 +1,19 @@
 {
  "feed_flags": {
   "RMSFTUSDT": {
-   "ratio": 794.888,
-   "reason": "candle volume is 794.9x the ticker's 24h turnover"
+   "ratio": 783.239,
+   "reason": "candle volume is 783.2x the ticker's 24h turnover"
   },
   "RPBRUSDT": {
-   "ratio": 189.791,
-   "reason": "candle volume is 189.8x the ticker's 24h turnover"
+   "ratio": 189.467,
+   "reason": "candle volume is 189.5x the ticker's 24h turnover"
   },
   "RSYKUSDT": {
    "ratio": 209416.229,
    "reason": "candle volume is 209416.2x the ticker's 24h turnover"
   }
  },
- "generated": "2026-10-26T04:28:21+00:00",
+ "generated": "2026-10-26T04:40:47+00:00",
  "keep": {
   "minimum": 12,
   "observations": 96
