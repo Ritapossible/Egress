@@ -1,5 +1,5 @@
 {
- "captured": "2026-10-27T09:55:00.410939+00:00",
+ "captured": "2026-10-27T11:54:26.557757+00:00",
  "counts": {
   "crypto": 573,
   "metal": 2,
@@ -17294,9 +17294,9 @@
    "status": "online",
    "type": "stock"
   },
-  "RMSGSUSDT": {
+  "RMSGKUSDT": {
    "band": "0.1",
-   "base": "rMSGS",
+   "base": "rMSGK",
    "launch_ms": "1792464956154",
    "min_order_usdt": "10",
    "status": "online",
@@ -28561,9 +28561,9 @@
   "XRPRLUSD": {
    "band": "0.1",
    "base": "XRP",
-   "launch_ms": "1770710528791",
+   "launch_ms": "1793095155464",
    "min_order_usdt": "1",
-   "status": "limit_open",
+   "status": "online",
    "type": "crypto"
   },
   "XRPUSD1": {
