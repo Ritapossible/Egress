@@ -1,9 +1,9 @@
 {
- "captured": "2026-10-28T02:55:00.213385+00:00",
+ "captured": "2026-10-28T04:00:00.343016+00:00",
  "counts": {
   "crypto": 573,
   "metal": 2,
-  "stock": 3018
+  "stock": 3019
  },
  "symbols": {
   "0GUSDT": {
@@ -5130,6 +5130,14 @@
    "band": "0.1",
    "base": "rAUPH",
    "launch_ms": "1792136152860",
+   "min_order_usdt": "20",
+   "status": "online",
+   "type": "stock"
+  },
+  "RAUREUSDT": {
+   "band": "0.1",
+   "base": "rAURE",
+   "launch_ms": "1791179257685",
    "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
