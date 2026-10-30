@@ -1,7 +1,7 @@
 {
- "captured": "2026-10-30T09:30:00.309767+00:00",
+ "captured": "2026-10-30T10:35:00.422098+00:00",
  "counts": {
-  "crypto": 573,
+  "crypto": 570,
   "metal": 2,
   "stock": 3019
  },
@@ -1806,14 +1806,6 @@
    "status": "online",
    "type": "crypto"
   },
-  "HEIUSDT": {
-   "band": "0.02",
-   "base": "HEI",
-   "launch_ms": "1739433600000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
   "HIVEUSDT": {
    "band": "0.02",
    "base": "HIVE",
@@ -2538,14 +2530,6 @@
    "band": "0.02",
    "base": "MON",
    "launch_ms": "1763996400000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "MOODENGUSDT": {
-   "band": "0.02",
-   "base": "MOODENG",
-   "launch_ms": "1727431200000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -28658,14 +28642,6 @@
    "band": "0.02",
    "base": "ZEC",
    "launch_ms": "1764759600000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "ZENTUSDT": {
-   "band": "0.02",
-   "base": "ZENT",
-   "launch_ms": "1715594400000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
