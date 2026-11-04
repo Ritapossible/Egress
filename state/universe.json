@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-04T11:05:00.509170+00:00",
+ "captured": "2026-11-04T15:10:00.995909+00:00",
  "counts": {
   "crypto": 571,
   "metal": 2,
@@ -2167,11 +2167,11 @@
    "type": "crypto"
   },
   "KORUSDT": {
-   "band": "200",
+   "band": "0.1",
    "base": "KOR",
    "launch_ms": "1793800800000",
    "min_order_usdt": "1",
-   "status": "listed",
+   "status": "online",
    "type": "crypto"
   },
   "KSMUSDT": {
