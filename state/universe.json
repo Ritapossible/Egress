@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-04T07:50:00.424798+00:00",
+ "captured": "2026-11-04T08:55:00.449365+00:00",
  "counts": {
   "crypto": 571,
   "metal": 2,
@@ -11608,7 +11608,7 @@
   },
   "RFOXUSDT": {
    "band": "0.1",
-   "base": "",
+   "base": "rFOX",
    "launch_ms": "1793191865695",
    "min_order_usdt": "10",
    "status": "online",
