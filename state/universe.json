@@ -1,9 +1,9 @@
 {
- "captured": "2026-11-04T06:45:00.471635+00:00",
+ "captured": "2026-11-04T07:50:00.424798+00:00",
  "counts": {
   "crypto": 571,
   "metal": 2,
-  "stock": 3105
+  "stock": 3104
  },
  "symbols": {
   "0GUSDT": {
@@ -14228,14 +14228,6 @@
    "launch_ms": "1792148796730",
    "min_order_usdt": "10",
    "status": "online",
-   "type": "stock"
-  },
-  "RINDVUSDT": {
-   "band": "0.1",
-   "base": "rINDV",
-   "launch_ms": "1792464967525",
-   "min_order_usdt": "10",
-   "status": "limit_open",
    "type": "stock"
   },
   "RINFQUSDT": {
