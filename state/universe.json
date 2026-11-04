@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-04T05:44:07.007420+00:00",
+ "captured": "2026-11-04T06:45:00.471635+00:00",
  "counts": {
   "crypto": 571,
   "metal": 2,
@@ -14235,7 +14235,7 @@
    "base": "rINDV",
    "launch_ms": "1792464967525",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RINFQUSDT": {

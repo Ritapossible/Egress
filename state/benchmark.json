@@ -1,5 +1,5 @@
 {
- "generated": "2026-11-04T06:16:54+00:00",
+ "generated": "2026-11-04T06:52:28+00:00",
  "phases": {
   "open": {
    "crypto_median_bp": 12.7,
@@ -8,8 +8,8 @@
   },
   "overnight": {
    "crypto_median_bp": 12.4,
-   "snapshots": 2965,
-   "stock_median_bp": 236.3
+   "snapshots": 2972,
+   "stock_median_bp": 236.6
   },
   "post": {
    "crypto_median_bp": 12.5,
