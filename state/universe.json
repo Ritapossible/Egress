@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-05T10:20:00.393494+00:00",
+ "captured": "2026-11-05T19:45:40.320191+00:00",
  "counts": {
   "crypto": 571,
   "metal": 2,
@@ -14585,9 +14585,9 @@
   "RITAUSDT": {
    "band": "0.1",
    "base": "rITA",
-   "launch_ms": "1781016998091",
+   "launch_ms": "1793877426773",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RITBUSDT": {
@@ -17777,9 +17777,9 @@
   "RMTUMUSDT": {
    "band": "0.1",
    "base": "rMTUM",
-   "launch_ms": "1792148808211",
+   "launch_ms": "1793878428983",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RMTUSDT": {
@@ -21089,9 +21089,9 @@
   "RQUALUSDT": {
    "band": "0.1",
    "base": "rQUAL",
-   "launch_ms": "1792148810456",
+   "launch_ms": "1793878431250",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RQUBTUSDT": {
@@ -23337,9 +23337,9 @@
   "RSOXXUSDT": {
    "band": "0.1",
    "base": "rSOXX",
-   "launch_ms": "1780582625081",
+   "launch_ms": "1793877888291",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RSPBUSDT": {
