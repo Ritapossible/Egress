@@ -1,9 +1,9 @@
 {
- "captured": "2026-11-05T06:01:09.561764+00:00",
+ "captured": "2026-11-05T07:05:00.389872+00:00",
  "counts": {
   "crypto": 571,
   "metal": 2,
-  "stock": 3104
+  "stock": 3100
  },
  "symbols": {
   "0GUSDT": {
@@ -7170,14 +7170,6 @@
    "band": "0.1",
    "base": "rCBU",
    "launch_ms": "1792383572642",
-   "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RCBZUSDT": {
-   "band": "0.1",
-   "base": "rCBZ",
-   "launch_ms": "1792383571836",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -15702,14 +15694,6 @@
    "status": "online",
    "type": "stock"
   },
-  "RKVUEUSDT": {
-   "band": "0.1",
-   "base": "rKVUE",
-   "launch_ms": "1784888260164",
-   "min_order_usdt": "20",
-   "status": "online",
-   "type": "stock"
-  },
   "RKVYOUSDT": {
    "band": "0.1",
    "base": "rKVYO",
@@ -16578,14 +16562,6 @@
    "band": "0.1",
    "base": "rLW",
    "launch_ms": "1789117389452",
-   "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RLXPUSDT": {
-   "band": "0.1",
-   "base": "rLXP",
-   "launch_ms": "1792148796156",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
@@ -21170,14 +21146,6 @@
    "band": "0.1",
    "base": "rRAL",
    "launch_ms": "1792383602123",
-   "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RRAMPUSDT": {
-   "band": "0.1",
-   "base": "rRAMP",
-   "launch_ms": "1792136162842",
    "min_order_usdt": "10",
    "status": "online",
    "type": "stock"
