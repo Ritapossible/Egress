@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-06T01:10:00.426205+00:00",
+ "captured": "2026-11-06T05:57:45.824927+00:00",
  "counts": {
   "crypto": 571,
   "metal": 2,
@@ -10033,9 +10033,9 @@
   "REFVUSDT": {
    "band": "0.1",
    "base": "rEFV",
-   "launch_ms": "1792148807735",
+   "launch_ms": "1793932882641",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "REFXTUSDT": {
