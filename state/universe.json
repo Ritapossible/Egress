@@ -1,7 +1,7 @@
 {
- "captured": "2026-11-06T09:10:00.305537+00:00",
+ "captured": "2026-11-06T10:15:00.347785+00:00",
  "counts": {
-  "crypto": 571,
+  "crypto": 566,
   "metal": 2,
   "stock": 3100
  },
@@ -244,14 +244,6 @@
    "launch_ms": "1663585620000",
    "min_order_usdt": "1",
    "status": "online",
-   "type": "crypto"
-  },
-  "ALUSDT": {
-   "band": "0.02",
-   "base": "AL",
-   "launch_ms": "1715594400000",
-   "min_order_usdt": "1",
-   "status": "limit_open",
    "type": "crypto"
   },
   "ANIMEUSDT": {
@@ -806,14 +798,6 @@
    "status": "online",
    "type": "crypto"
   },
-  "BRETTUSDT": {
-   "band": "0.02",
-   "base": "BRETT",
-   "launch_ms": "1711353688089",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
   "BREVUSDT": {
    "band": "0.1",
    "base": "BREV",
@@ -1018,14 +1002,6 @@
    "band": "0.02",
    "base": "CHEEMS",
    "launch_ms": "1732352400000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "CHILLGUYUSDT": {
-   "band": "0.02",
-   "base": "CHILLGUY",
-   "launch_ms": "1732708800000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -1578,14 +1554,6 @@
    "band": "0.02",
    "base": "FLOKI",
    "launch_ms": "1640158440000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "FOGOUSDT": {
-   "band": "0.1",
-   "base": "FOGO",
-   "launch_ms": "1768485600000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -29076,14 +29044,6 @@
    "launch_ms": "1735542000000",
    "min_order_usdt": "1",
    "status": "limit_open",
-   "type": "crypto"
-  },
-  "WEMIXUSDT": {
-   "band": "0.02",
-   "base": "WEMIX",
-   "launch_ms": "1644561960000",
-   "min_order_usdt": "1",
-   "status": "online",
    "type": "crypto"
   },
   "WIFUSDT": {
