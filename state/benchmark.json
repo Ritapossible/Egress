@@ -1,10 +1,10 @@
 {
- "generated": "2026-11-09T11:03:20+00:00",
+ "generated": "2026-11-09T16:18:54+00:00",
  "phases": {
   "open": {
    "crypto_median_bp": 12.6,
-   "snapshots": 2454,
-   "stock_median_bp": 11.6
+   "snapshots": 2460,
+   "stock_median_bp": 11.7
   },
   "overnight": {
    "crypto_median_bp": 12.4,
@@ -18,8 +18,8 @@
   },
   "pre": {
    "crypto_median_bp": 12.4,
-   "snapshots": 1656,
-   "stock_median_bp": 502.8
+   "snapshots": 1659,
+   "stock_median_bp": 504.3
   },
   "weekend": {
    "crypto_median_bp": 12.5,
