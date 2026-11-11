@@ -1,7 +1,7 @@
 {
- "captured": "2026-11-11T02:15:00.425737+00:00",
+ "captured": "2026-11-11T03:20:00.223033+00:00",
  "counts": {
-  "crypto": 566,
+  "crypto": 567,
   "metal": 2,
   "stock": 3101
  },
@@ -2532,6 +2532,14 @@
    "launch_ms": "1636515180000",
    "min_order_usdt": "1",
    "status": "online",
+   "type": "crypto"
+  },
+  "MTXUSDT": {
+   "band": "200",
+   "base": "MTX",
+   "launch_ms": "1794394800000",
+   "min_order_usdt": "1",
+   "status": "listed",
    "type": "crypto"
   },
   "MUBARAKUSDT": {
