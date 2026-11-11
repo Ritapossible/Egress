@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-11T11:00:00.403733+00:00",
+ "captured": "2026-11-11T13:55:44.431919+00:00",
  "counts": {
   "crypto": 567,
   "metal": 2,
@@ -2535,11 +2535,11 @@
    "type": "crypto"
   },
   "MTXUSDT": {
-   "band": "200",
+   "band": "0.1",
    "base": "MTX",
    "launch_ms": "1794394800000",
    "min_order_usdt": "1",
-   "status": "listed",
+   "status": "online",
    "type": "crypto"
   },
   "MUBARAKUSDT": {
