@@ -1,9 +1,9 @@
 {
- "captured": "2026-11-12T05:45:00.593898+00:00",
+ "captured": "2026-11-12T14:56:14.624573+00:00",
  "counts": {
   "crypto": 567,
   "metal": 2,
-  "stock": 3101
+  "stock": 3100
  },
  "symbols": {
   "0GUSDT": {
@@ -22731,14 +22731,6 @@
    "base": "rSITM",
    "launch_ms": "1780582172635",
    "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RSIVEFUSDT": {
-   "band": "0.1",
-   "base": "rSIVEF",
-   "launch_ms": "1791538394927",
-   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
