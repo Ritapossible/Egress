@@ -1,7 +1,7 @@
 {
- "captured": "2026-11-13T09:10:00.362028+00:00",
+ "captured": "2026-11-13T10:15:00.491503+00:00",
  "counts": {
-  "crypto": 567,
+  "crypto": 565,
   "metal": 2,
   "stock": 3100
  },
@@ -234,14 +234,6 @@
    "band": "0.02",
    "base": "ALPH",
    "launch_ms": "1713600000000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "ALPINEUSDT": {
-   "band": "0.02",
-   "base": "ALPINE",
-   "launch_ms": "1663585620000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
@@ -3106,14 +3098,6 @@
    "band": "0.02",
    "base": "QTUM",
    "launch_ms": "1621319400000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "QUBICUSDT": {
-   "band": "0.02",
-   "base": "QUBIC",
-   "launch_ms": "1719828000000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
