@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-14T00:30:00.268713+00:00",
+ "captured": "2026-11-14T01:35:00.357381+00:00",
  "counts": {
   "crypto": 565,
   "metal": 2,
@@ -10171,7 +10171,7 @@
    "base": "rEMBJ",
    "launch_ms": "1792464930698",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "REMBUSDT": {
