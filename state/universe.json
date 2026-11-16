@@ -1,9 +1,9 @@
 {
- "captured": "2026-11-16T09:00:00.719411+00:00",
+ "captured": "2026-11-16T10:05:00.346553+00:00",
  "counts": {
   "crypto": 565,
   "metal": 2,
-  "stock": 3100
+  "stock": 3099
  },
  "symbols": {
   "0GUSDT": {
@@ -21676,14 +21676,6 @@
    "launch_ms": "1781188845941",
    "min_order_usdt": "10",
    "status": "online",
-   "type": "stock"
-  },
-  "RROKUUSDT": {
-   "band": "0.1",
-   "base": "rROKU",
-   "launch_ms": "1780928169523",
-   "min_order_usdt": "10",
-   "status": "limit_open",
    "type": "stock"
   },
   "RROLUSDT": {
