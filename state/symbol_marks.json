@@ -1,15 +1,15 @@
 {
  "feed_flags": {
   "RPBRUSDT": {
-   "ratio": 1539.682,
-   "reason": "candle volume is 1539.7x the ticker's 24h turnover"
+   "ratio": 1500.367,
+   "reason": "candle volume is 1500.4x the ticker's 24h turnover"
   },
   "RSYKUSDT": {
    "ratio": 4554.026,
    "reason": "candle volume is 4554.0x the ticker's 24h turnover"
   }
  },
- "generated": "2026-11-16T11:23:26+00:00",
+ "generated": "2026-11-16T11:41:25+00:00",
  "keep": {
   "minimum": 12,
   "observations": 96
