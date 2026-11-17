@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-16T20:45:00.609477+00:00",
+ "captured": "2026-11-17T01:46:53.126043+00:00",
  "counts": {
   "crypto": 565,
   "metal": 2,
@@ -22331,7 +22331,7 @@
    "base": "rSENEA",
    "launch_ms": "1790170601805",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RSENEBUSDT": {
@@ -22339,7 +22339,7 @@
    "base": "rSENEB",
    "launch_ms": "1790170554207",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RSEPNUSDT": {
