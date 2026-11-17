@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-17T07:10:00.327421+00:00",
+ "captured": "2026-11-17T15:47:22.387013+00:00",
  "counts": {
   "crypto": 565,
   "metal": 2,
@@ -2335,7 +2335,7 @@
    "type": "crypto"
   },
   "MASUSDT": {
-   "band": "0.02",
+   "band": "0.1",
    "base": "MAS",
    "launch_ms": "1713178801000",
    "min_order_usdt": "1",
