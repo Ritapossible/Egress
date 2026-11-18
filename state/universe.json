@@ -1,7 +1,7 @@
 {
- "captured": "2026-11-18T04:00:00.437159+00:00",
+ "captured": "2026-11-18T05:05:00.342173+00:00",
  "counts": {
-  "crypto": 565,
+  "crypto": 564,
   "metal": 2,
   "stock": 3099
  },
@@ -1082,14 +1082,6 @@
    "band": "0.02",
    "base": "COW",
    "launch_ms": "1730890800000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
-  "CPOOLUSDT": {
-   "band": "0.02",
-   "base": "CPOOL",
-   "launch_ms": "1725444000000",
    "min_order_usdt": "1",
    "status": "online",
    "type": "crypto"
