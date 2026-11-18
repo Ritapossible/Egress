@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-18T06:10:00.358761+00:00",
+ "captured": "2026-11-18T15:26:47.156792+00:00",
  "counts": {
   "crypto": 564,
   "metal": 2,
@@ -10153,9 +10153,9 @@
   "REMBJUSDT": {
    "band": "0.1",
    "base": "rEMBJ",
-   "launch_ms": "1792464930698",
+   "launch_ms": "1794987846977",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "REMBUSDT": {
@@ -22321,17 +22321,17 @@
   "RSENEAUSDT": {
    "band": "0.1",
    "base": "rSENEA",
-   "launch_ms": "1790170601805",
+   "launch_ms": "1794987850182",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RSENEBUSDT": {
    "band": "0.1",
    "base": "rSENEB",
-   "launch_ms": "1790170554207",
+   "launch_ms": "1794987852781",
    "min_order_usdt": "10",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RSEPNUSDT": {
