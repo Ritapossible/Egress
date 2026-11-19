@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-19T00:07:14.999259+00:00",
+ "captured": "2026-11-19T01:10:00.287898+00:00",
  "counts": {
   "crypto": 564,
   "metal": 2,
@@ -6059,7 +6059,7 @@
    "base": "rBITI",
    "launch_ms": "1781016630513",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RBITOUSDT": {
@@ -6067,7 +6067,7 @@
    "base": "rBITO",
    "launch_ms": "1781016619724",
    "min_order_usdt": "20",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RBITXUSDT": {
@@ -20955,7 +20955,7 @@
    "base": "rQID",
    "launch_ms": "1789636538160",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RQLDUSDT": {
@@ -21867,7 +21867,7 @@
    "base": "rRWM",
    "launch_ms": "1792148809419",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RRXOUSDT": {
