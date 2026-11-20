@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-20T00:29:32.507794+00:00",
+ "captured": "2026-11-20T01:30:00.446192+00:00",
  "counts": {
   "crypto": 564,
   "metal": 2,
@@ -23059,7 +23059,7 @@
    "base": "rSNDK",
    "launch_ms": "1792464915805",
    "min_order_usdt": "10",
-   "status": "online",
+   "status": "limit_open",
    "type": "stock"
   },
   "RSNDQUSDT": {
