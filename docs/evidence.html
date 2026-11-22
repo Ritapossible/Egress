@@ -465,7 +465,7 @@ pre code{background:none;padding:0}
     <p class="say"><b>1 of the 6 tokenized
     stocks checked are scored against their own prints:</b> RPBRUSDT.
     The other 5 &mdash; RNVDAUSDT, RTSLAUSDT, RAAPLUSDT, RMSFTUSDT and RSYKUSDT &mdash; are excluded, because <b>two of the venue's own volume feeds disagree
-    about them</b>: the candle volume runs 1.6&times; to 2.5&times; the 24h turnover the ticker reports for the same symbol. Which feed is right is not something this
+    about them</b>: the candle volume runs 1.6&times; to 2.4&times; the 24h turnover the ticker reports for the same symbol. Which feed is right is not something this
     project can settle from outside, and scoring a prediction against a number
     that may be wrong would be worse than not scoring it.
     <a href="validation.html">The validation page</a> names every one.</p>
@@ -485,17 +485,17 @@ pre code{background:none;padding:0}
     different SDK, in a different process, with no credentials &mdash; and both
     are costed by the same code, so any gap is the book and not the
     arithmetic.</p>
-    <p class="say">Both clients asked for the same 25,000 USDT exit, 2026-11-19T05:57:09+00:00. <b>9 of 9 could be compared; 9 agree</b> within 0.5 bp.</p>
+    <p class="say">Both clients asked for the same 25,000 USDT exit, 2026-11-22T11:41:30+00:00. <b>7 of 9 could be compared; 7 agree</b> within 0.5 bp.</p>
 <div class="scroll"><table class="tbl"><thead><tr><th>Symbol</th><th>This site</th><th>Agent Hub</th><th>Gap</th><th>Verdict</th></tr></thead><tbody>
-<tr><td class="sym">RNVDAUSDT</td><td>11.31 bp</td><td>11.31 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RTSLAUSDT</td><td>16.09 bp</td><td>16.09 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RAAPLUSDT</td><td>14.24 bp</td><td>14.24 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RMSFTUSDT</td><td>18.31 bp</td><td>18.31 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RSYKUSDT</td><td>84.94 bp</td><td>84.94 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">RPBRUSDT</td><td>39.73 bp</td><td>39.73 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">BTCUSDT</td><td>10.00 bp</td><td>10.00 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">ETHUSDT</td><td>10.66 bp</td><td>10.66 bp</td><td>0.00 bp</td><td>agree</td></tr>
-<tr><td class="sym">SOLUSDT</td><td>11.59 bp</td><td>11.59 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RNVDAUSDT</td><td>19.94 bp</td><td>19.94 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RTSLAUSDT</td><td>15.51 bp</td><td>15.51 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RAAPLUSDT</td><td>59.87 bp</td><td>59.87 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RMSFTUSDT</td><td>27.55 bp</td><td>27.55 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">RSYKUSDT</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>unavailable &mdash; the Hub returned no two-sided book for RSYKUSDT</td></tr>
+<tr><td class="sym">RPBRUSDT</td><td>&ndash;</td><td>&ndash;</td><td>&ndash;</td><td>unavailable &mdash; the Hub returned no two-sided book for RPBRUSDT</td></tr>
+<tr><td class="sym">BTCUSDT</td><td>10.03 bp</td><td>10.03 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">ETHUSDT</td><td>10.03 bp</td><td>10.03 bp</td><td>0.00 bp</td><td>agree</td></tr>
+<tr><td class="sym">SOLUSDT</td><td>11.89 bp</td><td>11.89 bp</td><td>0.00 bp</td><td>agree</td></tr>
 </tbody></table></div>
     <p class="note"><b>What agreement does and does not prove.</b> It does not
     prove the cost is right; both clients read the same exchange and would
@@ -535,7 +535,7 @@ pre code{background:none;padding:0}
       </div>
     </div>
     <div class="foot-bot">
-      <p class="prov"><i></i>Generated 2026-11-22 11:31 UTC from
+      <p class="prov"><i></i>Generated 2026-11-22 11:45 UTC from
       14,383 recorded snapshots. Every figure on this site is read
       from that record at build time. None is typed, and none is cached longer
       than the crawl that produced it.</p>
