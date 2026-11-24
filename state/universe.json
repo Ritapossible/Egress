@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-24T05:05:00.226636+00:00",
+ "captured": "2026-11-24T09:21:02.779558+00:00",
  "counts": {
   "crypto": 564,
   "metal": 2,
@@ -2903,7 +2903,7 @@
    "type": "crypto"
   },
   "PLAIUSDT": {
-   "band": "0.02",
+   "band": "0.1",
    "base": "PLAI",
    "launch_ms": "1762257600000",
    "min_order_usdt": "1",
