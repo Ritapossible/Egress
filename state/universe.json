@@ -1,5 +1,5 @@
 {
- "captured": "2026-11-23T12:15:00.346613+00:00",
+ "captured": "2026-11-23T23:41:06.497427+00:00",
  "counts": {
   "crypto": 564,
   "metal": 2,
@@ -19657,9 +19657,9 @@
   "RPARAUSDT": {
    "band": "0.1",
    "base": "rPARA",
-   "launch_ms": "1793191862757",
+   "launch_ms": "1795443663454",
    "min_order_usdt": "20",
-   "status": "limit_open",
+   "status": "online",
    "type": "stock"
   },
   "RPARRUSDT": {
