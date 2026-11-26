@@ -1,10 +1,10 @@
 {
- "generated": "2026-11-26T02:49:37+00:00",
+ "generated": "2026-11-26T08:16:08+00:00",
  "phases": {
   "holiday": {
-   "crypto_median_bp": 15.9,
-   "snapshots": 32,
-   "stock_median_bp": 38.6
+   "crypto_median_bp": 15.8,
+   "snapshots": 40,
+   "stock_median_bp": 37.9
   },
   "open": {
    "crypto_median_bp": 12.8,
@@ -14,22 +14,22 @@
   "overnight": {
    "crypto_median_bp": 12.6,
    "snapshots": 3931,
-   "stock_median_bp": 255.4
+   "stock_median_bp": 254.8
   },
   "post": {
    "crypto_median_bp": 12.5,
    "snapshots": 1284,
-   "stock_median_bp": 290.9
+   "stock_median_bp": 290.6
   },
   "pre": {
    "crypto_median_bp": 12.5,
    "snapshots": 1904,
-   "stock_median_bp": 580.1
+   "stock_median_bp": 577.2
   },
   "weekend": {
    "crypto_median_bp": 12.6,
    "snapshots": 4482,
-   "stock_median_bp": 226.2
+   "stock_median_bp": 225.9
   }
  }
 }

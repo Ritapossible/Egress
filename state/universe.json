@@ -1,9 +1,9 @@
 {
- "captured": "2026-11-26T02:50:00.293604+00:00",
+ "captured": "2026-11-26T07:45:18.961639+00:00",
  "counts": {
   "crypto": 564,
   "metal": 2,
-  "stock": 3100
+  "stock": 3090
  },
  "symbols": {
   "0GUSDT": {
@@ -4918,14 +4918,6 @@
    "status": "online",
    "type": "stock"
   },
-  "RASTCUSDT": {
-   "band": "0.1",
-   "base": "rASTC",
-   "launch_ms": "1791540316528",
-   "min_order_usdt": "20",
-   "status": "online",
-   "type": "stock"
-  },
   "RASTHUSDT": {
    "band": "0.1",
    "base": "rASTH",
@@ -5114,14 +5106,6 @@
    "band": "0.1",
    "base": "rAURA",
    "launch_ms": "1793191864441",
-   "min_order_usdt": "20",
-   "status": "online",
-   "type": "stock"
-  },
-  "RAUREUSDT": {
-   "band": "0.1",
-   "base": "rAURE",
-   "launch_ms": "1791179257685",
    "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
@@ -9638,14 +9622,6 @@
    "status": "online",
    "type": "stock"
   },
-  "RDSPUSDT": {
-   "band": "0.1",
-   "base": "rDSP",
-   "launch_ms": "1791540315759",
-   "min_order_usdt": "20",
-   "status": "online",
-   "type": "stock"
-  },
   "RDTEGYUSDT": {
    "band": "0.1",
    "base": "rDTEGY",
@@ -10947,14 +10923,6 @@
    "base": "rFBTC",
    "launch_ms": "1792148808332",
    "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RFBYDUSDT": {
-   "band": "0.1",
-   "base": "rFBYD",
-   "launch_ms": "1791540314961",
-   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -13198,14 +13166,6 @@
    "status": "online",
    "type": "stock"
   },
-  "RHMHUSDT": {
-   "band": "0.1",
-   "base": "rHMH",
-   "launch_ms": "1791540315111",
-   "min_order_usdt": "20",
-   "status": "online",
-   "type": "stock"
-  },
   "RHMNUSDT": {
    "band": "0.1",
    "base": "rHMN",
@@ -14563,14 +14523,6 @@
    "base": "rITGR",
    "launch_ms": "1792148796949",
    "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RITGUSDT": {
-   "band": "0.1",
-   "base": "rITG",
-   "launch_ms": "1789982992415",
-   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -17910,14 +17862,6 @@
    "status": "online",
    "type": "stock"
   },
-  "RNAKAUSDT": {
-   "band": "0.1",
-   "base": "rNAKA",
-   "launch_ms": "1788765865369",
-   "min_order_usdt": "20",
-   "status": "online",
-   "type": "stock"
-  },
   "RNAMSUSDT": {
    "band": "0.1",
    "base": "rNAMS",
@@ -18355,14 +18299,6 @@
    "base": "rNNI",
    "launch_ms": "1792464967552",
    "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RNNNNUSDT": {
-   "band": "0.1",
-   "base": "rNNNN",
-   "launch_ms": "1791540316282",
-   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
@@ -27510,14 +27446,6 @@
    "status": "online",
    "type": "stock"
   },
-  "RWYFIUSDT": {
-   "band": "0.1",
-   "base": "rWYFI",
-   "launch_ms": "1792464916503",
-   "min_order_usdt": "20",
-   "status": "online",
-   "type": "stock"
-  },
   "RWYNNUSDT": {
    "band": "0.1",
    "base": "rWYNN",
@@ -27747,14 +27675,6 @@
    "base": "rXOP",
    "launch_ms": "1789636517692",
    "min_order_usdt": "10",
-   "status": "online",
-   "type": "stock"
-  },
-  "RXOSUSDT": {
-   "band": "0.1",
-   "base": "rXOS",
-   "launch_ms": "1791540316598",
-   "min_order_usdt": "20",
    "status": "online",
    "type": "stock"
   },
