@@ -1,8 +1,8 @@
 {
- "generated": "2026-11-27T11:02:14+00:00",
+ "generated": "2026-11-27T11:42:05+00:00",
  "phases": {
   "holiday": {
-   "crypto_median_bp": 15.5,
+   "crypto_median_bp": 15.4,
    "snapshots": 135,
    "stock_median_bp": 22.3
   },
@@ -23,8 +23,8 @@
   },
   "pre": {
    "crypto_median_bp": 12.6,
-   "snapshots": 1926,
-   "stock_median_bp": 581.8
+   "snapshots": 1934,
+   "stock_median_bp": 584.0
   },
   "weekend": {
    "crypto_median_bp": 12.6,
