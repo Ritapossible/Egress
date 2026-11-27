@@ -1,7 +1,7 @@
 {
- "captured": "2026-11-27T09:55:00.441524+00:00",
+ "captured": "2026-11-27T11:00:00.577941+00:00",
  "counts": {
-  "crypto": 564,
+  "crypto": 562,
   "metal": 2,
   "stock": 3090
  },
@@ -2326,14 +2326,6 @@
    "status": "online",
    "type": "crypto"
   },
-  "MASUSDT": {
-   "band": "0.1",
-   "base": "MAS",
-   "launch_ms": "1713178801000",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
-  },
   "MAVUSDT": {
    "band": "0.02",
    "base": "MAV",
@@ -2981,14 +2973,6 @@
    "min_order_usdt": "1",
    "status": "online",
    "type": "stock"
-  },
-  "PRIMEUSDT": {
-   "band": "0.1",
-   "base": "PRIME",
-   "launch_ms": "1677744049368",
-   "min_order_usdt": "1",
-   "status": "online",
-   "type": "crypto"
   },
   "PRLUSDT": {
    "band": "0.1",
